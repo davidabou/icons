@@ -41,3 +41,11 @@ jobs:
           fi
 
       - run: npm publish --access public --tag ${{ steps.tag.outputs.tag }}
+
+      # Rebuild the website (icons.abou.dev) so the new icons show the version they shipped in.
+      # VERCEL_DEPLOY_HOOK: Vercel project → Settings → Git → Deploy Hooks (branch master)
+      - name: Rebuild the website
+        if: env.VERCEL_DEPLOY_HOOK != ''
+        run: curl -fsS -X POST "$VERCEL_DEPLOY_HOOK"
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
