@@ -1,0 +1,21 @@
+<script setup lang="ts">
+import type { SelectGroupProps } from '@animate-ui/vue/primitives/reka-ui'
+import type { HTMLAttributes } from 'vue'
+import { reactiveOmit } from '@vueuse/core'
+import { cn } from 'cn'
+import { SelectGroup } from '@animate-ui/vue/primitives/reka-ui'
+
+const props = defineProps<SelectGroupProps & { class?: HTMLAttributes['class'] }>()
+
+const delegatedProps = reactiveOmit(props, 'class')
+</script>
+
+<template>
+  <SelectGroup
+    data-slot="select-group"
+    v-bind="delegatedProps"
+    :class="cn('scroll-my-1.5 p-1.5', props.class)"
+  >
+    <slot />
+  </SelectGroup>
+</template>

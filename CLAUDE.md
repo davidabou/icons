@@ -8,12 +8,18 @@ Fork of [`@codexteam/icons`](https://github.com/codex-team/icons). Goal of this 
 - `bin/generate.js` — optimizes the SVGs (svgo), generates `src/index.ts`, `dist/icons/Icon*.svg`, the icon table in `README.md` and the `showcase.png` preview (all icons as a grid, rendered with `@resvg/resvg-js`).
 - `src/index.ts`, `dist/`, `showcase.png`, the `<!-- BEGIN TABLE_OF_ICONS -->` section of the README — **generated, never edit by hand**.
 - `packages/nuxt/` — Nuxt module (`<da-icon name="IconHeart" />`), consumes the main package.
+- `packages/site/` — Nuxt website (search, copy, download), statically generated and deployed on Vercel at icons.abou.dev (project root directory `packages/site`, build settings in `vercel.json`). It uses the local module and aliases `@davidabou/icons` to `src/index.ts`, so new icons show up without publishing.
+  - Each icon's dialog shows the first `@davidabou/icons` version that contains it, read at build time by `modules/icon-versions.ts` from the published npm tarballs. `npm-publish.yml` triggers a Vercel rebuild (`VERCEL_DEPLOY_HOOK` secret) after each publish, so nothing needs updating by hand. The same module reads the Iconify `codex` collection, to show the "View on Iconify" link only for icons Iconify already has.
+  - UI: Tailwind CSS v4 + shadcn-vue components (`app/components/ui/`, added with `bunx shadcn-vue@latest add <name>`), animated by Animate UI: after adding a component, run `bunx @animate-ui/cli@latest animate all` (it swaps `reka-ui` imports for `@animate-ui/vue/primitives/reka-ui`). Components use `<DaIcon>`, never Lucide. Exception: `ui/tooltip` is built on Animate UI's own tooltip primitive (`@animate-ui/vue/primitives/tooltip`, one shared popup that glides between triggers), not on shadcn-vue: do not re-add it with the CLI. Font: Fredoka via `@nuxt/fonts`, minimum weight 500. Dark theme: `.dark` class on `<html>`, switched by Animate UI's `ThemeToggler`.
+  - Interaction sounds: `app/composables/useSound.ts` synthesizes them with the Web Audio API (no audio files). On by default, muted by the header button (kept in localStorage). To add one, add a recipe to `SOUNDS` and call `useSound().play('name')`.
 
 ## Commands
 
 ```sh
 bun run generate   # regenerates index.ts, dist/icons and the README table
 bun run build      # generate + vite build (dist/index.mjs, index.umd.js, index.d.ts)
+bun run site:dev   # website dev server (packages/site)
+bun run site:generate  # static build of the website
 ```
 
 After adding an icon: run `bun run build` and check that the report prints `N of N icons were generated`.

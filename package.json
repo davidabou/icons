@@ -16,7 +16,9 @@
   "scripts": {
     "build": "bun run generate && vite build",
     "generate": "node bin/generate.js",
-    "playground": "cd packages/nuxt && bun install && bun run dev"
+    "playground:dev": "bun run --cwd packages/nuxt dev",
+    "site:dev": "bun run --cwd packages/site dev",
+    "site:generate": "bun run --cwd packages/site generate"
   },
   "repository": {
     "type": "git",
