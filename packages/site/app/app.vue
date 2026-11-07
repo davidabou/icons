@@ -9,7 +9,8 @@ const sound = useSound();
 
 const links = [
   { label: 'GitHub', href: 'https://github.com/davidabou/icons' },
-  { label: 'npm', href: 'https://www.npmjs.com/package/@davidabou/icons' }
+  // Hidden below 375px, where the header would overflow
+  { label: 'npm', href: 'https://www.npmjs.com/package/@davidabou/icons', class: 'hidden min-[375px]:inline-flex' }
 ];
 
 /**
@@ -151,14 +152,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
   <TooltipProvider :open-delay="300">
     <div class="mx-auto max-w-280 px-4 sm:px-6">
       <header class="flex h-18 items-center justify-between">
-        <NuxtLink class="flex items-center gap-2 text-[17px] font-semibold" to="/">
+        <NuxtLink class="flex items-center gap-1.5 text-[17px] font-semibold min-[375px]:gap-2" to="/">
           <CodeXIcon name="sparkles" class="text-primary" />
-          <div class="inline-flex items-baseline gap-2">
+          <div class="inline-flex items-baseline gap-2 whitespace-nowrap">
             <span>CodeX Icons</span>
-            <span class="text-muted-foreground text-sm">Extended</span>
+            <!-- Hidden on phones, where the header would overflow -->
+            <span class="hidden text-muted-foreground text-sm sm:inline">Extended</span>
           </div>
         </NuxtLink>
-        <nav class="flex items-center gap-1">
+        <nav class="flex items-center sm:gap-1">
           <Button
             v-for="link in links"
             :key="link.label"
@@ -167,7 +169,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
             :href="link.href"
             target="_blank"
             rel="noopener"
-            class="text-muted-foreground"
+            :class="['px-1.5 text-muted-foreground sm:px-4', link.class]"
           >
             {{ link.label }}
           </Button>
@@ -178,7 +180,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
             target="_blank"
             rel="noopener"
             aria-label="Sponsor on GitHub"
-            class="mx-1 gap-1.5 px-2.5 sm:px-3"
+            class="mx-0.5 gap-1.5 px-2.5 sm:mx-1 sm:px-3"
           >
             <CodeXIcon name="heart" class="text-pink-500" />
             <span class="hidden sm:inline">Sponsor</span>
@@ -188,7 +190,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
               <Button
                 variant="ghost"
                 size="icon-lg"
-                class="text-muted-foreground"
+                class="size-8 text-muted-foreground min-[375px]:size-9 sm:size-10"
                 :aria-label="sound.enabled.value ? 'Mute sounds' : 'Unmute sounds'"
                 :aria-pressed="!sound.enabled.value"
                 @click="sound.toggle"
@@ -210,7 +212,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
                 <Button
                   variant="ghost"
                   size="icon-lg"
-                  class="text-muted-foreground"
+                  class="size-8 text-muted-foreground min-[375px]:size-9 sm:size-10"
                   :aria-label="resolved === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
                   @click="toggleTheme(resolved === 'dark' ? 'light' : 'dark')"
                 >
