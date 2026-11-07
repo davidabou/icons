@@ -17,7 +17,7 @@ A growing set of small, airy outline icons. It extends [CodeX Icons](https://git
 - **Lightweight**: plain SVG strings, no runtime dependencies, tree-shakable ES module.
 - **Typed**: TypeScript declarations are included.
 - **Vue components**: an optional [Vue package](packages/vue) with one tree-shakable component per icon.
-- **Nuxt ready**: an optional [Nuxt module](packages/nuxt) with an auto-imported `<DaIcon>` component.
+- **Nuxt ready**: an optional [Nuxt module](packages/nuxt) with an auto-imported `<CodeXIcon>` component.
 
 ## Installation
 
@@ -72,7 +72,7 @@ bun add @davidabou/nuxt-icons
 ```
 
 ```vue
-<DaIcon name="IconHeart" :size="20" />
+<CodeXIcon name="IconHeart" :size="20" />
 ```
 
 See the [module documentation](packages/nuxt#readme) for the setup.

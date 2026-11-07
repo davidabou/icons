@@ -3,7 +3,12 @@ import { defineNuxtModule, createResolver, addComponent } from '@nuxt/kit';
 /**
  * Union type for available icon names (same as runtime/types.ts, exposed to module consumers)
  */
-export type DaIconName = keyof typeof import('@davidabou/icons');
+export type CodeXIconName = Extract<keyof typeof import('@davidabou/icons-vue'), `Icon${string}`>;
+
+/**
+ * @deprecated Renamed to CodeXIconName
+ */
+export type DaIconName = CodeXIconName;
 
 export default defineNuxtModule({
   meta: {
@@ -15,13 +20,16 @@ export default defineNuxtModule({
   },
   setup () {
     const { resolve } = createResolver(import.meta.url);
+    const filePath = resolve('./runtime/components/CodeXIcon.vue');
 
     /**
-     * Usable as <DaIcon> or <da-icon> in templates
+     * Usable as <CodeXIcon> or <code-x-icon> in templates
      */
-    addComponent({
-      name: 'DaIcon',
-      filePath: resolve('./runtime/components/DaIcon.vue')
-    });
+    addComponent({ name: 'CodeXIcon', filePath });
+
+    /**
+     * Former name, kept so existing templates keep working. Deprecated, use <CodeXIcon>.
+     */
+    addComponent({ name: 'DaIcon', filePath });
   }
 });

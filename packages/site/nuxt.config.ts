@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineNuxtConfig({
   /**
-   * Use the local Nuxt module, so the site dogfoods <DaIcon>
+   * Use the local Nuxt module, so the site dogfoods <CodeXIcon>
    */
   modules: ['../nuxt/src/module', '@nuxt/fonts', '@vercel/analytics', 'shadcn-nuxt'],
 
@@ -13,11 +13,12 @@ export default defineNuxtConfig({
   },
 
   /**
-   * Point the icons package to the generated sources of this repo,
+   * Point the icons packages to the generated sources of this repo,
    * so the site always shows the latest icons, even unpublished ones
    */
   alias: {
-    '@davidabou/icons': fileURLToPath(new URL('../../src/index.ts', import.meta.url))
+    '@davidabou/icons': fileURLToPath(new URL('../../src/index.ts', import.meta.url)),
+    '@davidabou/icons-vue': fileURLToPath(new URL('../vue/src/index.ts', import.meta.url))
   },
 
   /**

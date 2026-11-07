@@ -1,10 +1,10 @@
 import * as iconsModule from '@davidabou/icons';
-import type { DaIconName } from '../../../nuxt/src/runtime/types';
+import type { CodeXIconName } from '../../../nuxt/src/runtime/types';
 import { toSlug } from '../lib/icon-names';
 
 export interface IconEntry {
   /** Export name, e.g. IconArrowLeft */
-  name: DaIconName;
+  name: CodeXIconName;
   /** Source file name, e.g. arrow-left */
   slug: string;
   /** Optimized SVG markup */
@@ -15,7 +15,7 @@ const icons: Record<string, string> = iconsModule;
 
 const list: IconEntry[] = Object.entries(icons)
   .filter(([name, svg]) => name.startsWith('Icon') && typeof svg === 'string')
-  .map(([name, svg]) => ({ name: name as DaIconName, slug: toSlug(name), svg }))
+  .map(([name, svg]) => ({ name: name as CodeXIconName, slug: toSlug(name), svg }))
   /**
    * Sort explicitly: the key order of a module namespace differs between server and client,
    * which would break hydration. Headings come first, like in the README.

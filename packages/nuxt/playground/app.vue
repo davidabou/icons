@@ -4,10 +4,12 @@ const open = ref(false);
 
 <template>
   <div>
-    <DaIcon name="IconHeart" />
-    <da-icon name="IconSparkles" :size="32" style="color: #e11d48" />
+    <CodeXIcon name="IconHeart" />
+    <code-x-icon name="IconSparkles" :size="32" style="color: #e11d48" />
     <button @click="open = !open">
-      <DaIcon :name="open ? 'IconChevronUp' : 'IconChevronDown'" :size="16" />
+      <CodeXIcon :name="open ? 'IconChevronUp' : 'IconChevronDown'" :size="16" aria-label="Toggle" />
     </button>
+    <!-- Deprecated name, still registered -->
+    <DaIcon name="IconLoader" />
   </div>
 </template>

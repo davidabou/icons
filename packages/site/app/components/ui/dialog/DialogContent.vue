@@ -43,7 +43,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
         as-child
       >
         <Button variant="ghost" class="absolute top-4 right-4 bg-secondary" size="icon-sm">
-          <DaIcon name="IconCross" :size="20" />
+          <CodeXIcon name="IconCross" :size="20" />
           <span class="sr-only">Close</span>
         </Button>
       </DialogClose>

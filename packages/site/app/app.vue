@@ -150,7 +150,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
     <div class="mx-auto max-w-280 px-4 sm:px-6">
       <header class="flex h-18 items-center justify-between">
         <NuxtLink class="flex items-center gap-2 text-[17px] font-semibold" to="/">
-          <DaIcon name="IconSparkles" class="text-primary" />
+          <CodeXIcon name="IconSparkles" class="text-primary" />
           <div class="inline-flex items-baseline gap-2">
             <span>CodeX Icons</span>
             <span class="text-muted-foreground text-sm">Extended</span>
@@ -178,7 +178,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
             aria-label="Sponsor on GitHub"
             class="mx-1 gap-1.5 px-2.5 sm:px-3"
           >
-            <DaIcon name="IconHeart" class="text-pink-500" />
+            <CodeXIcon name="IconHeart" class="text-pink-500" />
             <span class="hidden sm:inline">Sponsor</span>
           </Button>
           <Tooltip>
@@ -191,7 +191,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
                 :aria-pressed="!sound.enabled.value"
                 @click="sound.toggle"
               >
-                <DaIcon :name="sound.enabled.value ? 'IconVolume' : 'IconMute'" />
+                <CodeXIcon :name="sound.enabled.value ? 'IconVolume' : 'IconMute'" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>{{ sound.enabled.value ? 'Mute sounds' : 'Unmute sounds' }}</TooltipContent>
@@ -212,7 +212,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
                   :aria-label="resolved === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
                   @click="toggleTheme(resolved === 'dark' ? 'light' : 'dark')"
                 >
-                  <DaIcon :name="resolved === 'dark' ? 'IconSun' : 'IconMoon'" />
+                  <CodeXIcon :name="resolved === 'dark' ? 'IconSun' : 'IconMoon'" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>{{ resolved === 'dark' ? 'Light theme' : 'Dark theme' }}</TooltipContent>
@@ -242,7 +242,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
 
       <div class="sticky top-0 z-5 flex gap-3 bg-background py-3">
         <div class="relative flex-1">
-          <DaIcon name="IconSearch" :size="20" class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted-foreground" />
+          <CodeXIcon name="IconSearch" :size="20" class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
             ref="searchInput"
             v-model="query"
@@ -314,14 +314,14 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
                 class="flex aspect-square w-full flex-col items-center justify-center gap-3.5 rounded-2xl px-2 py-3 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
                 @click="sound.play('open')"
               >
-                <DaIcon :name="icon.name" :size="previewSize" />
+                <CodeXIcon :name="icon.name" :size="previewSize" />
                 <span class="max-w-full truncate text-xs text-muted-foreground">{{ icon.slug }}</span>
               </NuxtLink>
             </HighlightItem>
           </ul>
         </Highlight>
         <div v-else class="flex flex-col items-center gap-3 py-20 text-muted-foreground">
-          <DaIcon name="IconSearch" :size="32" />
+          <CodeXIcon name="IconSearch" :size="32" />
           <p>No icon matches “{{ query }}”.</p>
           <Button as="a" variant="outline" :href="iconRequestUrl" target="_blank" rel="noopener">
             Suggest an icon
