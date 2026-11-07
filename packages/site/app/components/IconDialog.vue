@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { IconEntry } from '~/composables/useIcons';
+import type { Framework } from '~/composables/useFramework';
 import { CopyButton, CopyButtonIcon } from '@animate-ui/vue/primitives/buttons/copy';
 import { cn } from 'cn';
 import { buttonVariants } from '~/components/ui/button';
@@ -19,7 +20,23 @@ const sizes = [16, 20, 24, 32, 48];
 const size = ref(DEFAULT_SIZE);
 /** null = currentColor */
 const color = ref<string | null>(null);
-const tab = ref('vue');
+/**
+ * Snippet tab: opens on the framework chosen on the page, and picking Vue, Nuxt or Vanilla
+ * here changes that choice too (React and SVG stay local to the dialog)
+ */
+const framework = useFramework();
+const tab = ref<string>(framework.value);
+
+watch(tab, value => {
+  framework.value = value;
+});
+
+// Follow the page's tabs and the saved choice, unless React or SVG is shown
+watch(framework, value => {
+  if (FRAMEWORKS.includes(tab.value as Framework)) {
+    tab.value = value;
+  }
+});
 
 const customized = computed(() => size.value !== DEFAULT_SIZE || color.value !== null);
 
@@ -85,15 +102,36 @@ const snippets = computed(() => {
     `import { ${name} } from '@davidabou/icons';`,
     ...sized ? ['', `const icon = ${name}.replace('width="24" height="24"', 'width="${size.value}" height="${size.value}"');`] : []
   ].join('\n');
-  const vueStyle = color.value ? ` style="color: ${color.value}"` : '';
   const reactStyle = color.value ? ` style={{ color: '${color.value}' }}` : '';
+
+  // Vue: a component of @davidabou/icons-vue, sized with its prop (24 by default)
+  const vueAttrs = [
+    ...sized ? [`:size="${size.value}"`] : [],
+    ...color.value ? [`style="color: ${color.value}"`] : []
+  ].map(attr => ` ${attr}`).join('');
 
   return [
     {
       id: 'vue',
       label: 'Vue',
       // Split tag: a literal closing script tag would end this component's own script block
-      code: `<script setup>\n${script}\n</` + `script>\n\n<template>\n  <span v-html="${icon}"${vueStyle} />\n</template>`
+      code: `<script setup>\nimport { ${name} } from '@davidabou/icons-vue';\n</` + `script>\n\n<template>\n  <${name}${vueAttrs} />\n</template>`
+    },
+    {
+      id: 'nuxt',
+      label: 'Nuxt',
+      // <CodeXIcon> is auto-imported by @davidabou/nuxt-icons and takes the kebab-case name
+      code: `<CodeXIcon name="${shown.value.slug}"${vueAttrs} />`
+    },
+    {
+      id: 'vanilla',
+      label: 'Vanilla',
+      code: [
+        script,
+        '',
+        `element.innerHTML = ${icon};`,
+        ...color.value ? [`element.style.color = '${color.value}';`] : []
+      ].join('\n')
     },
     {
       id: 'react',
@@ -270,7 +308,7 @@ onBeforeUnmount(() => clearTimeout(downloadedTimeout));
         <!-- Usage snippets -->
         <Tabs v-model="tab" class="gap-3 border-t bg-muted/40 px-6 pt-5 pb-6" @update:model-value="sound.play('tap')">
           <TabsList class="w-full sm:w-fit">
-            <TabsTrigger v-for="snippet in snippets" :key="snippet.id" :value="snippet.id" class="px-4">
+            <TabsTrigger v-for="snippet in snippets" :key="snippet.id" :value="snippet.id" class="px-2 sm:px-4">
               {{ snippet.label }}
             </TabsTrigger>
           </TabsList>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { IconEntry } from './composables/useIcons';
+import type { Framework } from './composables/useFramework';
 import { Highlight, HighlightItem } from '@animate-ui/vue/primitives/effects/highlight';
 import { ThemeToggler } from '@animate-ui/vue/primitives/effects/theme-toggler';
 
@@ -48,16 +49,16 @@ function setTheme (value: Theme | 'system') {
 }
 
 /**
- * Install command, for each package manager
+ * Install command, for each framework: the tab is shared with the icon dialog's snippets
  */
-const installTabs = [
-  { id: 'pnpm', label: 'pnpm', code: 'pnpm add @davidabou/icons' },
-  { id: 'npm', label: 'npm', code: 'npm install @davidabou/icons' },
-  { id: 'yarn', label: 'yarn', code: 'yarn add @davidabou/icons' },
-  { id: 'bun', label: 'bun', code: 'bun add @davidabou/icons' }
+const installTabs: { id: Framework; label: string; code: string }[] = [
+  { id: 'vue', label: 'Vue', code: 'bun add @davidabou/icons-vue' },
+  // nuxi installs the module with the project's package manager and adds it to nuxt.config.ts
+  { id: 'nuxt', label: 'Nuxt', code: 'bunx nuxi module add @davidabou/nuxt-icons' },
+  { id: 'vanilla', label: 'Vanilla', code: 'bun add @davidabou/icons' }
 ];
 
-const installTab = ref('pnpm');
+const installTab = useFramework();
 
 /**
  * Search and preview size
@@ -228,7 +229,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
         <p class="mb-7 text-[17px] leading-normal text-muted-foreground">
           Drawn on a 24×24 grid with a 2px stroke. They take the current text color. Click an icon to copy it.
         </p>
-        <Tabs v-model="installTab" class="max-w-110" @update:model-value="sound.play('tap')">
+        <Tabs v-model="installTab" class="max-w-114" @update:model-value="sound.play('tap')">
           <TabsList>
             <TabsTrigger v-for="tab in installTabs" :key="tab.id" :value="tab.id" class="px-3">
               {{ tab.label }}
