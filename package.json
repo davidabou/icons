@@ -1,6 +1,6 @@
 {
   "name": "@davidabou/icons",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "davidabou",
   "repository": {
     "type": "git",
@@ -39,7 +39,13 @@
     "generate": "node bin/generate.js",
     "playground:dev": "bun run --cwd packages/nuxt dev",
     "site:dev": "bun run --cwd packages/site dev",
-    "site:generate": "bun run --cwd packages/site generate"
+    "site:generate": "bun run --cwd packages/site generate",
+    "set-version": "node bin/set-version.js",
+    "vue:test": "bun run --cwd packages/vue test"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "workspaces": [
+    "packages/vue",
+    "packages/nuxt"
+  ]
 }

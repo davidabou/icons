@@ -1,12 +1,13 @@
-name: Publish package to NPM
+name: Publish packages to NPM
 
-# Manual trigger only on this fork (publishes @davidabou/icons).
-# Manual trigger only; restore the push trigger to re-enable automatic publishing.
+# Manual trigger only. Publishes, with the same version:
+# @davidabou/icons, then @davidabou/icons-vue, then @davidabou/nuxt-icons (which depends on it).
+# A package whose version is already on npm is skipped, so the workflow can safely be re-run.
 on:
   workflow_dispatch:
 
 # Publishing uses npm Trusted Publishing (OIDC): no NPM_TOKEN secret is needed,
-# but this workflow must be registered as a trusted publisher on npmjs.com.
+# but this workflow must be registered as a trusted publisher of each package on npmjs.com.
 permissions:
   contents: read
   id-token: write
@@ -26,8 +27,22 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
-      - run: bun install
+      - run: bun install --frozen-lockfile
+
+      - name: Check that all packages have the same version
+        run: |
+          node bin/set-version.js
+          git diff --exit-code -- package.json packages/vue/package.json packages/nuxt/package.json
+
+      # Core package (also regenerates packages/vue/src/icons.ts)
       - run: bun run build
+
+      # Vue package: builds dist/ and checks the rendered components
+      - run: bun run vue:test
+
+      # Nuxt module: generates the .nuxt type definitions, then type-checks the module and the playground
+      - run: bun run dev:prepare && bun run test:types
+        working-directory: packages/nuxt
 
       # Release candidates go to the "next" tag, everything else to "latest"
       - name: Pick the npm dist-tag
@@ -40,7 +55,28 @@ jobs:
             echo "tag=latest" >> "$GITHUB_OUTPUT"
           fi
 
-      - run: npm publish --access public --tag ${{ steps.tag.outputs.tag }}
+      # The prepack script (the Nuxt module build) is run with `bun run`, which finds the binaries
+      # hoisted to the workspace root (`bun pm pack` does not). `bun pm pack` then replaces the
+      # workspace:* dependency on @davidabou/icons-vue with its exact version.
+      - name: Publish
+        run: |
+          mkdir -p "$RUNNER_TEMP/packages"
+          for dir in . packages/vue packages/nuxt; do
+            name=$(node -p "require('./$dir/package.json').name")
+            version=$(node -p "require('./$dir/package.json').version")
+
+            if npm view "$name@$version" version > /dev/null 2>&1; then
+              echo "⏭ $name@$version is already published"
+              continue
+            fi
+
+            if [ -n "$(node -p "require('./$dir/package.json').scripts?.prepack ?? ''")" ]; then
+              (cd "$dir" && bun run prepack)
+            fi
+
+            tarball=$(cd "$dir" && bun pm pack --quiet --ignore-scripts --destination "$RUNNER_TEMP/packages")
+            npm publish "$RUNNER_TEMP/packages/$(basename "$tarball")" --access public --tag ${{ steps.tag.outputs.tag }}
+          done
 
       # Rebuild the website (icons.abou.dev) so the new icons show the version they shipped in.
       # VERCEL_DEPLOY_HOOK: Vercel project → Settings → Git → Deploy Hooks (branch master)

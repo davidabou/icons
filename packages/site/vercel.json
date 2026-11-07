@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nuxtjs",
-  "installCommand": "cd ../nuxt && bun install --frozen-lockfile && bunx nuxt-module-build prepare && cd ../site && bun install --frozen-lockfile",
+  "installCommand": "cd ../.. && bun install --frozen-lockfile && cd packages/nuxt && bunx nuxt-module-build prepare && cd ../site && bun install --frozen-lockfile",
   "buildCommand": "bun run generate"
 }
