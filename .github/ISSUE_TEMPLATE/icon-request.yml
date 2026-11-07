@@ -58,6 +58,7 @@ body:
     id: contribution
     attributes:
       label: Contribution
+      description: To draw it, follow the style guide in [CONTRIBUTING.md](https://github.com/davidabou/icons/blob/master/CONTRIBUTING.md).
       options:
         - label: I'd like to draw this icon myself and open a pull request.
           required: false
