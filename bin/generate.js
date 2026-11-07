@@ -1,5 +1,4 @@
 const { optimize } = require('svgo');
-const { parseSvg } = require('svgo/lib/parser');
 const { Resvg } = require('@resvg/resvg-js');
 const path = require('path');
 const fs = require('fs');
@@ -139,7 +138,7 @@ class IconsGenerator {
       /**
        * Optimize icon
        */
-      const optimizedSvgString = this.optimizeSvg(iconCode);
+      const { svg: optimizedSvgString, root } = this.optimizeSvg(iconCode);
 
       /**
        * Creating icon's object to simplify processing calls
@@ -168,7 +167,7 @@ class IconsGenerator {
       /**
        * Add the icon's Vue and React components
        */
-      this.COMPONENTS.push({ name: icon.name, nodes: this.svgToNodes(icon.svg) });
+      this.COMPONENTS.push({ name: icon.name, nodes: this.svgToNodes(root, icon.svg) });
     });
   }
 
@@ -203,9 +202,14 @@ class IconsGenerator {
    *
    * @param {string} svg - SVG code
    *
-   * @returns {string}
+   * @returns {{svg: string, root: object}} - optimized code, and its syntax tree (xast)
    */
   optimizeSvg(svg) {
+    /**
+     * Syntax tree of the optimized icon, kept by the last plugin, right before it is serialized
+     */
+    let root;
+
     /**
      * Optimizing SVG with SVGO package
      * Read more: https://github.com/svg/svgo#api-usage
@@ -218,10 +222,17 @@ class IconsGenerator {
           params: {
             currentColor: true
           }
+        },
+        {
+          name: 'collectRoot',
+          fn: tree => {
+            root = tree;
+          }
         }
       ]
     });
-    return result.data;
+
+    return { svg: result.data, root };
   }
 
   /**
@@ -280,12 +291,13 @@ class IconsGenerator {
   /**
    * Convert an optimized SVG to the elements inside its <svg> root, as [tag, attrs, children?] nodes
    *
-   * @param {string} svg - optimized svg code
+   * @param {object} tree - syntax tree (xast) of the optimized svg
+   * @param {string} svg - optimized svg code, for the error message
    *
    * @returns {Array}
    */
-  svgToNodes(svg) {
-    const root = parseSvg(svg).children.find(node => node.type === 'element');
+  svgToNodes(tree, svg) {
+    const root = tree.children.find(node => node.type === 'element');
 
     if (root.attributes.viewBox !== '0 0 24 24' || root.attributes.fill !== 'none') {
       throw new Error(`Unexpected <svg> root: ${svg}`);
