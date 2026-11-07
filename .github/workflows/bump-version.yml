@@ -51,7 +51,7 @@ jobs:
       - name: Suggest the new version
         run: bun pm version prerelease --preid rc --no-git-tag-version
 
-      # Apply the same version to the Vue package and the Nuxt module
+      # Apply the same version to the Vue, React and Nuxt packages
       - name: Sync the other packages
         run: node bin/set-version.js
 
