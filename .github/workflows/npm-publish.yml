@@ -2,7 +2,7 @@ name: Release
 
 # Manual trigger only (Actions → Release → Run workflow). In order:
 #   1. version: computes the next version from the Conventional Commits since the last release
-#      (or takes the bump chosen below), checks the build, then commits "chore: release x.y.z" and tags vx.y.z
+#      (or takes the bump chosen below, see .github/scripts/release.ts), checks the build, then commits "chore: release x.y.z" and tags vx.y.z
 #   2. publish: publishes @davidabou/icons, @davidabou/icons-vue, @davidabou/icons-react, then
 #      @davidabou/nuxt-icons (which depends on icons-vue), skipping the versions already on npm
 #   3. release: creates the GitHub Release with notes grouped by commit type, and rebuilds the website
@@ -38,7 +38,7 @@ jobs:
       contents: write
     outputs:
       version: ${{ steps.next.outputs.version }}
-      base: ${{ steps.base.outputs.base }}
+      base: ${{ steps.next.outputs.base }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -50,61 +50,10 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
-      # Last release: the latest vx.y.z tag, or the last "chore: release x.y.z" commit (releases made before the tags)
-      - name: Find the last release
-        id: base
-        run: |
-          base=$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || git log -1 --format=%H --grep='^chore: release [0-9]')
-          if [ -z "$base" ]; then
-            echo "::error::No previous release found"
-            exit 1
-          fi
-          if [ -z "$(git log --format=%H "$base..HEAD")" ]; then
-            echo "::error::No commit since the last release ($base)"
-            exit 1
-          fi
-          echo "base=$(git rev-parse "$base")" >> "$GITHUB_OUTPUT"
-
+      # Last release, and next version from the commits since then (or from the chosen bump)
       - name: Compute the next version
         id: next
-        env:
-          BUMP: ${{ inputs.bump }}
-          BASE: ${{ steps.base.outputs.base }}
-        run: |
-          current=$(node -p "require('./package.json').version")
-          IFS=. read -r major minor patch <<< "${current%%-*}"
-          bump=$BUMP
-
-          if [ "$bump" = auto ]; then
-            log=$(git log --no-merges --format='%s%n%b' "$BASE..HEAD")
-            subjects=$(git log --no-merges --format=%s "$BASE..HEAD")
-            if grep -qE '^[a-z]+(\([^)]*\))?!:|^BREAKING CHANGE:' <<< "$log"; then
-              bump=major
-            elif grep -qE '^feat(\([^)]*\))?:' <<< "$subjects"; then
-              bump=minor
-            else
-              bump=patch
-            fi
-          fi
-
-          # Before 1.0, a breaking change bumps the minor version
-          if [ "$bump" = major ] && [ "$major" = 0 ]; then
-            bump=minor
-          fi
-
-          case $bump in
-            major) version="$((major + 1)).0.0" ;;
-            minor) version="$major.$((minor + 1)).0" ;;
-            patch) version="$major.$minor.$((patch + 1))" ;;
-          esac
-
-          if git rev-parse -q --verify "refs/tags/v$version" > /dev/null; then
-            echo "::error::Tag v$version already exists"
-            exit 1
-          fi
-
-          echo "🔖 $current → $version ($bump)"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+        run: bun .github/scripts/release.ts next-version ${{ inputs.bump }}
 
       - run: bun install --frozen-lockfile
 
@@ -197,52 +146,11 @@ jobs:
           ref: v${{ needs.version.outputs.version }}
           fetch-depth: 0
 
+      - uses: oven-sh/setup-bun@v2
+
       # Notes grouped by Conventional Commit type, from the commits since the last release
       - name: Write the release notes
-        env:
-          VERSION: ${{ needs.version.outputs.version }}
-          BASE: ${{ needs.version.outputs.base }}
-          REPOSITORY: ${{ github.repository }}
-        run: |
-          breaking='' features='' fixes='' other=''
-          pattern='^([a-z]+)(\(([^)]*)\))?(!)?: (.*)$'
-
-          for hash in $(git log --no-merges --reverse --format=%h "$BASE..v$VERSION"); do
-            subject=$(git log -1 --format=%s "$hash")
-            body=$(git log -1 --format=%b "$hash")
-
-            if [[ $subject =~ ^chore:\ release\ [0-9] ]]; then
-              continue
-            fi
-
-            if [[ $subject =~ $pattern ]]; then
-              type=${BASH_REMATCH[1]} scope=${BASH_REMATCH[3]} bang=${BASH_REMATCH[4]} text=${BASH_REMATCH[5]}
-            else
-              type='' scope='' bang='' text=$subject
-            fi
-
-            line="- ${scope:+**$scope:** }$text ($hash)"$'\n'
-
-            if [ -n "$bang" ] || grep -q '^BREAKING CHANGE:' <<< "$body"; then
-              breaking+=$line
-            elif [ "$type" = feat ]; then
-              features+=$line
-            elif [ "$type" = fix ]; then
-              fixes+=$line
-            else
-              other+=$line
-            fi
-          done
-
-          {
-            [ -n "$breaking" ] && printf '## ⚠️ Breaking changes\n\n%s\n' "$breaking"
-            [ -n "$features" ] && printf '## Features\n\n%s\n' "$features"
-            [ -n "$fixes" ] && printf '## Fixes\n\n%s\n' "$fixes"
-            [ -n "$other" ] && printf '## Other changes\n\n%s\n' "$other"
-            printf '**Full changelog**: https://github.com/%s/compare/%s...v%s\n' "$REPOSITORY" "$BASE" "$VERSION"
-          } > "$RUNNER_TEMP/notes.md"
-
-          cat "$RUNNER_TEMP/notes.md"
+        run: bun .github/scripts/release.ts notes ${{ needs.version.outputs.version }} ${{ needs.version.outputs.base }} | tee "$RUNNER_TEMP/notes.md"
 
       - name: Create the GitHub Release
         env:

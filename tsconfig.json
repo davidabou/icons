@@ -8,5 +8,5 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["bin", "src", "eslint.config.ts", "vite.config.ts"]
+  "include": [".github/scripts", "bin", "src", "eslint.config.ts", "vite.config.ts"]
 }
