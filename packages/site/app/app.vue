@@ -1,14 +1,151 @@
+<script setup lang="ts">
+import type { IconEntry } from './composables/useIcons';
+import { Highlight, HighlightItem } from '@animate-ui/vue/primitives/effects/highlight';
+import { ThemeToggler } from '@animate-ui/vue/primitives/effects/theme-toggler';
+
+const icons = useIcons();
+const sound = useSound();
+
+const links = [
+  { label: 'GitHub', href: 'https://github.com/davidabou/icons' },
+  { label: 'npm', href: 'https://www.npmjs.com/package/@davidabou/icons' }
+];
+
+/**
+ * External URLs, bound rather than written as static attributes: vue-tsc 3.3 turns the `//` of a
+ * static `href="https://…"` into a comment in its generated code, which breaks the type checking
+ * of the rest of the template (spurious "Property 'value' does not exist" errors).
+ */
+const urls = {
+  sponsor: 'https://github.com/sponsors/davidabou',
+  newIssue: 'https://github.com/davidabou/icons/issues/new',
+  upstream: 'https://github.com/codex-team/icons'
+};
+
+/**
+ * Theme: the initial class is set by an inline script before hydration, to avoid a flash.
+ * Animate UI's ThemeToggler then animates each switch and commits it through setTheme.
+ */
+useHead({
+  script: [{
+    innerHTML: `(function(){try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.classList.toggle('dark',t==='dark')}catch(e){}})()`
+  }]
+});
+
+type Theme = 'light' | 'dark';
+
+const theme = ref<Theme>('light');
+
+function setTheme (value: Theme | 'system') {
+  const resolved: Theme = value === 'system'
+    ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    : value;
+
+  theme.value = resolved;
+  sound.play('toggle');
+  document.documentElement.classList.toggle('dark', resolved === 'dark');
+  localStorage.setItem('theme', resolved);
+}
+
+/**
+ * Install command, for each package manager
+ */
+const installTabs = [
+  { id: 'pnpm', label: 'pnpm', code: 'pnpm add @davidabou/icons' },
+  { id: 'npm', label: 'npm', code: 'npm install @davidabou/icons' },
+  { id: 'yarn', label: 'yarn', code: 'yarn add @davidabou/icons' },
+  { id: 'bun', label: 'bun', code: 'bun add @davidabou/icons' }
+];
+
+const installTab = ref('pnpm');
+
+/**
+ * Search and preview size
+ */
+const query = ref('');
+const searchInput = ref<{ $el: HTMLInputElement }>();
+const sizes = [16, 24, 32];
+const previewSize = ref(24);
+
+const filtered = computed(() => {
+  const words = query.value.trim().toLowerCase().split(/[\s-]+/).filter(Boolean);
+
+  if (!words.length) {
+    return icons;
+  }
+
+  return icons.filter(icon => {
+    const haystack = `${icon.slug} ${icon.name.toLowerCase()}`;
+
+    return words.every(word => haystack.includes(word));
+  });
+});
+
+/**
+ * Selected icon: the route itself (/icons/arrow-left), so it can be shared and indexed.
+ * Sounds play from the clicks themselves: opening from the URL is silent.
+ */
+const route = useRoute();
+const router = useRouter();
+
+const selected = computed<IconEntry | null>(() => icons.find(icon => icon.slug === route.params.slug) ?? null);
+
+function close () {
+  sound.play('close');
+  // Opened from the grid: going back closes it, without leaving a /icons entry to come back to
+  if (router.options.history.state.back === '/') {
+    router.back();
+  } else {
+    router.replace('/');
+  }
+}
+
+/** Title, description, social previews and structured data of the current page */
+useIconSeo(selected);
+
+/**
+ * Keyboard: "/" focuses the search, Escape clears it (the Dialog closes itself on Escape)
+ */
+function onKeydown (event: KeyboardEvent) {
+  const input = searchInput.value?.$el;
+  const typing = event.target instanceof HTMLInputElement;
+
+  if (event.key === '/' && !typing) {
+    event.preventDefault();
+    input?.focus();
+  } else if (event.key === 'Escape' && typing && !selected.value) {
+    query.value = '';
+    input?.blur();
+  }
+}
+
+onMounted(() => {
+  theme.value = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+
+  // Links shared before icon pages existed (/?icon=arrow-left)
+  const legacy = route.query.icon;
+
+  if (typeof legacy === 'string' && icons.some(icon => icon.slug === legacy)) {
+    router.replace(`/icons/${legacy}`);
+  }
+
+  window.addEventListener('keydown', onKeydown);
+});
+
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
+</script>
+
 <template>
   <TooltipProvider :open-delay="300">
     <div class="mx-auto max-w-[1120px] px-4 sm:px-6">
       <header class="flex h-18 items-center justify-between">
-        <a class="flex items-center gap-2 text-[17px] font-semibold" href="./">
+        <NuxtLink class="flex items-center gap-2 text-[17px] font-semibold" to="/">
           <DaIcon name="IconSparkles" class="text-primary" />
           <div class="inline-flex items-baseline gap-2">
             <span>CodeX Icons</span>
             <span class="text-muted-foreground text-sm">Extended</span>
           </div>
-        </a>
+        </NuxtLink>
         <nav class="flex items-center gap-1">
           <Button
             v-for="link in links"
@@ -25,7 +162,7 @@
           <Button
             as="a"
             variant="outline"
-            href="https://github.com/sponsors/davidabou"
+            :href="urls.sponsor"
             target="_blank"
             rel="noopener"
             aria-label="Sponsor on GitHub"
@@ -157,22 +294,26 @@
               as="li"
               class="p-1"
             >
-              <!-- No selected state: the dialog opens over the grid -->
-              <button
+              <!--
+                No selected state: the dialog opens over the grid.
+                A real link to the icon's page, so search engines can follow it.
+              -->
+              <NuxtLink
+                :to="`/icons/${icon.slug}`"
                 :title="icon.name"
                 class="flex aspect-square w-full flex-col items-center justify-center gap-3.5 rounded-2xl px-2 py-3 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-                @click="open(icon)"
+                @click="sound.play('open')"
               >
                 <DaIcon :name="icon.name" :size="previewSize" />
                 <span class="max-w-full truncate text-xs text-muted-foreground">{{ icon.slug }}</span>
-              </button>
+              </NuxtLink>
             </HighlightItem>
           </ul>
         </Highlight>
         <div v-else class="flex flex-col items-center gap-3 py-20 text-muted-foreground">
           <DaIcon name="IconSearch" :size="32" />
           <p>No icon matches “{{ query }}”.</p>
-          <Button as="a" variant="outline" href="https://github.com/davidabou/icons/issues/new" target="_blank" rel="noopener">
+          <Button as="a" variant="outline" :href="urls.newIssue" target="_blank" rel="noopener">
             Suggest an icon
           </Button>
         </div>
@@ -180,140 +321,13 @@
 
       <footer class="pt-16 pb-10 text-center text-sm text-muted-foreground">
         MIT licensed · Fork of
-        <Button as="a" variant="link" class="h-auto p-0 text-muted-foreground" href="https://github.com/codex-team/icons" target="_blank" rel="noopener">
+        <Button as="a" variant="link" class="h-auto p-0 text-muted-foreground" :href="urls.upstream" target="_blank" rel="noopener">
           CodeX Icons
         </Button>
       </footer>
     </div>
 
     <IconDialog :icon="selected" @close="close" />
+    <NuxtPage />
   </TooltipProvider>
 </template>
-
-<script setup lang="ts">
-import type { IconEntry } from './composables/useIcons';
-import { Highlight, HighlightItem } from '@animate-ui/vue/primitives/effects/highlight';
-import { ThemeToggler } from '@animate-ui/vue/primitives/effects/theme-toggler';
-
-const icons = useIcons();
-const sound = useSound();
-
-const links = [
-  { label: 'GitHub', href: 'https://github.com/davidabou/icons' },
-  { label: 'npm', href: 'https://www.npmjs.com/package/@davidabou/icons' }
-];
-
-/**
- * Theme: the initial class is set by an inline script before hydration, to avoid a flash.
- * Animate UI's ThemeToggler then animates each switch and commits it through setTheme.
- */
-useHead({
-  script: [{
-    innerHTML: `(function(){try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.classList.toggle('dark',t==='dark')}catch(e){}})()`
-  }]
-});
-
-type Theme = 'light' | 'dark';
-
-const theme = ref<Theme>('light');
-
-function setTheme (value: Theme | 'system') {
-  const resolved: Theme = value === 'system'
-    ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-    : value;
-
-  theme.value = resolved;
-  sound.play('toggle');
-  document.documentElement.classList.toggle('dark', resolved === 'dark');
-  localStorage.setItem('theme', resolved);
-}
-
-/**
- * Install command, for each package manager
- */
-const installTabs = [
-  { id: 'pnpm', label: 'pnpm', code: 'pnpm add @davidabou/icons' },
-  { id: 'npm', label: 'npm', code: 'npm install @davidabou/icons' },
-  { id: 'yarn', label: 'yarn', code: 'yarn add @davidabou/icons' },
-  { id: 'bun', label: 'bun', code: 'bun add @davidabou/icons' }
-];
-
-const installTab = ref('pnpm');
-
-/**
- * Search and preview size
- */
-const query = ref('');
-const searchInput = ref<{ $el: HTMLInputElement }>();
-const sizes = [16, 24, 32];
-const previewSize = ref(24);
-
-const filtered = computed(() => {
-  const words = query.value.trim().toLowerCase().split(/[\s-]+/).filter(Boolean);
-
-  if (!words.length) {
-    return icons;
-  }
-
-  return icons.filter(icon => {
-    const haystack = `${icon.slug} ${icon.name.toLowerCase()}`;
-
-    return words.every(word => haystack.includes(word));
-  });
-});
-
-/**
- * Selected icon, kept in the URL (?icon=arrow-left) so it can be shared
- */
-const selected = ref<IconEntry | null>(null);
-
-/** Sounds play from the clicks themselves, not from the watch: opening from the URL is silent */
-function open (icon: IconEntry) {
-  selected.value = icon;
-  sound.play('open');
-}
-
-function close () {
-  selected.value = null;
-  sound.play('close');
-}
-
-watch(selected, icon => {
-  const url = new URL(location.href);
-
-  if (icon) {
-    url.searchParams.set('icon', icon.slug);
-  } else {
-    url.searchParams.delete('icon');
-  }
-  history.replaceState(history.state, '', url);
-});
-
-/**
- * Keyboard: "/" focuses the search, Escape clears it (the Dialog closes itself on Escape)
- */
-function onKeydown (event: KeyboardEvent) {
-  const input = searchInput.value?.$el;
-  const typing = event.target instanceof HTMLInputElement;
-
-  if (event.key === '/' && !typing) {
-    event.preventDefault();
-    input?.focus();
-  } else if (event.key === 'Escape' && typing && !selected.value) {
-    query.value = '';
-    input?.blur();
-  }
-}
-
-onMounted(() => {
-  theme.value = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-
-  const slug = new URL(location.href).searchParams.get('icon');
-
-  selected.value = icons.find(icon => icon.slug === slug) ?? null;
-
-  window.addEventListener('keydown', onKeydown);
-});
-
-onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
-</script>

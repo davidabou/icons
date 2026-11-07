@@ -11,6 +11,9 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "description": "Rounded outline SVG icons, 24×24 with a 2px stroke. Extended fork of CodeX Icons.",
+  "keywords": ["icons", "svg", "svg-icons", "icon-set", "outline-icons", "rounded-icons", "vue", "react", "nuxt", "codex"],
+  "homepage": "https://icons.abou.dev",
   "license": "MIT",
   "author": "davidabou",
   "scripts": {

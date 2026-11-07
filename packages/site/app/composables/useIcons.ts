@@ -1,5 +1,6 @@
 import * as iconsModule from '@davidabou/icons';
 import type { DaIconName } from '../../../nuxt/src/runtime/types';
+import { toSlug } from '../lib/icon-names';
 
 export interface IconEntry {
   /** Export name, e.g. IconArrowLeft */
@@ -11,16 +12,6 @@ export interface IconEntry {
 }
 
 const icons: Record<string, string> = iconsModule;
-
-/**
- * IconTableWithHeadings → table-with-headings, IconH1 → h1
- */
-function toSlug (name: string): string {
-  return name
-    .replace(/^Icon/, '')
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .toLowerCase();
-}
 
 const list: IconEntry[] = Object.entries(icons)
   .filter(([name, svg]) => name.startsWith('Icon') && typeof svg === 'string')

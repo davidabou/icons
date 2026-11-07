@@ -36,16 +36,27 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()]
   },
 
+  /**
+   * Public URL, for canonical links, social images and the sitemap (see modules/seo.ts)
+   */
+  runtimeConfig: {
+    public: { siteUrl: 'https://icons.abou.dev' }
+  },
+
+  /**
+   * Per-page title, description and social tags are set in app.vue
+   */
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'CodeX Icons (Extended) - rounded outline SVG icons',
       meta: [
-        { name: 'description', content: 'Rounded outline SVG icons, 24×24 with a 2px stroke. Search, copy and download.' },
-        { name: 'theme-color', content: '#ffffff' }
+        { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' },
+        { name: 'theme-color', content: '#09090b', media: '(prefers-color-scheme: dark)' },
+        { name: 'author', content: 'davidabou' }
       ],
       link: [
-        { rel: 'icon', type: 'image/svg+xml', href: 'favicon.svg' }
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }
       ]
     }
   },
