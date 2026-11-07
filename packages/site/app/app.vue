@@ -18,7 +18,7 @@ const links = [
  */
 const urls = {
   sponsor: 'https://github.com/sponsors/davidabou',
-  newIssue: 'https://github.com/davidabou/icons/issues/new',
+  iconRequest: 'https://github.com/davidabou/icons/issues/new?template=icon-request.yml',
   upstream: 'https://github.com/codex-team/icons'
 };
 
@@ -66,6 +66,16 @@ const query = ref('');
 const searchInput = ref<{ $el: HTMLInputElement }>();
 const sizes = [16, 24, 32];
 const previewSize = ref(24);
+
+/**
+ * "Suggest an icon" link: opens the icon request form with the search prefilled as the icon name.
+ */
+const iconRequestUrl = computed(() => {
+  const name = query.value.trim();
+  const params = new URLSearchParams({ title: `Icon request: ${name}`, name });
+
+  return `${urls.iconRequest}&${params}`;
+});
 
 const filtered = computed(() => {
   const words = query.value.trim().toLowerCase().split(/[\s-]+/).filter(Boolean);
@@ -313,7 +323,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
         <div v-else class="flex flex-col items-center gap-3 py-20 text-muted-foreground">
           <DaIcon name="IconSearch" :size="32" />
           <p>No icon matches “{{ query }}”.</p>
-          <Button as="a" variant="outline" :href="urls.newIssue" target="_blank" rel="noopener">
+          <Button as="a" variant="outline" :href="iconRequestUrl" target="_blank" rel="noopener">
             Suggest an icon
           </Button>
         </div>

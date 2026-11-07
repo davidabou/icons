@@ -1,0 +1,63 @@
+name: Icon request
+description: Suggest a new icon for the set.
+title: "Icon request: "
+labels: ["icon request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an icon! Before submitting, please search [icons.abou.dev](https://icons.abou.dev) and the [existing requests](https://github.com/davidabou/icons/issues?q=label%3A%22icon+request%22) to make sure it isn't already covered.
+
+        New icons follow the existing style strictly: 24×24 outline, 2px stroke, rounded caps and joins, small and airy inside the canvas.
+
+  - type: input
+    id: name
+    attributes:
+      label: Icon name
+      description: What the icon represents or the action it triggers (not its shape), in English.
+      placeholder: e.g. bookmark, cloud-upload, calendar
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: Where and how would you use it? This helps choose the right metaphor.
+      placeholder: e.g. A button in my editor's toolbar to save an article for later.
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: Visual references
+      description: Links or screenshots of similar icons from other sets, or a quick sketch. Drag and drop images here.
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing icons considered
+      description: Did you try any existing icon for this need? Why doesn't it fit?
+      placeholder: e.g. IconStar is close, but it reads as "favorite" rather than "save for later".
+    validations:
+      required: false
+
+  - type: textarea
+    id: variants
+    attributes:
+      label: Variants
+      description: Any related variants worth adding at the same time (directions, small size, crossed out…)?
+      placeholder: e.g. bookmark-add, bookmark-remove
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd like to draw this icon myself and open a pull request.
+          required: false
