@@ -25,7 +25,7 @@ defineProps<{
   <div :class="cn('flex gap-2 rounded-3xl bg-muted py-1.5 pr-1.5 pl-3.5', wrap ? 'items-start' : 'items-center', $attrs.class as string)">
     <code
       class="flex-1 font-mono text-[13px]"
-      :class="wrap ? 'py-2.5 leading-5 break-words whitespace-pre-wrap' : 'overflow-x-auto whitespace-nowrap'"
+      :class="wrap ? 'py-2.5 leading-5 wrap-break-word whitespace-pre-wrap' : 'overflow-x-auto whitespace-nowrap'"
     >{{ code }}</code>
     <Tooltip>
       <TooltipTrigger>

@@ -134,7 +134,7 @@ onBeforeUnmount(() => clearTimeout(downloadedTimeout));
   <Dialog :open="!!icon" @update:open="(open: boolean) => { if (!open) emit('close') }">
     <DialogContent
       :show-close-button="false"
-      class="gap-0 overflow-hidden p-0 sm:max-w-[760px]"
+      class="gap-0 overflow-hidden p-0 sm:max-w-190"
       @open-auto-focus="(event: Event) => event.preventDefault()"
     >
       <!-- `shown` outlives `icon` while the close animation plays -->

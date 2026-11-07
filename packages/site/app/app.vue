@@ -137,7 +137,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
 
 <template>
   <TooltipProvider :open-delay="300">
-    <div class="mx-auto max-w-[1120px] px-4 sm:px-6">
+    <div class="mx-auto max-w-280 px-4 sm:px-6">
       <header class="flex h-18 items-center justify-between">
         <NuxtLink class="flex items-center gap-2 text-[17px] font-semibold" to="/">
           <DaIcon name="IconSparkles" class="text-primary" />
@@ -211,14 +211,14 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
         </nav>
       </header>
 
-      <section class="max-w-[640px] pt-8 pb-6 sm:pt-14 sm:pb-10">
+      <section class="max-w-160 pt-8 pb-6 sm:pt-14 sm:pb-10">
         <h1 class="mb-3 text-[clamp(32px,5vw,44px)] leading-[1.1] font-semibold tracking-tight">
           {{ icons.length }} rounded outline icons
         </h1>
         <p class="mb-7 text-[17px] leading-normal text-muted-foreground">
           Drawn on a 24×24 grid with a 2px stroke. They take the current text color. Click an icon to copy it.
         </p>
-        <Tabs v-model="installTab" class="max-w-[440px]" @update:model-value="sound.play('tap')">
+        <Tabs v-model="installTab" class="max-w-110" @update:model-value="sound.play('tap')">
           <TabsList>
             <TabsTrigger v-for="tab in installTabs" :key="tab.id" :value="tab.id" class="px-3">
               {{ tab.label }}
@@ -230,7 +230,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
         </Tabs>
       </section>
 
-      <div class="sticky top-0 z-[5] flex gap-3 bg-background py-3">
+      <div class="sticky top-0 z-5 flex gap-3 bg-background py-3">
         <div class="relative flex-1">
           <DaIcon name="IconSearch" :size="20" class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
