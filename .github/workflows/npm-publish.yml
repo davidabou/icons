@@ -1,22 +1,149 @@
-name: Publish packages to NPM
+name: Release
 
-# Manual trigger only. Publishes, with the same version:
-# @davidabou/icons, @davidabou/icons-vue, @davidabou/icons-react, then @davidabou/nuxt-icons (which depends on icons-vue).
-# A package whose version is already on npm is skipped, so the workflow can safely be re-run.
+# Manual trigger only (Actions → Release → Run workflow). In order:
+#   1. version: computes the next version from the Conventional Commits since the last release
+#      (or takes the bump chosen below), checks the build, then commits "chore: release x.y.z" and tags vx.y.z
+#   2. publish: publishes @davidabou/icons, @davidabou/icons-vue, @davidabou/icons-react, then
+#      @davidabou/nuxt-icons (which depends on icons-vue), skipping the versions already on npm
+#   3. release: creates the GitHub Release with notes grouped by commit type, and rebuilds the website
+# A failed job can be re-run alone: publishing skips what is already on npm.
+#
+# This file keeps the name npm-publish.yml: it is the workflow registered as the npm trusted publisher
+# of each package on npmjs.com (Trusted Publishing, OIDC: no NPM_TOKEN secret).
 on:
   workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version bump (auto: from the commits, feat → minor, fix → patch, breaking → major, or minor before 1.0)'
+        type: choice
+        default: auto
+        options:
+          - auto
+          - patch
+          - minor
+          - major
 
-# Publishing uses npm Trusted Publishing (OIDC): no NPM_TOKEN secret is needed,
-# but this workflow must be registered as a trusted publisher of each package on npmjs.com.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 permissions:
   contents: read
-  id-token: write
 
 jobs:
-  publish:
+  version:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.next.outputs.version }}
+      base: ${{ steps.base.outputs.base }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+
+      - uses: oven-sh/setup-bun@v2
+
+      # Last release: the latest vx.y.z tag, or the last "chore: release x.y.z" commit (releases made before the tags)
+      - name: Find the last release
+        id: base
+        run: |
+          base=$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || git log -1 --format=%H --grep='^chore: release [0-9]')
+          if [ -z "$base" ]; then
+            echo "::error::No previous release found"
+            exit 1
+          fi
+          if [ -z "$(git log --format=%H "$base..HEAD")" ]; then
+            echo "::error::No commit since the last release ($base)"
+            exit 1
+          fi
+          echo "base=$(git rev-parse "$base")" >> "$GITHUB_OUTPUT"
+
+      - name: Compute the next version
+        id: next
+        env:
+          BUMP: ${{ inputs.bump }}
+          BASE: ${{ steps.base.outputs.base }}
+        run: |
+          current=$(node -p "require('./package.json').version")
+          IFS=. read -r major minor patch <<< "${current%%-*}"
+          bump=$BUMP
+
+          if [ "$bump" = auto ]; then
+            log=$(git log --no-merges --format='%s%n%b' "$BASE..HEAD")
+            subjects=$(git log --no-merges --format=%s "$BASE..HEAD")
+            if grep -qE '^[a-z]+(\([^)]*\))?!:|^BREAKING CHANGE:' <<< "$log"; then
+              bump=major
+            elif grep -qE '^feat(\([^)]*\))?:' <<< "$subjects"; then
+              bump=minor
+            else
+              bump=patch
+            fi
+          fi
+
+          # Before 1.0, a breaking change bumps the minor version
+          if [ "$bump" = major ] && [ "$major" = 0 ]; then
+            bump=minor
+          fi
+
+          case $bump in
+            major) version="$((major + 1)).0.0" ;;
+            minor) version="$major.$((minor + 1)).0" ;;
+            patch) version="$major.$minor.$((patch + 1))" ;;
+          esac
+
+          if git rev-parse -q --verify "refs/tags/v$version" > /dev/null; then
+            echo "::error::Tag v$version already exists"
+            exit 1
+          fi
+
+          echo "🔖 $current → $version ($bump)"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - run: bun install --frozen-lockfile
+
+      - name: Set the version of all packages
+        run: bun run set-version ${{ steps.next.outputs.version }}
+
+      # Nothing is committed or tagged unless the whole build passes
+      - run: bun run lint
+      - run: bun run typecheck
+      - run: bun run build
+      - run: bun run vue:test
+      - run: bun run react:test
+
+      - name: Type-check the Nuxt module and its playground
+        run: bun run dev:prepare && bun run test:types
+        working-directory: packages/nuxt
+
+      - name: Commit and tag the release
+        env:
+          VERSION: ${{ steps.next.outputs.version }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json packages/vue/package.json packages/react/package.json packages/nuxt/package.json
+          git commit -m "chore: release $VERSION"
+          git tag "v$VERSION"
+          git push --atomic origin HEAD:master "v$VERSION"
+
+  publish:
+    needs: version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: v${{ needs.version.outputs.version }}
+
       - uses: actions/setup-node@v7
         with:
           node-version: lts/*
@@ -29,34 +156,12 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
-      - name: Check that all packages have the same version
-        run: |
-          bun bin/set-version.ts
-          git diff --exit-code -- package.json packages/vue/package.json packages/react/package.json packages/nuxt/package.json
-
-      # Core package (also regenerates packages/vue/src/icons.ts and packages/react/src/icons.ts)
+      # Core package (also regenerates packages/vue/src/icons.ts and packages/react/src/icons.ts), then the Vue and React packages
       - run: bun run build
-
-      # Vue package: builds dist/ and checks the rendered components
-      - run: bun run vue:test
-
-      # React package: builds dist/ and checks the rendered components
-      - run: bun run react:test
-
-      # Nuxt module: generates the .nuxt type definitions, then type-checks the module and the playground
-      - run: bun run dev:prepare && bun run test:types
-        working-directory: packages/nuxt
-
-      # Release candidates go to the "next" tag, everything else to "latest"
-      - name: Pick the npm dist-tag
-        id: tag
-        run: |
-          version=$(node -p "require('./package.json').version")
-          if [[ "$version" == *-rc* ]]; then
-            echo "tag=next" >> "$GITHUB_OUTPUT"
-          else
-            echo "tag=latest" >> "$GITHUB_OUTPUT"
-          fi
+      - run: bun run build
+        working-directory: packages/vue
+      - run: bun run build
+        working-directory: packages/react
 
       # The prepack script (the Nuxt module build) is run with `bun run`, which finds the binaries
       # hoisted to the workspace root (`bun pm pack` does not). `bun pm pack` then replaces the
@@ -78,8 +183,72 @@ jobs:
             fi
 
             tarball=$(cd "$dir" && bun pm pack --quiet --ignore-scripts --destination "$RUNNER_TEMP/packages")
-            npm publish "$RUNNER_TEMP/packages/$(basename "$tarball")" --access public --tag ${{ steps.tag.outputs.tag }}
+            npm publish "$RUNNER_TEMP/packages/$(basename "$tarball")" --access public
           done
+
+  release:
+    needs: [version, publish]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: v${{ needs.version.outputs.version }}
+          fetch-depth: 0
+
+      # Notes grouped by Conventional Commit type, from the commits since the last release
+      - name: Write the release notes
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+          BASE: ${{ needs.version.outputs.base }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          breaking='' features='' fixes='' other=''
+          pattern='^([a-z]+)(\(([^)]*)\))?(!)?: (.*)$'
+
+          for hash in $(git log --no-merges --reverse --format=%h "$BASE..v$VERSION"); do
+            subject=$(git log -1 --format=%s "$hash")
+            body=$(git log -1 --format=%b "$hash")
+
+            if [[ $subject =~ ^chore:\ release\ [0-9] ]]; then
+              continue
+            fi
+
+            if [[ $subject =~ $pattern ]]; then
+              type=${BASH_REMATCH[1]} scope=${BASH_REMATCH[3]} bang=${BASH_REMATCH[4]} text=${BASH_REMATCH[5]}
+            else
+              type='' scope='' bang='' text=$subject
+            fi
+
+            line="- ${scope:+**$scope:** }$text ($hash)"$'\n'
+
+            if [ -n "$bang" ] || grep -q '^BREAKING CHANGE:' <<< "$body"; then
+              breaking+=$line
+            elif [ "$type" = feat ]; then
+              features+=$line
+            elif [ "$type" = fix ]; then
+              fixes+=$line
+            else
+              other+=$line
+            fi
+          done
+
+          {
+            [ -n "$breaking" ] && printf '## ⚠️ Breaking changes\n\n%s\n' "$breaking"
+            [ -n "$features" ] && printf '## Features\n\n%s\n' "$features"
+            [ -n "$fixes" ] && printf '## Fixes\n\n%s\n' "$fixes"
+            [ -n "$other" ] && printf '## Other changes\n\n%s\n' "$other"
+            printf '**Full changelog**: https://github.com/%s/compare/%s...v%s\n' "$REPOSITORY" "$BASE" "$VERSION"
+          } > "$RUNNER_TEMP/notes.md"
+
+          cat "$RUNNER_TEMP/notes.md"
+
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.version.outputs.version }}
+        run: gh release create "v$VERSION" --title "v$VERSION" --notes-file "$RUNNER_TEMP/notes.md" --verify-tag
 
       # Rebuild the website (icons.abou.dev) so the new icons show the version they shipped in.
       # VERCEL_DEPLOY_HOOK: Vercel project → Settings → Git → Deploy Hooks (branch master)
