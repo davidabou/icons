@@ -1,6 +1,7 @@
 # CodeX Icons (extended)
 
 [![npm](https://img.shields.io/npm/v/@davidabou/icons?label=%40davidabou%2Ficons)](https://www.npmjs.com/package/@davidabou/icons)
+[![npm](https://img.shields.io/npm/v/@davidabou/icons-vue?label=%40davidabou%2Ficons-vue)](https://www.npmjs.com/package/@davidabou/icons-vue)
 [![npm](https://img.shields.io/npm/v/@davidabou/nuxt-icons?label=%40davidabou%2Fnuxt-icons)](https://www.npmjs.com/package/@davidabou/nuxt-icons)
 [![npm downloads](https://img.shields.io/npm/dm/@davidabou/icons)](https://www.npmjs.com/package/@davidabou/icons)
 [![license](https://img.shields.io/npm/l/@davidabou/icons)](LICENSE)
@@ -15,6 +16,7 @@ A growing set of small, airy outline icons. It extends [CodeX Icons](https://git
 - **Colors with your text**: every icon uses `currentColor`.
 - **Lightweight**: plain SVG strings, no runtime dependencies, tree-shakable ES module.
 - **Typed**: TypeScript declarations are included.
+- **Vue components**: an optional [Vue package](packages/vue) with one tree-shakable component per icon.
 - **Nuxt ready**: an optional [Nuxt module](packages/nuxt) with an auto-imported `<DaIcon>` component.
 
 ## Installation
@@ -45,11 +47,23 @@ Icons are 24px by default. Resize them with CSS and color them with `color`:
 }
 ```
 
-In a framework, render the string as HTML, for example in Vue:
+### Vue
+
+```sh
+bun add @davidabou/icons-vue
+```
 
 ```vue
-<span class="icon" v-html="IconHeart" />
+<script setup lang="ts">
+import { IconHeart } from '@davidabou/icons-vue';
+</script>
+
+<template>
+  <IconHeart :size="20" class="text-primary" />
+</template>
 ```
+
+See the [package documentation](packages/vue#readme) for the properties.
 
 ### Nuxt
 

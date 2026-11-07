@@ -5,8 +5,9 @@ Fork of [`@codexteam/icons`](https://github.com/codex-team/icons). Goal of this 
 ## Structure
 
 - `src/icons/*.svg` — **single source of truth**. This is the only place where icons are added or modified.
-- `bin/generate.js` — optimizes the SVGs (svgo), generates `src/index.ts`, `dist/icons/Icon*.svg`, the icon table in `README.md` and the `showcase.png` preview (all icons as a grid, rendered with `@resvg/resvg-js`).
-- `src/index.ts`, `dist/`, `showcase.png`, the `<!-- BEGIN TABLE_OF_ICONS -->` section of the README — **generated, never edit by hand**.
+- `bin/generate.js` — optimizes the SVGs (svgo), generates `src/index.ts`, `dist/icons/Icon*.svg`, `packages/vue/src/icons.ts`, the icon table in `README.md` and the `showcase.png` preview (all icons as a grid, rendered with `@resvg/resvg-js`).
+- `src/index.ts`, `dist/`, `packages/vue/src/icons.ts`, `showcase.png`, the `<!-- BEGIN TABLE_OF_ICONS -->` section of the README — **generated, never edit by hand**.
+- `packages/vue/` — `@davidabou/icons-vue`, one functional Vue 3 component per icon (`<IconHeart :size="20" />`), built from the parsed SVG elements by `createIcon` (`src/create-icon.ts`), no `v-html`. Own `bun.lock`; `bun run test` builds it and checks the SSR output.
 - `packages/nuxt/` — Nuxt module (`<da-icon name="IconHeart" />`), consumes the main package.
 - `packages/site/` — Nuxt website (search, copy, download), statically generated and deployed on Vercel at icons.abou.dev (project root directory `packages/site`, build settings in `vercel.json`). It uses the local module and aliases `@davidabou/icons` to `src/index.ts`, so new icons show up without publishing.
   - Each icon's dialog shows the first `@davidabou/icons` version that contains it, read at build time by `modules/icon-versions.ts` from the published npm tarballs. `npm-publish.yml` triggers a Vercel rebuild (`VERCEL_DEPLOY_HOOK` secret) after each publish, so nothing needs updating by hand. The same module reads the Iconify `codex` collection, to show the "View on Iconify" link only for icons Iconify already has.
@@ -92,7 +93,7 @@ Values measured on the existing icons (`check`, `plus`, `search`, `picture`, `wa
    grep -oh 'stroke-width="[^"]*"' src/icons/*.svg | sort | uniq -c
    ```
 5. `bun run build`, then visually check the new icon in `showcase.png`, next to the existing ones (also check `dist/icons/Icon<Name>.svg` at 24px **and** 16px).
-6. Commit the source SVG **and** the regenerated files (`src/index.ts`, `dist/`, `README.md`, `showcase.png`).
+6. Commit the source SVG **and** the regenerated files (`src/index.ts`, `packages/vue/src/icons.ts`, `dist/`, `README.md`, `showcase.png`).
 
 ## Misc
 
