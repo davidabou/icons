@@ -1,3 +1,135 @@
+<script setup lang="ts">
+import type { IconEntry } from '~/composables/useIcons';
+import { CopyButton, CopyButtonIcon } from '@animate-ui/vue/primitives/buttons/copy';
+import { cn } from 'cn';
+import { buttonVariants } from '~/components/ui/button';
+
+const sound = useSound();
+
+const props = defineProps<{
+  icon: IconEntry | null;
+}>();
+
+const emit = defineEmits<{
+  close: [];
+}>();
+
+const DEFAULT_SIZE = 48;
+const sizes = [16, 20, 24, 32, 48];
+const size = ref(DEFAULT_SIZE);
+/** null = currentColor */
+const color = ref<string | null>(null);
+const tab = ref('vue');
+
+const customized = computed(() => size.value !== DEFAULT_SIZE || color.value !== null);
+
+function reset () {
+  sound.play('tap');
+  size.value = DEFAULT_SIZE;
+  color.value = null;
+}
+
+
+/**
+ * The SVG with the chosen size and color applied
+ */
+const svg = computed(() => {
+  if (!shown.value) {
+    return '';
+  }
+  let markup = shown.value.svg.replace('width="24" height="24"', `width="${size.value}" height="${size.value}"`);
+
+  if (color.value) {
+    markup = markup.replaceAll('currentColor', color.value);
+  }
+
+  return markup;
+});
+
+/**
+ * Last opened icon: kept while the dialog animates out, so its content does not vanish at once
+ */
+const shown = ref<IconEntry | null>(props.icon);
+
+watch(() => props.icon, icon => {
+  if (icon) {
+    shown.value = icon;
+  }
+});
+
+/**
+ * First published version containing each icon, read at build time from the npm tarballs
+ * (see modules/icon-versions.ts); null when the registry could not be reached
+ */
+const releases = useAppConfig().iconReleases as Record<string, string> | null;
+const release = computed(() => (shown.value && releases?.[shown.value.name]) || null);
+
+const releaseLabel = computed(() => release.value ? `Added in v${release.value}` : 'Unreleased');
+
+/**
+ * Icons on Iconify (`codex` prefix), read at build time: a new icon only gets there after Iconify
+ * syncs the repo. null when the API could not be reached: the link is then shown for every icon.
+ */
+const iconify = useAppConfig().iconifyIcons as string[] | null;
+const onIconify = computed(() => !!shown.value && (!iconify || iconify.includes(shown.value.slug)));
+
+const snippets = computed(() => {
+  if (!shown.value) {
+    return [];
+  }
+  const { name } = shown.value;
+  // The strings are 24px: another size rewrites the root attributes, as in the SVG tab
+  const sized = size.value !== 24;
+  const icon = sized ? 'icon' : name;
+  const script = [
+    `import { ${name} } from '@davidabou/icons';`,
+    ...sized ? ['', `const icon = ${name}.replace('width="24" height="24"', 'width="${size.value}" height="${size.value}"');`] : []
+  ].join('\n');
+  const vueStyle = color.value ? ` style="color: ${color.value}"` : '';
+  const reactStyle = color.value ? ` style={{ color: '${color.value}' }}` : '';
+
+  return [
+    {
+      id: 'vue',
+      label: 'Vue',
+      // Split tag: a literal closing script tag would end this component's own script block
+      code: `<script setup>\n${script}\n</` + `script>\n\n<template>\n  <span v-html="${icon}"${vueStyle} />\n</template>`
+    },
+    {
+      id: 'react',
+      label: 'React',
+      code: `${script}\n\n<span dangerouslySetInnerHTML={{ __html: ${icon} }}${reactStyle} />`
+    },
+    { id: 'svg', label: 'SVG', code: svg.value }
+  ];
+});
+
+/** Shows a check on the download button for a moment, like the copy buttons */
+const downloaded = ref(false);
+let downloadedTimeout: ReturnType<typeof setTimeout> | undefined;
+
+function download () {
+  if (!shown.value) {
+    return;
+  }
+  const url = URL.createObjectURL(new Blob([svg.value], { type: 'image/svg+xml' }));
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = `${shown.value.slug}.svg`;
+  link.click();
+  URL.revokeObjectURL(url);
+
+  // Same delay as the copy buttons
+  sound.play('success');
+  downloaded.value = true;
+  clearTimeout(downloadedTimeout);
+  downloadedTimeout = setTimeout(() => downloaded.value = false, 3000);
+}
+
+onBeforeUnmount(() => clearTimeout(downloadedTimeout));
+</script>
+
 <template>
   <Dialog :open="!!icon" @update:open="(open: boolean) => { if (!open) emit('close') }">
     <DialogContent
@@ -150,135 +282,3 @@
     </DialogContent>
   </Dialog>
 </template>
-
-<script setup lang="ts">
-import type { IconEntry } from '~/composables/useIcons';
-import { CopyButton, CopyButtonIcon } from '@animate-ui/vue/primitives/buttons/copy';
-import { cn } from 'cn';
-import { buttonVariants } from '~/components/ui/button';
-
-const sound = useSound();
-
-const props = defineProps<{
-  icon: IconEntry | null;
-}>();
-
-const emit = defineEmits<{
-  close: [];
-}>();
-
-const DEFAULT_SIZE = 48;
-const sizes = [16, 20, 24, 32, 48];
-const size = ref(DEFAULT_SIZE);
-/** null = currentColor */
-const color = ref<string | null>(null);
-const tab = ref('vue');
-
-const customized = computed(() => size.value !== DEFAULT_SIZE || color.value !== null);
-
-function reset () {
-  sound.play('tap');
-  size.value = DEFAULT_SIZE;
-  color.value = null;
-}
-
-
-/**
- * The SVG with the chosen size and color applied
- */
-const svg = computed(() => {
-  if (!shown.value) {
-    return '';
-  }
-  let markup = shown.value.svg.replace('width="24" height="24"', `width="${size.value}" height="${size.value}"`);
-
-  if (color.value) {
-    markup = markup.replaceAll('currentColor', color.value);
-  }
-
-  return markup;
-});
-
-/**
- * Last opened icon: kept while the dialog animates out, so its content does not vanish at once
- */
-const shown = ref<IconEntry | null>(props.icon);
-
-watch(() => props.icon, icon => {
-  if (icon) {
-    shown.value = icon;
-  }
-});
-
-/**
- * First published version containing each icon, read at build time from the npm tarballs
- * (see modules/icon-versions.ts); null when the registry could not be reached
- */
-const releases = useAppConfig().iconReleases as Record<string, string> | null;
-const release = computed(() => (shown.value && releases?.[shown.value.name]) || null);
-
-const releaseLabel = computed(() => release.value ? `Added in v${release.value}` : 'Unreleased');
-
-/**
- * Icons on Iconify (`codex` prefix), read at build time: a new icon only gets there after Iconify
- * syncs the repo. null when the API could not be reached: the link is then shown for every icon.
- */
-const iconify = useAppConfig().iconifyIcons as string[] | null;
-const onIconify = computed(() => !!shown.value && (!iconify || iconify.includes(shown.value.slug)));
-
-const snippets = computed(() => {
-  if (!shown.value) {
-    return [];
-  }
-  const { name } = shown.value;
-  // The strings are 24px: another size rewrites the root attributes, as in the SVG tab
-  const sized = size.value !== 24;
-  const icon = sized ? 'icon' : name;
-  const script = [
-    `import { ${name} } from '@davidabou/icons';`,
-    ...sized ? ['', `const icon = ${name}.replace('width="24" height="24"', 'width="${size.value}" height="${size.value}"');`] : []
-  ].join('\n');
-  const vueStyle = color.value ? ` style="color: ${color.value}"` : '';
-  const reactStyle = color.value ? ` style={{ color: '${color.value}' }}` : '';
-
-  return [
-    {
-      id: 'vue',
-      label: 'Vue',
-      // Split tag: a literal closing script tag would end this component's own script block
-      code: `<script setup>\n${script}\n</` + `script>\n\n<template>\n  <span v-html="${icon}"${vueStyle} />\n</template>`
-    },
-    {
-      id: 'react',
-      label: 'React',
-      code: `${script}\n\n<span dangerouslySetInnerHTML={{ __html: ${icon} }}${reactStyle} />`
-    },
-    { id: 'svg', label: 'SVG', code: svg.value }
-  ];
-});
-
-/** Shows a check on the download button for a moment, like the copy buttons */
-const downloaded = ref(false);
-let downloadedTimeout: ReturnType<typeof setTimeout> | undefined;
-
-function download () {
-  if (!shown.value) {
-    return;
-  }
-  const url = URL.createObjectURL(new Blob([svg.value], { type: 'image/svg+xml' }));
-  const link = document.createElement('a');
-
-  link.href = url;
-  link.download = `${shown.value.slug}.svg`;
-  link.click();
-  URL.revokeObjectURL(url);
-
-  // Same delay as the copy buttons
-  sound.play('success');
-  downloaded.value = true;
-  clearTimeout(downloadedTimeout);
-  downloadedTimeout = setTimeout(() => downloaded.value = false, 3000);
-}
-
-onBeforeUnmount(() => clearTimeout(downloadedTimeout));
-</script>

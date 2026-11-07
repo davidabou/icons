@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const open = ref(false);
+</script>
+
 <template>
   <div>
     <DaIcon name="IconHeart" />
@@ -7,7 +11,3 @@
     </button>
   </div>
 </template>
-
-<script setup lang="ts">
-const open = ref(false);
-</script>

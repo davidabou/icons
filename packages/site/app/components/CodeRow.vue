@@ -1,3 +1,22 @@
+<script setup lang="ts">
+import { CopyButton, CopyButtonIcon } from '@animate-ui/vue/primitives/buttons/copy';
+import { cn } from 'cn';
+import { buttonVariants } from '~/components/ui/button';
+
+defineOptions({ inheritAttrs: false });
+
+const { play } = useSound();
+
+defineProps<{
+  /** Code to show and copy */
+  code: string;
+  /** What the code is, for the button label */
+  label: string;
+  /** Wrap long lines instead of scrolling */
+  wrap?: boolean;
+}>();
+</script>
+
 <template>
   <!--
     Wrapped code is top-aligned with the button: a 20px line with 10px padding is as tall as the
@@ -30,22 +49,3 @@
     </Tooltip>
   </div>
 </template>
-
-<script setup lang="ts">
-import { CopyButton, CopyButtonIcon } from '@animate-ui/vue/primitives/buttons/copy';
-import { cn } from 'cn';
-import { buttonVariants } from '~/components/ui/button';
-
-defineOptions({ inheritAttrs: false });
-
-const { play } = useSound();
-
-defineProps<{
-  /** Code to show and copy */
-  code: string;
-  /** What the code is, for the button label */
-  label: string;
-  /** Wrap long lines instead of scrolling */
-  wrap?: boolean;
-}>();
-</script>

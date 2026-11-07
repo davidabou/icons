@@ -1,60 +1,3 @@
-<template>
-  <Popover @update:open="(open: boolean) => open && play('tap')">
-    <PopoverTrigger as-child>
-      <!-- pl-2: same 8px gap on the left as above and below the 20px swatch (h-9) -->
-      <button
-        type="button"
-        class="flex h-9 cursor-pointer items-center gap-2 rounded-3xl bg-input/50 pr-3 pl-2 text-sm transition-[color,box-shadow,background-color] outline-none hover:bg-input/80 focus-visible:ring-3 focus-visible:ring-ring/30 aria-expanded:bg-input/80"
-        aria-label="Color"
-      >
-        <span class="size-5 rounded-full border" :style="{ background: modelValue ?? 'currentColor' }" />
-        <span class="font-mono text-[13px]">{{ modelValue ?? 'currentColor' }}</span>
-      </button>
-    </PopoverTrigger>
-
-    <PopoverContent align="start" :side-offset="6" class="w-64 gap-3 p-3">
-      <!-- Saturation (x) and brightness (y) for the current hue -->
-      <ColorAreaRoot
-        v-slot="{ style }"
-        :model-value="draft"
-        color-space="hsb"
-        x-channel="saturation"
-        y-channel="brightness"
-        @update:color="(value: Color) => update(convertToHsb(value))"
-      >
-        <ColorAreaArea class="relative h-36 w-full rounded-2xl" :style="style">
-          <ColorAreaThumb :class="thumb" />
-        </ColorAreaArea>
-      </ColorAreaRoot>
-
-      <!-- Hue, with its value above the slider -->
-      <div class="flex flex-col gap-1.5">
-        <div class="flex items-center justify-between text-xs text-muted-foreground select-none">
-          <span>Hue</span>
-          <span class="font-mono tabular-nums">{{ Math.round(draft.h) }}°</span>
-        </div>
-        <ColorSliderRoot
-          :model-value="draft"
-          channel="hue"
-          color-space="hsb"
-          class="relative flex h-4 w-full touch-none items-center select-none"
-          @update:color="(value: Color) => update({ ...draft, h: convertToHsb(value).h })"
-        >
-          <ColorSliderTrack class="relative h-3 w-full grow rounded-full" />
-          <ColorSliderThumb :class="thumb" aria-label="Hue" />
-        </ColorSliderRoot>
-      </div>
-
-      <ColorFieldRoot :model-value="draft" @update:model-value="typed">
-        <ColorFieldInput
-          class="h-9 w-full rounded-3xl bg-input/50 px-3 font-mono text-[13px] uppercase transition-[color,box-shadow,background-color] outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
-          aria-label="Hex color"
-        />
-      </ColorFieldRoot>
-    </PopoverContent>
-  </Popover>
-</template>
-
 <script setup lang="ts">
 import type { Color, HSBColor } from 'reka-ui';
 import { ColorAreaArea, ColorAreaRoot, ColorAreaThumb, ColorFieldInput, ColorFieldRoot, ColorSliderRoot, ColorSliderThumb, ColorSliderTrack, colorToString, convertToHsb, parseColor } from 'reka-ui';
@@ -119,3 +62,60 @@ function typed (hex: string) {
 
 onBeforeUnmount(() => cancelAnimationFrame(frame));
 </script>
+
+<template>
+  <Popover @update:open="(open: boolean) => open && play('tap')">
+    <PopoverTrigger as-child>
+      <!-- pl-2: same 8px gap on the left as above and below the 20px swatch (h-9) -->
+      <button
+        type="button"
+        class="flex h-9 cursor-pointer items-center gap-2 rounded-3xl bg-input/50 pr-3 pl-2 text-sm transition-[color,box-shadow,background-color] outline-none hover:bg-input/80 focus-visible:ring-3 focus-visible:ring-ring/30 aria-expanded:bg-input/80"
+        aria-label="Color"
+      >
+        <span class="size-5 rounded-full border" :style="{ background: modelValue ?? 'currentColor' }" />
+        <span class="font-mono text-[13px]">{{ modelValue ?? 'currentColor' }}</span>
+      </button>
+    </PopoverTrigger>
+
+    <PopoverContent align="start" :side-offset="6" class="w-64 gap-3 p-3">
+      <!-- Saturation (x) and brightness (y) for the current hue -->
+      <ColorAreaRoot
+        v-slot="{ style }"
+        :model-value="draft"
+        color-space="hsb"
+        x-channel="saturation"
+        y-channel="brightness"
+        @update:color="(value: Color) => update(convertToHsb(value))"
+      >
+        <ColorAreaArea class="relative h-36 w-full rounded-2xl" :style="style">
+          <ColorAreaThumb :class="thumb" />
+        </ColorAreaArea>
+      </ColorAreaRoot>
+
+      <!-- Hue, with its value above the slider -->
+      <div class="flex flex-col gap-1.5">
+        <div class="flex items-center justify-between text-xs text-muted-foreground select-none">
+          <span>Hue</span>
+          <span class="font-mono tabular-nums">{{ Math.round(draft.h) }}°</span>
+        </div>
+        <ColorSliderRoot
+          :model-value="draft"
+          channel="hue"
+          color-space="hsb"
+          class="relative flex h-4 w-full touch-none items-center select-none"
+          @update:color="(value: Color) => update({ ...draft, h: convertToHsb(value).h })"
+        >
+          <ColorSliderTrack class="relative h-3 w-full grow rounded-full" />
+          <ColorSliderThumb :class="thumb" aria-label="Hue" />
+        </ColorSliderRoot>
+      </div>
+
+      <ColorFieldRoot :model-value="draft" @update:model-value="typed">
+        <ColorFieldInput
+          class="h-9 w-full rounded-3xl bg-input/50 px-3 font-mono text-[13px] uppercase transition-[color,box-shadow,background-color] outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
+          aria-label="Hex color"
+        />
+      </ColorFieldRoot>
+    </PopoverContent>
+  </Popover>
+</template>

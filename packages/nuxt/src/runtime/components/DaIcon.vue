@@ -1,11 +1,3 @@
-<template>
-  <span
-    class="da-icon"
-    :style="style"
-    v-html="icon"
-  />
-</template>
-
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { DaIconName } from '../types';
@@ -48,6 +40,14 @@ const icon = computed(() => iconList[props.name]);
  */
 const style = computed(() => `--size: ${props.size}px`);
 </script>
+
+<template>
+  <span
+    class="da-icon"
+    :style="style"
+    v-html="icon"
+  />
+</template>
 
 <style>
 .da-icon {
