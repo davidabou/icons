@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   /**
    * Use the local Nuxt module, so the site dogfoods <DaIcon>
    */
-  modules: ['../nuxt/src/module', '@nuxt/fonts', 'shadcn-nuxt'],
+  modules: ['../nuxt/src/module', '@nuxt/fonts', '@vercel/analytics', 'shadcn-nuxt'],
 
   shadcn: {
     prefix: '',
