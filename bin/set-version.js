@@ -12,6 +12,7 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const PACKAGES = [
   'package.json',
   'packages/vue/package.json',
+  'packages/react/package.json',
   'packages/nuxt/package.json'
 ];
 

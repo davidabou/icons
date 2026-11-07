@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@davidabou/icons?label=%40davidabou%2Ficons)](https://www.npmjs.com/package/@davidabou/icons)
 [![npm](https://img.shields.io/npm/v/@davidabou/icons-vue?label=%40davidabou%2Ficons-vue)](https://www.npmjs.com/package/@davidabou/icons-vue)
+[![npm](https://img.shields.io/npm/v/@davidabou/icons-react?label=%40davidabou%2Ficons-react)](https://www.npmjs.com/package/@davidabou/icons-react)
 [![npm](https://img.shields.io/npm/v/@davidabou/nuxt-icons?label=%40davidabou%2Fnuxt-icons)](https://www.npmjs.com/package/@davidabou/nuxt-icons)
 [![npm downloads](https://img.shields.io/npm/dm/@davidabou/icons)](https://www.npmjs.com/package/@davidabou/icons)
 [![license](https://img.shields.io/npm/l/@davidabou/icons)](LICENSE)
@@ -16,7 +17,7 @@ A growing set of small, airy outline icons. It extends [CodeX Icons](https://git
 - **Colors with your text**: every icon uses `currentColor`.
 - **Lightweight**: plain SVG strings, no runtime dependencies, tree-shakable ES module.
 - **Typed**: TypeScript declarations are included.
-- **Vue components**: an optional [Vue package](packages/vue) with one tree-shakable component per icon.
+- **Vue and React components**: optional [Vue](packages/vue) and [React](packages/react) packages with one tree-shakable component per icon.
 - **Nuxt ready**: an optional [Nuxt module](packages/nuxt) with an auto-imported `<CodeXIcon>` component.
 
 ## Installation
@@ -64,6 +65,20 @@ import { IconHeart } from '@davidabou/icons-vue';
 ```
 
 See the [package documentation](packages/vue#readme) for the properties.
+
+### React
+
+```sh
+bun add @davidabou/icons-react
+```
+
+```tsx
+import { IconHeart } from '@davidabou/icons-react';
+
+<IconHeart size={20} className="text-primary" />
+```
+
+See the [package documentation](packages/react#readme) for the properties.
 
 ### Nuxt
 

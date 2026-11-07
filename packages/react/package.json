@@ -1,0 +1,47 @@
+{
+  "name": "@davidabou/icons-react",
+  "version": "0.2.0",
+  "description": "150+ rounded outline SVG icons as tree-shakable React components.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidabou/icons.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://icons.abou.dev",
+  "author": "davidabou",
+  "license": "MIT",
+  "keywords": ["icons", "svg", "svg-icons", "icon-set", "outline-icons", "rounded-icons", "react", "react-icons", "codex"],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "test": "bun run build && node --test"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.5",
+    "vite-plugin-dts": "^5.1.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

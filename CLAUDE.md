@@ -5,9 +5,10 @@ Fork of [`@codexteam/icons`](https://github.com/codex-team/icons). Goal of this 
 ## Structure
 
 - `src/icons/*.svg` — **single source of truth**. This is the only place where icons are added or modified.
-- `bin/generate.js` — optimizes the SVGs (svgo), generates `src/index.ts`, `dist/icons/Icon*.svg`, `packages/vue/src/icons.ts`, the icon table in `README.md` and the `showcase.png` preview (all icons as a grid, rendered with `@resvg/resvg-js`).
-- `src/index.ts`, `dist/`, `packages/vue/src/icons.ts`, `showcase.png`, the `<!-- BEGIN TABLE_OF_ICONS -->` section of the README — **generated, never edit by hand**.
+- `bin/generate.js` — optimizes the SVGs (svgo), generates `src/index.ts`, `dist/icons/Icon*.svg`, `packages/vue/src/icons.ts`, `packages/react/src/icons.ts`, the icon table in `README.md` and the `showcase.png` preview (all icons as a grid, rendered with `@resvg/resvg-js`).
+- `src/index.ts`, `dist/`, `packages/vue/src/icons.ts`, `packages/react/src/icons.ts`, `showcase.png`, the `<!-- BEGIN TABLE_OF_ICONS -->` section of the README — **generated, never edit by hand**.
 - `packages/vue/` — `@davidabou/icons-vue`, one functional Vue 3 component per icon (`<IconHeart :size="20" />`) plus an `icons` map by kebab-case name (`IconName` type, same names as the site URLs), built from the parsed SVG elements by `createIcon` (`src/create-icon.ts`), no `v-html`. `bun run vue:test` builds it and checks the SSR output.
+- `packages/react/` — `@davidabou/icons-react`, the same for React 18/19 (`<IconHeart size={20} />`, `forwardRef`, same `icons` map and `IconName`), from the same nodes with React attribute names (`strokeWidth`…). `bun run react:test` builds it and checks the server-rendered markup.
 - `packages/nuxt/` — Nuxt module (`<CodeXIcon name="arrow-left" />`, or `<code-x-icon>`: kebab-case names, from the `icons` map of `@davidabou/icons-vue`). `<DaIcon name="IconArrowLeft" />` and the `DaIconName` type are deprecated, kept for compatibility.
 - `packages/site/` — Nuxt website (search, copy, download), statically generated and deployed on Vercel at icons.abou.dev (project root directory `packages/site`, build settings in `vercel.json`). It uses the local module and aliases `@davidabou/icons` to `src/index.ts` and `@davidabou/icons-vue` to `packages/vue/src/index.ts`, so new icons show up without publishing.
   - Each icon's dialog shows the first `@davidabou/icons` version that contains it, read at build time by `modules/icon-versions.ts` from the published npm tarballs. `npm-publish.yml` triggers a Vercel rebuild (`VERCEL_DEPLOY_HOOK` secret) after each publish, so nothing needs updating by hand. The same module reads the Iconify `codex` collection, to show the "View on Iconify" link only for icons Iconify already has.
@@ -23,6 +24,7 @@ bun run build      # generate + vite build (dist/index.mjs, index.umd.js, index.
 bun run site:dev   # website dev server (packages/site)
 bun run site:generate  # static build of the website
 bun run vue:test   # builds packages/vue and checks the rendered components
+bun run react:test # builds packages/react and checks the rendered components
 bun run set-version 0.3.0  # sets the same version on all published packages
 ```
 
@@ -95,13 +97,13 @@ Values measured on the existing icons (`check`, `plus`, `search`, `picture`, `wa
    grep -oh 'stroke-width="[^"]*"' src/icons/*.svg | sort | uniq -c
    ```
 5. `bun run build`, then visually check the new icon in `showcase.png`, next to the existing ones (also check `dist/icons/Icon<Name>.svg` at 24px **and** 16px).
-6. Commit the source SVG **and** the regenerated files (`src/index.ts`, `packages/vue/src/icons.ts`, `dist/`, `README.md`, `showcase.png`).
+6. Commit the source SVG **and** the regenerated files (`src/index.ts`, `packages/vue/src/icons.ts`, `packages/react/src/icons.ts`, `dist/`, `README.md`, `showcase.png`).
 
 ## Misc
 
 - 2-space indentation, LF, final newline (`.editorconfig`).
-- The project's package manager is **Bun** (CI: `bun install && bun run build`). The root is a Bun workspace with `packages/vue` and `packages/nuxt` (one `bun.lock` at the root); `packages/site` stays outside, with its own `bun.lock`.
-- **Synchronized versions**: `@davidabou/icons`, `@davidabou/icons-vue` and `@davidabou/nuxt-icons` always share the same version, set with `bun run set-version <x.y.z>` (never edit one `version` field alone). `npm-publish.yml` (manual) publishes the three in that order and skips the ones already on npm. A breaking change in any package bumps all of them.
+- The project's package manager is **Bun** (CI: `bun install && bun run build`). The root is a Bun workspace with `packages/vue`, `packages/react` and `packages/nuxt` (one `bun.lock` at the root); `packages/site` stays outside, with its own `bun.lock`.
+- **Synchronized versions**: `@davidabou/icons`, `@davidabou/icons-vue`, `@davidabou/icons-react` and `@davidabou/nuxt-icons` always share the same version, set with `bun run set-version <x.y.z>` (never edit one `version` field alone). `npm-publish.yml` (manual) publishes the four in that order and skips the ones already on npm. A breaking change in any package bumps all of them.
 - The generator sorts icons explicitly (code-point order, so `H1`…`H6` come first) and writes POSIX paths in the README, so its output is identical on Windows and Linux. CI regenerates and commits the build on every PR.
 - devDependency versions are pinned by the root `bun.lock`. Keep TypeScript on the same major version at the root and in `packages/nuxt` (editors pick the root one), and check that `bun run build` still outputs only `dist/index.{mjs,umd.js,d.ts}` after upgrading Vite or `vite-plugin-dts`.
 - Keep upstream compatibility: do not rename/remove existing icons (that would be a breaking change for `IconXxx` imports).

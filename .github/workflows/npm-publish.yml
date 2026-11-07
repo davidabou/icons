@@ -1,7 +1,7 @@
 name: Publish packages to NPM
 
 # Manual trigger only. Publishes, with the same version:
-# @davidabou/icons, then @davidabou/icons-vue, then @davidabou/nuxt-icons (which depends on it).
+# @davidabou/icons, @davidabou/icons-vue, @davidabou/icons-react, then @davidabou/nuxt-icons (which depends on icons-vue).
 # A package whose version is already on npm is skipped, so the workflow can safely be re-run.
 on:
   workflow_dispatch:
@@ -32,13 +32,16 @@ jobs:
       - name: Check that all packages have the same version
         run: |
           node bin/set-version.js
-          git diff --exit-code -- package.json packages/vue/package.json packages/nuxt/package.json
+          git diff --exit-code -- package.json packages/vue/package.json packages/react/package.json packages/nuxt/package.json
 
-      # Core package (also regenerates packages/vue/src/icons.ts)
+      # Core package (also regenerates packages/vue/src/icons.ts and packages/react/src/icons.ts)
       - run: bun run build
 
       # Vue package: builds dist/ and checks the rendered components
       - run: bun run vue:test
+
+      # React package: builds dist/ and checks the rendered components
+      - run: bun run react:test
 
       # Nuxt module: generates the .nuxt type definitions, then type-checks the module and the playground
       - run: bun run dev:prepare && bun run test:types
@@ -61,7 +64,7 @@ jobs:
       - name: Publish
         run: |
           mkdir -p "$RUNNER_TEMP/packages"
-          for dir in . packages/vue packages/nuxt; do
+          for dir in . packages/vue packages/react packages/nuxt; do
             name=$(node -p "require('./$dir/package.json').name")
             version=$(node -p "require('./$dir/package.json').version")
 
