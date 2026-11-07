@@ -55,6 +55,7 @@ const installTabs: { id: Framework; label: string; code: string }[] = [
   { id: 'vue', label: 'Vue', code: 'bun add @davidabou/icons-vue' },
   // nuxi installs the module with the project's package manager and adds it to nuxt.config.ts
   { id: 'nuxt', label: 'Nuxt', code: 'bunx nuxi module add @davidabou/nuxt-icons' },
+  { id: 'react', label: 'React', code: 'bun add @davidabou/icons-react' },
   { id: 'vanilla', label: 'Vanilla', code: 'bun add @davidabou/icons' }
 ];
 

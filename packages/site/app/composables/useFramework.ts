@@ -3,7 +3,7 @@
  * of the icon dialog, and kept in localStorage.
  */
 
-export const FRAMEWORKS = ['vue', 'nuxt', 'vanilla'] as const;
+export const FRAMEWORKS = ['vue', 'nuxt', 'react', 'vanilla'] as const;
 
 export type Framework = typeof FRAMEWORKS[number];
 
@@ -35,7 +35,7 @@ export function useFramework () {
   }
 
   /**
-   * Writable, for v-model: ignores values that are not frameworks (the dialog's React and SVG tabs)
+   * Writable, for v-model: ignores values that are not frameworks (the dialog's SVG tab)
    */
   return computed({
     get: () => framework.value,

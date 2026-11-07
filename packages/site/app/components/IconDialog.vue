@@ -22,7 +22,7 @@ const size = ref(DEFAULT_SIZE);
 const color = ref<string | null>(null);
 /**
  * Snippet tab: opens on the framework chosen on the page, and picking Vue, Nuxt or Vanilla
- * here changes that choice too (React and SVG stay local to the dialog)
+ * here changes that choice too (SVG stays local to the dialog)
  */
 const framework = useFramework();
 const tab = ref<string>(framework.value);
@@ -31,7 +31,7 @@ watch(tab, value => {
   framework.value = value;
 });
 
-// Follow the page's tabs and the saved choice, unless React or SVG is shown
+// Follow the page's tabs and the saved choice, unless SVG is shown
 watch(framework, value => {
   if (FRAMEWORKS.includes(tab.value as Framework)) {
     tab.value = value;
@@ -102,12 +102,16 @@ const snippets = computed(() => {
     `import { ${name} } from '@davidabou/icons';`,
     ...sized ? ['', `const icon = ${name}.replace('width="24" height="24"', 'width="${size.value}" height="${size.value}"');`] : []
   ].join('\n');
-  const reactStyle = color.value ? ` style={{ color: '${color.value}' }}` : '';
-
   // Vue: a component of @davidabou/icons-vue, sized with its prop (24 by default)
   const vueAttrs = [
     ...sized ? [`:size="${size.value}"`] : [],
     ...color.value ? [`style="color: ${color.value}"`] : []
+  ].map(attr => ` ${attr}`).join('');
+
+  // React: a component of @davidabou/icons-react, same props in JSX
+  const reactAttrs = [
+    ...sized ? [`size={${size.value}}`] : [],
+    ...color.value ? [`style={{ color: '${color.value}' }}`] : []
   ].map(attr => ` ${attr}`).join('');
 
   return [
@@ -124,6 +128,11 @@ const snippets = computed(() => {
       code: `<CodeXIcon name="${shown.value.slug}"${vueAttrs} />`
     },
     {
+      id: 'react',
+      label: 'React',
+      code: `import { ${name} } from '@davidabou/icons-react';\n\n<${name}${reactAttrs} />`
+    },
+    {
       id: 'vanilla',
       label: 'Vanilla',
       code: [
@@ -132,11 +141,6 @@ const snippets = computed(() => {
         `element.innerHTML = ${icon};`,
         ...color.value ? [`element.style.color = '${color.value}';`] : []
       ].join('\n')
-    },
-    {
-      id: 'react',
-      label: 'React',
-      code: `${script}\n\n<span dangerouslySetInnerHTML={{ __html: ${icon} }}${reactStyle} />`
     },
     { id: 'svg', label: 'SVG', code: svg.value }
   ];
