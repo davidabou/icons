@@ -17,6 +17,7 @@ A growing set of small, airy outline icons, for Vue, React, Nuxt or plain JavaSc
 - **Tree-shakable**: only the icons you import end up in your bundle.
 - **Real SVG elements** in the Vue, React and Nuxt components: no `v-html` or `dangerouslySetInnerHTML`, so they work with server-side rendering and strict CSP.
 - **Typed**: TypeScript declarations, with autocompletion of the icon names.
+- **ESM only**: works with every modern bundler, and with `require()` on Node.js 20.19 or later.
 
 ## Packages
 

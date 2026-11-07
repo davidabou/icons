@@ -21,7 +21,7 @@ Fork of [`@codexteam/icons`](https://github.com/codex-team/icons). Goal of this 
 
 ```sh
 bun run generate   # regenerates index.ts, dist/icons, the Vue/React icons and showcase.png
-bun run build      # generate + vite build (dist/index.mjs, index.umd.js, index.d.ts)
+bun run build      # generate + vite build (dist/index.mjs, index.d.ts)
 bun run site:dev   # website dev server (packages/site)
 bun run site:generate  # static build of the website
 bun run vue:test   # builds packages/vue and checks the rendered components
@@ -42,7 +42,8 @@ The rules for drawing and naming icons live in `CONTRIBUTING.md`, imported here:
 
 - 2-space indentation, LF, final newline (`.editorconfig`).
 - The project's package manager is **Bun** (CI: `bun install && bun run build`). The root is a Bun workspace with `packages/vue`, `packages/react` and `packages/nuxt` (one `bun.lock` at the root); `packages/site` stays outside, with its own `bun.lock`.
+- **ESM only**: every package has `"type": "module"` and publishes a single ESM build (`exports` with `types` + `default`, so `require()` still works through Node's require(esm), `engines.node >=20.19.0`). Do not add back CJS or UMD builds.
 - **Synchronized versions**: `@davidabou/icons`, `@davidabou/icons-vue`, `@davidabou/icons-react` and `@davidabou/nuxt-icons` always share the same version, set with `bun run set-version <x.y.z>` (never edit one `version` field alone). `npm-publish.yml` (manual) publishes the four in that order and skips the ones already on npm. A breaking change in any package bumps all of them.
 - The generator sorts icons explicitly (code-point order, so `H1`…`H6` come first) so its output is identical on Windows and Linux. CI regenerates and commits the build on every PR.
-- devDependency versions are pinned by the root `bun.lock`. Keep TypeScript on the same major version at the root and in `packages/nuxt` (editors pick the root one), and check that `bun run build` still outputs only `dist/index.{mjs,umd.js,d.ts}` after upgrading Vite or `vite-plugin-dts`.
+- devDependency versions are pinned by the root `bun.lock`. Keep TypeScript on the same major version at the root and in `packages/nuxt` (editors pick the root one), and check that `bun run build` still outputs only `dist/index.{mjs,d.ts}` after upgrading Vite or `vite-plugin-dts`.
 - Keep upstream compatibility: do not rename/remove existing icons (that would be a breaking change for `IconXxx` imports).

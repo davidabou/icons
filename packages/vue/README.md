@@ -13,6 +13,7 @@ The [`@davidabou/icons`](https://github.com/davidabou/icons) pack (an extended f
 - **Real SVG elements**, no `v-html`: works with server-side rendering and strict CSP.
 - **Colors with your text**: every icon uses `currentColor`.
 - **Typed**, with autocompletion of the icon names.
+- **ESM only**: works with every modern bundler, and with `require()` on Node.js 20.19 or later.
 
 Requires Vue 3.3 or later. For Nuxt, see the [Nuxt module](https://github.com/davidabou/icons/tree/master/packages/nuxt).
 

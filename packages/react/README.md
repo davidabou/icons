@@ -13,6 +13,7 @@ The [`@davidabou/icons`](https://github.com/davidabou/icons) pack (an extended f
 - **Real SVG elements**, no `dangerouslySetInnerHTML`: works with server components, server-side rendering and strict CSP.
 - **Colors with your text**: every icon uses `currentColor`.
 - **Typed**, with autocompletion of the icon names.
+- **ESM only**: works with every modern bundler, and with `require()` on Node.js 20.19 or later.
 
 Requires React 18 or later.
 

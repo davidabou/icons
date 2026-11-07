@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
   build: {
     lib: {
       entry: fileURLToPath(new URL('src/index.ts', import.meta.url)),
-      formats: ['es', 'cjs'],
-      fileName: format => (format === 'es' ? 'index.mjs' : 'index.cjs')
+      formats: ['es'],
+      fileName: () => 'index.mjs'
     },
     rollupOptions: {
       external: ['react']

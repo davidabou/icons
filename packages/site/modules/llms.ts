@@ -30,7 +30,7 @@ Only use names from the list of icons (${siteUrl}/llms-full.txt): there is no al
 
 ## Packages
 
-All packages share the same version and are tree-shakable.
+All packages share the same version, are tree-shakable and ESM only (\`require()\` works on Node.js 20.19 or later).
 
 ### Vue 3: @davidabou/icons-vue
 

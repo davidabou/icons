@@ -6,8 +6,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: fileURLToPath(new URL('src/index.ts', import.meta.url)),
-      name: '@davidabou/icons',
-      fileName: 'index'
+      formats: ['es'],
+      fileName: () => 'index.mjs'
     },
     emptyOutDir: false
   },
