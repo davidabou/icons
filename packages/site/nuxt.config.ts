@@ -1,5 +1,5 @@
-import { fileURLToPath } from 'node:url';
-import tailwindcss from '@tailwindcss/vite';
+import { fileURLToPath } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
   /**
@@ -71,4 +71,4 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
   compatibilityDate: 'latest'
-});
+})

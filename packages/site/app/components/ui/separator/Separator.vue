@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<
   SeparatorProps & { class?: HTMLAttributes['class'] }
 >(), {
   orientation: 'horizontal',
-  decorative: true,
+  decorative: true
 })
 
 const delegatedProps = reactiveOmit(props, 'class')

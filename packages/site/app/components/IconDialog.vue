@@ -1,118 +1,117 @@
 <script setup lang="ts">
-import type { IconEntry } from '~/composables/useIcons';
-import type { Framework } from '~/composables/useFramework';
-import { CopyButton, CopyButtonIcon } from '@animate-ui/vue/primitives/buttons/copy';
-import { cn } from 'cn';
-import { buttonVariants } from '~/components/ui/button';
+import type { IconEntry } from '~/composables/useIcons'
+import type { Framework } from '~/composables/useFramework'
+import { CopyButton, CopyButtonIcon } from '@animate-ui/vue/primitives/buttons/copy'
+import { cn } from 'cn'
+import { buttonVariants } from '~/components/ui/button'
 
-const sound = useSound();
+const sound = useSound()
 
 const props = defineProps<{
-  icon: IconEntry | null;
-}>();
+  icon: IconEntry | null
+}>()
 
 const emit = defineEmits<{
-  close: [];
-}>();
+  close: []
+}>()
 
-const DEFAULT_SIZE = 48;
-const sizes = [16, 20, 24, 32, 48];
-const size = ref(DEFAULT_SIZE);
+const DEFAULT_SIZE = 48
+const sizes = [16, 20, 24, 32, 48]
+const size = ref(DEFAULT_SIZE)
 /** null = currentColor */
-const color = ref<string | null>(null);
+const color = ref<string | null>(null)
 /**
  * Snippet tab: opens on the framework chosen on the page, and picking Vue, Nuxt or Vanilla
  * here changes that choice too (SVG stays local to the dialog)
  */
-const framework = useFramework();
-const tab = ref<string>(framework.value);
+const framework = useFramework()
+const tab = ref<string>(framework.value)
 
-watch(tab, value => {
-  framework.value = value;
-});
+watch(tab, (value) => {
+  framework.value = value
+})
 
 // Follow the page's tabs and the saved choice, unless SVG is shown
-watch(framework, value => {
+watch(framework, (value) => {
   if (FRAMEWORKS.includes(tab.value as Framework)) {
-    tab.value = value;
+    tab.value = value
   }
-});
+})
 
-const customized = computed(() => size.value !== DEFAULT_SIZE || color.value !== null);
+const customized = computed(() => size.value !== DEFAULT_SIZE || color.value !== null)
 
-function reset () {
-  sound.play('tap');
-  size.value = DEFAULT_SIZE;
-  color.value = null;
+function reset() {
+  sound.play('tap')
+  size.value = DEFAULT_SIZE
+  color.value = null
 }
-
 
 /**
  * The SVG with the chosen size and color applied
  */
 const svg = computed(() => {
   if (!shown.value) {
-    return '';
+    return ''
   }
-  let markup = shown.value.svg.replace('width="24" height="24"', `width="${size.value}" height="${size.value}"`);
+  let markup = shown.value.svg.replace('width="24" height="24"', `width="${size.value}" height="${size.value}"`)
 
   if (color.value) {
-    markup = markup.replaceAll('currentColor', color.value);
+    markup = markup.replaceAll('currentColor', color.value)
   }
 
-  return markup;
-});
+  return markup
+})
 
 /**
  * Last opened icon: kept while the dialog animates out, so its content does not vanish at once
  */
-const shown = ref<IconEntry | null>(props.icon);
+const shown = ref<IconEntry | null>(props.icon)
 
-watch(() => props.icon, icon => {
+watch(() => props.icon, (icon) => {
   if (icon) {
-    shown.value = icon;
+    shown.value = icon
   }
-});
+})
 
 /**
  * First published version containing each icon, read at build time from the npm tarballs
  * (see modules/icon-versions.ts); null when the registry could not be reached
  */
-const releases = useAppConfig().iconReleases as Record<string, string> | null;
-const release = computed(() => (shown.value && releases?.[shown.value.name]) || null);
+const releases = useAppConfig().iconReleases as Record<string, string> | null
+const release = computed(() => (shown.value && releases?.[shown.value.name]) || null)
 
-const releaseLabel = computed(() => release.value ? `Added in v${release.value}` : 'Unreleased');
+const releaseLabel = computed(() => release.value ? `Added in v${release.value}` : 'Unreleased')
 
 /**
  * Icons on Iconify (`codex` prefix), read at build time: a new icon only gets there after Iconify
  * syncs the repo. null when the API could not be reached: the link is then shown for every icon.
  */
-const iconify = useAppConfig().iconifyIcons as string[] | null;
-const onIconify = computed(() => !!shown.value && (!iconify || iconify.includes(shown.value.slug)));
+const iconify = useAppConfig().iconifyIcons as string[] | null
+const onIconify = computed(() => !!shown.value && (!iconify || iconify.includes(shown.value.slug)))
 
 const snippets = computed(() => {
   if (!shown.value) {
-    return [];
+    return []
   }
-  const { name } = shown.value;
+  const { name } = shown.value
   // The strings are 24px: another size rewrites the root attributes, as in the SVG tab
-  const sized = size.value !== 24;
-  const icon = sized ? 'icon' : name;
+  const sized = size.value !== 24
+  const icon = sized ? 'icon' : name
   const script = [
     `import { ${name} } from '@davidabou/icons';`,
     ...sized ? ['', `const icon = ${name}.replace('width="24" height="24"', 'width="${size.value}" height="${size.value}"');`] : []
-  ].join('\n');
+  ].join('\n')
   // Vue: a component of @davidabou/icons-vue, sized with its prop (24 by default)
   const vueAttrs = [
     ...sized ? [`:size="${size.value}"`] : [],
     ...color.value ? [`style="color: ${color.value}"`] : []
-  ].map(attr => ` ${attr}`).join('');
+  ].map(attr => ` ${attr}`).join('')
 
   // React: a component of @davidabou/icons-react, same props in JSX
   const reactAttrs = [
     ...sized ? [`size={${size.value}}`] : [],
     ...color.value ? [`style={{ color: '${color.value}' }}`] : []
-  ].map(attr => ` ${attr}`).join('');
+  ].map(attr => ` ${attr}`).join('')
 
   return [
     {
@@ -143,33 +142,33 @@ const snippets = computed(() => {
       ].join('\n')
     },
     { id: 'svg', label: 'SVG', code: svg.value }
-  ];
-});
+  ]
+})
 
 /** Shows a check on the download button for a moment, like the copy buttons */
-const downloaded = ref(false);
-let downloadedTimeout: ReturnType<typeof setTimeout> | undefined;
+const downloaded = ref(false)
+let downloadedTimeout: ReturnType<typeof setTimeout> | undefined
 
-function download () {
+function download() {
   if (!shown.value) {
-    return;
+    return
   }
-  const url = URL.createObjectURL(new Blob([svg.value], { type: 'image/svg+xml' }));
-  const link = document.createElement('a');
+  const url = URL.createObjectURL(new Blob([svg.value], { type: 'image/svg+xml' }))
+  const link = document.createElement('a')
 
-  link.href = url;
-  link.download = `${shown.value.slug}.svg`;
-  link.click();
-  URL.revokeObjectURL(url);
+  link.href = url
+  link.download = `${shown.value.slug}.svg`
+  link.click()
+  URL.revokeObjectURL(url)
 
   // Same delay as the copy buttons
-  sound.play('success');
-  downloaded.value = true;
-  clearTimeout(downloadedTimeout);
-  downloadedTimeout = setTimeout(() => downloaded.value = false, 3000);
+  sound.play('success')
+  downloaded.value = true
+  clearTimeout(downloadedTimeout)
+  downloadedTimeout = setTimeout(() => downloaded.value = false, 3000)
 }
 
-onBeforeUnmount(() => clearTimeout(downloadedTimeout));
+onBeforeUnmount(() => clearTimeout(downloadedTimeout))
 </script>
 
 <template>

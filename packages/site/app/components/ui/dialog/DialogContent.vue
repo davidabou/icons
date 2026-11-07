@@ -8,17 +8,17 @@ import {
   DialogClose,
   DialogContent,
   DialogPortal,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from '@animate-ui/vue/primitives/reka-ui'
 import { Button } from '@/components/ui/button'
 import DialogOverlay from './DialogOverlay.vue'
 
 defineOptions({
-  inheritAttrs: false,
+  inheritAttrs: false
 })
 
 const props = withDefaults(defineProps<DialogContentProps & { class?: HTMLAttributes['class'], showCloseButton?: boolean }>(), {
-  showCloseButton: true,
+  showCloseButton: true
 })
 const emits = defineEmits<DialogContentEmits>()
 

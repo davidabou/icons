@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<ToggleGroupRootProps & {
 }>(), {
   spacing: 0,
   // Reka only sets data-orientation (used by the first/last item radius) when it is given
-  orientation: 'horizontal',
+  orientation: 'horizontal'
 })
 
 const emits = defineEmits<ToggleGroupRootEmits>()
@@ -26,7 +26,7 @@ const emits = defineEmits<ToggleGroupRootEmits>()
 provide('toggleGroup', {
   variant: props.variant,
   size: props.size,
-  spacing: props.spacing,
+  spacing: props.spacing
 })
 
 const delegatedProps = reactiveOmit(props, 'class', 'size', 'variant')

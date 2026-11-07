@@ -6,7 +6,7 @@
 definePageMeta({
   // Unknown slugs get a real 404
   validate: route => useIcons().some(icon => icon.slug === route.params.slug)
-});
+})
 </script>
 
 <template>

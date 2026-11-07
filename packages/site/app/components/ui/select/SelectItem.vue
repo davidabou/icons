@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectItemIndicator,
   SelectItemText,
-  useForwardProps,
+  useForwardProps
 } from '@animate-ui/vue/primitives/reka-ui'
 
 const props = defineProps<SelectItemProps & { class?: HTMLAttributes['class'] }>()

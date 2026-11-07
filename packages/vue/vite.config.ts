@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
-import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
+import { fileURLToPath } from 'node:url'
 
 export default defineConfig({
   build: {
@@ -23,4 +23,4 @@ export default defineConfig({
       entryRoot: 'src'
     })
   ]
-});
+})

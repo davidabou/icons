@@ -3,35 +3,35 @@
  * of the icon dialog, and kept in localStorage.
  */
 
-export const FRAMEWORKS = ['vue', 'nuxt', 'react', 'vanilla'] as const;
+export const FRAMEWORKS = ['vue', 'nuxt', 'react', 'vanilla'] as const
 
-export type Framework = typeof FRAMEWORKS[number];
+export type Framework = typeof FRAMEWORKS[number]
 
-const STORAGE_KEY = 'framework';
+const STORAGE_KEY = 'framework'
 
-const framework = ref<Framework>('vue');
+const framework = ref<Framework>('vue')
 
-let loaded = false;
+let loaded = false
 
-function isFramework (value: unknown): value is Framework {
-  return FRAMEWORKS.includes(value as Framework);
+function isFramework(value: unknown): value is Framework {
+  return FRAMEWORKS.includes(value as Framework)
 }
 
-export function useFramework () {
+export function useFramework() {
   // Read the saved choice once, on the client (the site is prerendered)
   if (import.meta.client && !loaded) {
-    loaded = true;
+    loaded = true
     onMounted(() => {
       try {
-        const saved = localStorage.getItem(STORAGE_KEY);
+        const saved = localStorage.getItem(STORAGE_KEY)
 
         if (isFramework(saved)) {
-          framework.value = saved;
+          framework.value = saved
         }
       } catch {
         // Storage unavailable (private mode, blocked site data): keep the default
       }
-    });
+    })
   }
 
   /**
@@ -41,14 +41,14 @@ export function useFramework () {
     get: () => framework.value,
     set: (value: string) => {
       if (!isFramework(value)) {
-        return;
+        return
       }
-      framework.value = value;
+      framework.value = value
       try {
-        localStorage.setItem(STORAGE_KEY, value);
+        localStorage.setItem(STORAGE_KEY, value)
       } catch {
         // Not saved: the choice still applies to this visit
       }
     }
-  });
+  })
 }

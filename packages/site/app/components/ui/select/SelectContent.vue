@@ -7,20 +7,20 @@ import {
   SelectContent,
   SelectPortal,
   SelectViewport,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from '@animate-ui/vue/primitives/reka-ui'
 import { SelectScrollDownButton, SelectScrollUpButton } from '.'
 
 defineOptions({
-  inheritAttrs: false,
+  inheritAttrs: false
 })
 
 const props = withDefaults(
   defineProps<SelectContentProps & { class?: HTMLAttributes['class'] }>(),
   {
     position: 'item-aligned',
-    align: 'center',
-  },
+    align: 'center'
+  }
 )
 const emits = defineEmits<SelectContentEmits>()
 

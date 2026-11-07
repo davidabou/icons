@@ -5,19 +5,19 @@
 /**
  * IconTableWithHeadings → table-with-headings, IconH1 → h1
  */
-export function toSlug (name: string): string {
+export function toSlug(name: string): string {
   return name
     .replace(/^Icon/, '')
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .toLowerCase();
+    .toLowerCase()
 }
 
 /**
  * table-with-headings → Table With Headings, h1 → H1: the human name used in titles
  */
-export function toTitle (slug: string): string {
+export function toTitle(slug: string): string {
   return slug
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .join(' ')
 }

@@ -8,7 +8,7 @@ import { SelectIcon, SelectTrigger, useForwardProps } from '@animate-ui/vue/prim
 
 const props = withDefaults(
   defineProps<SelectTriggerProps & { class?: HTMLAttributes['class'], size?: 'sm' | 'default' }>(),
-  { size: 'default' },
+  { size: 'default' }
 )
 
 const delegatedProps = reactiveOmit(props, 'class', 'size')

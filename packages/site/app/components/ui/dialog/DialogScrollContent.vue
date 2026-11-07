@@ -9,11 +9,11 @@ import {
   DialogContent,
   DialogOverlay,
   DialogPortal,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from '@animate-ui/vue/primitives/reka-ui'
 
 defineOptions({
-  inheritAttrs: false,
+  inheritAttrs: false
 })
 
 const props = defineProps<DialogContentProps & { class?: HTMLAttributes['class'] }>()

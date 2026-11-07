@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<TabsListProps & {
   class?: HTMLAttributes['class']
   variant?: TabsListVariants['variant']
 }>(), {
-  variant: 'default',
+  variant: 'default'
 })
 
 const delegatedProps = reactiveOmit(props, 'class', 'variant')

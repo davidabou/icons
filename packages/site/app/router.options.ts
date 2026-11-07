@@ -1,4 +1,4 @@
-import type { RouterConfig } from '@nuxt/schema';
+import type { RouterConfig } from '@nuxt/schema'
 
 /**
  * Opening or closing an icon changes the route (/ ↔ /icons/<slug>) over the same grid:
@@ -6,4 +6,4 @@ import type { RouterConfig } from '@nuxt/schema';
  */
 export default {
   scrollBehavior: (_to, _from, savedPosition) => savedPosition ?? false
-} satisfies RouterConfig;
+} satisfies RouterConfig

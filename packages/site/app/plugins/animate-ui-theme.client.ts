@@ -7,19 +7,19 @@
  * MutationObserver then reads the colors again, before the theme transition snapshot is taken.
  */
 export default defineNuxtPlugin(() => {
-  const root = document.documentElement;
-  let dark = root.classList.contains('dark');
+  const root = document.documentElement
+  let dark = root.classList.contains('dark')
 
   new MutationObserver(() => {
-    const now = root.classList.contains('dark');
+    const now = root.classList.contains('dark')
 
     if (now === dark) {
-      return;
+      return
     }
-    dark = now;
+    dark = now
 
     for (const group of document.querySelectorAll<HTMLElement>('[data-animate-ui-surfaces]')) {
-      group.classList.toggle('theme-refresh');
+      group.classList.toggle('theme-refresh')
     }
-  }).observe(root, { attributes: true, attributeFilter: ['class'] });
-});
+  }).observe(root, { attributes: true, attributeFilter: ['class'] })
+})

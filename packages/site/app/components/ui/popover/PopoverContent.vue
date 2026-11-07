@@ -6,19 +6,19 @@ import { cn } from 'cn'
 import {
   PopoverContent,
   PopoverPortal,
-  useForwardPropsEmits,
+  useForwardPropsEmits
 } from '@animate-ui/vue/primitives/reka-ui'
 
 defineOptions({
-  inheritAttrs: false,
+  inheritAttrs: false
 })
 
 const props = withDefaults(
   defineProps<PopoverContentProps & { class?: HTMLAttributes['class'] }>(),
   {
     align: 'center',
-    sideOffset: 4,
-  },
+    sideOffset: 4
+  }
 )
 const emits = defineEmits<PopoverContentEmits>()
 

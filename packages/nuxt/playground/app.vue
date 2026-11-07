@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const open = ref(false);
+const open = ref(false)
 </script>
 
 <template>

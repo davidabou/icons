@@ -1,22 +1,22 @@
-import type { Ref } from 'vue';
-import type { IconEntry } from './useIcons';
-import { toTitle } from '../lib/icon-names';
+import type { Ref } from 'vue'
+import type { IconEntry } from './useIcons'
+import { toTitle } from '../lib/icon-names'
 
-const siteName = 'CodeX Icons Extended';
-const repository = 'https://github.com/davidabou/icons';
-const license = 'https://opensource.org/licenses/MIT';
+const siteName = 'CodeX Icons Extended'
+const repository = 'https://github.com/davidabou/icons'
+const license = 'https://opensource.org/licenses/MIT'
 
 /**
  * SEO: title, description, canonical URL, social previews and structured data, for the home
  * (no icon selected) and for each icon page. The images and the sitemap are generated at build
  * time by modules/seo.ts.
  */
-export function useIconSeo (selected: Ref<IconEntry | null>) {
-  const siteUrl = useRuntimeConfig().public.siteUrl;
-  const count = useIcons().length;
+export function useIconSeo(selected: Ref<IconEntry | null>) {
+  const siteUrl = useRuntimeConfig().public.siteUrl
+  const count = useIcons().length
 
   const seo = computed(() => {
-    const icon = selected.value;
+    const icon = selected.value
 
     if (!icon) {
       return {
@@ -25,9 +25,9 @@ export function useIconSeo (selected: Ref<IconEntry | null>) {
         url: `${siteUrl}/`,
         image: `${siteUrl}/og.png`,
         alt: siteName
-      };
+      }
     }
-    const title = toTitle(icon.slug);
+    const title = toTitle(icon.slug)
 
     return {
       title: `${title} icon: free SVG for Vue and React | ${siteName}`,
@@ -35,61 +35,61 @@ export function useIconSeo (selected: Ref<IconEntry | null>) {
       url: `${siteUrl}/icons/${icon.slug}`,
       image: `${siteUrl}/og/${icon.slug}.png`,
       alt: `${title} icon`
-    };
-  });
+    }
+  })
 
   /** The site and the package on the home, the image and its breadcrumb on icon pages */
   const structuredData = computed(() => {
-    const icon = selected.value;
+    const icon = selected.value
 
     if (!icon) {
       return [
         {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: siteName,
-          url: `${siteUrl}/`,
-          description: seo.value.description
+          'name': siteName,
+          'url': `${siteUrl}/`,
+          'description': seo.value.description
         },
         {
           '@context': 'https://schema.org',
           '@type': 'SoftwareSourceCode',
-          name: '@davidabou/icons',
-          description: seo.value.description,
-          codeRepository: repository,
-          programmingLanguage: ['TypeScript', 'SVG'],
-          runtimePlatform: ['Vue', 'React', 'Nuxt'],
+          'name': '@davidabou/icons',
+          'description': seo.value.description,
+          'codeRepository': repository,
+          'programmingLanguage': ['TypeScript', 'SVG'],
+          'runtimePlatform': ['Vue', 'React', 'Nuxt'],
           license,
-          url: `${siteUrl}/`
+          'url': `${siteUrl}/`
         }
-      ];
+      ]
     }
 
     return [
       {
         '@context': 'https://schema.org',
         '@type': 'ImageObject',
-        name: seo.value.alt,
-        description: seo.value.description,
-        contentUrl: `${siteUrl}/svg/${icon.slug}.svg`,
-        thumbnailUrl: seo.value.image,
-        encodingFormat: 'image/svg+xml',
+        'name': seo.value.alt,
+        'description': seo.value.description,
+        'contentUrl': `${siteUrl}/svg/${icon.slug}.svg`,
+        'thumbnailUrl': seo.value.image,
+        'encodingFormat': 'image/svg+xml',
         license,
-        acquireLicensePage: seo.value.url,
-        creditText: siteName,
-        creator: { '@type': 'Person', name: 'davidabou', url: 'https://github.com/davidabou' },
-        copyrightNotice: 'MIT License'
+        'acquireLicensePage': seo.value.url,
+        'creditText': siteName,
+        'creator': { '@type': 'Person', 'name': 'davidabou', 'url': 'https://github.com/davidabou' },
+        'copyrightNotice': 'MIT License'
       },
       {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: siteName, item: `${siteUrl}/` },
-          { '@type': 'ListItem', position: 2, name: seo.value.alt, item: seo.value.url }
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': siteName, 'item': `${siteUrl}/` },
+          { '@type': 'ListItem', 'position': 2, 'name': seo.value.alt, 'item': seo.value.url }
         ]
       }
-    ];
-  });
+    ]
+  })
 
   useSeoMeta({
     title: () => seo.value.title,
@@ -107,10 +107,10 @@ export function useIconSeo (selected: Ref<IconEntry | null>) {
     twitterTitle: () => seo.value.title,
     twitterDescription: () => seo.value.description,
     twitterImage: () => seo.value.image
-  });
+  })
 
   useHead({
     link: [{ rel: 'canonical', href: () => seo.value.url }],
     script: [{ type: 'application/ld+json', innerHTML: () => JSON.stringify(structuredData.value) }]
-  });
+  })
 }

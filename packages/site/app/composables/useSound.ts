@@ -7,16 +7,16 @@
 
 interface Note {
   /** Start frequency, in Hz */
-  from: number;
+  from: number
   /** End frequency, for a glide (defaults to `from`) */
-  to?: number;
+  to?: number
   /** Seconds after the sound starts */
-  at?: number;
+  at?: number
   /** Seconds */
-  duration: number;
+  duration: number
   /** Relative to the master volume */
-  gain?: number;
-  type?: OscillatorType;
+  gain?: number
+  type?: OscillatorType
 }
 
 const SOUNDS = {
@@ -38,88 +38,88 @@ const SOUNDS = {
     { from: 600, duration: 0.05, gain: 0.5, type: 'triangle' },
     { from: 800, at: 0.045, duration: 0.07, gain: 0.45, type: 'triangle' }
   ]
-} satisfies Record<string, Note[]>;
+} satisfies Record<string, Note[]>
 
-export type SoundName = keyof typeof SOUNDS;
+export type SoundName = keyof typeof SOUNDS
 
-const MASTER_VOLUME = 0.15;
+const MASTER_VOLUME = 0.15
 /** Minimum gap between two ticks, so sweeping across the grid does not machine-gun */
-const TICK_INTERVAL = 45;
-const STORAGE_KEY = 'sound';
+const TICK_INTERVAL = 45
+const STORAGE_KEY = 'sound'
 
 /** Shared by every component */
-const enabled = ref(true);
-let loaded = false;
-let context: AudioContext | null = null;
-let master: GainNode | null = null;
-let lastTick = 0;
+const enabled = ref(true)
+let loaded = false
+let context: AudioContext | null = null
+let master: GainNode | null = null
+let lastTick = 0
 
-function audio () {
-  if (!context) {
-    context = new AudioContext();
-    master = context.createGain();
-    master.gain.value = MASTER_VOLUME;
-    master.connect(context.destination);
+function audio() {
+  if (!context || !master) {
+    context = new AudioContext()
+    master = context.createGain()
+    master.gain.value = MASTER_VOLUME
+    master.connect(context.destination)
   }
   if (context.state === 'suspended') {
-    void context.resume();
+    void context.resume()
   }
 
-  return { context, master: master! };
+  return { context, master }
 }
 
-function play (name: SoundName) {
+function play(name: SoundName) {
   if (!import.meta.client || !enabled.value || typeof AudioContext === 'undefined') {
-    return;
+    return
   }
   if (name === 'tick') {
-    const now = performance.now();
+    const now = performance.now()
 
     if (now - lastTick < TICK_INTERVAL) {
-      return;
+      return
     }
-    lastTick = now;
+    lastTick = now
   }
-  const { context, master } = audio();
-  const start = context.currentTime;
+  const { context, master } = audio()
+  const start = context.currentTime
 
   for (const note of SOUNDS[name] as Note[]) {
-    const at = start + (note.at ?? 0);
-    const end = at + note.duration;
-    const oscillator = context.createOscillator();
-    const envelope = context.createGain();
+    const at = start + (note.at ?? 0)
+    const end = at + note.duration
+    const oscillator = context.createOscillator()
+    const envelope = context.createGain()
 
-    oscillator.type = note.type ?? 'sine';
-    oscillator.frequency.setValueAtTime(note.from, at);
+    oscillator.type = note.type ?? 'sine'
+    oscillator.frequency.setValueAtTime(note.from, at)
     if (note.to) {
-      oscillator.frequency.exponentialRampToValueAtTime(note.to, end);
+      oscillator.frequency.exponentialRampToValueAtTime(note.to, end)
     }
     // Short attack and exponential decay: no click at either end
-    envelope.gain.setValueAtTime(0.0001, at);
-    envelope.gain.exponentialRampToValueAtTime(note.gain ?? 1, at + 0.005);
-    envelope.gain.exponentialRampToValueAtTime(0.0001, end);
+    envelope.gain.setValueAtTime(0.0001, at)
+    envelope.gain.exponentialRampToValueAtTime(note.gain ?? 1, at + 0.005)
+    envelope.gain.exponentialRampToValueAtTime(0.0001, end)
 
-    oscillator.connect(envelope).connect(master);
-    oscillator.start(at);
-    oscillator.stop(end + 0.02);
+    oscillator.connect(envelope).connect(master)
+    oscillator.start(at)
+    oscillator.stop(end + 0.02)
   }
 }
 
-function toggle () {
-  enabled.value = !enabled.value;
-  localStorage.setItem(STORAGE_KEY, enabled.value ? 'on' : 'off');
+function toggle() {
+  enabled.value = !enabled.value
+  localStorage.setItem(STORAGE_KEY, enabled.value ? 'on' : 'off')
   // Let the user hear that sounds are back
-  play('toggle');
+  play('toggle')
 }
 
-export function useSound () {
+export function useSound() {
   // Read the saved choice once, on the client (the site is prerendered)
   if (import.meta.client && !loaded) {
-    loaded = true;
+    loaded = true
     onMounted(() => {
-      enabled.value = localStorage.getItem(STORAGE_KEY) !== 'off';
-    });
+      enabled.value = localStorage.getItem(STORAGE_KEY) !== 'off'
+    })
   }
 
-  return { play, enabled: readonly(enabled), toggle };
+  return { play, enabled: readonly(enabled), toggle }
 }

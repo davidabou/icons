@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { CopyButton, CopyButtonIcon } from '@animate-ui/vue/primitives/buttons/copy';
-import { cn } from 'cn';
-import { buttonVariants } from '~/components/ui/button';
+import { CopyButton, CopyButtonIcon } from '@animate-ui/vue/primitives/buttons/copy'
+import { cn } from 'cn'
+import { buttonVariants } from '~/components/ui/button'
 
-defineOptions({ inheritAttrs: false });
+defineOptions({ inheritAttrs: false })
 
-const { play } = useSound();
+const { play } = useSound()
 
 defineProps<{
   /** Code to show and copy */
-  code: string;
+  code: string
   /** What the code is, for the button label */
-  label: string;
+  label: string
   /** Wrap long lines instead of scrolling */
-  wrap?: boolean;
-}>();
+  wrap?: boolean
+}>()
 </script>
 
 <template>

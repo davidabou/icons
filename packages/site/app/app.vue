@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { IconEntry } from './composables/useIcons';
-import type { Framework } from './composables/useFramework';
-import { Highlight, HighlightItem } from '@animate-ui/vue/primitives/effects/highlight';
-import { ThemeToggler } from '@animate-ui/vue/primitives/effects/theme-toggler';
+import type { IconEntry } from './composables/useIcons'
+import type { Framework } from './composables/useFramework'
+import { Highlight, HighlightItem } from '@animate-ui/vue/primitives/effects/highlight'
+import { ThemeToggler } from '@animate-ui/vue/primitives/effects/theme-toggler'
 
-const icons = useIcons();
-const sound = useSound();
+const icons = useIcons()
+const sound = useSound()
 
 const links = [
   { label: 'GitHub', href: 'https://github.com/davidabou/icons' },
   // Hidden below 375px, where the header would overflow
   { label: 'npm', href: 'https://www.npmjs.com/package/@davidabou/icons', class: 'hidden min-[375px]:inline-flex' }
-];
+]
 
 /**
  * External URLs, bound rather than written as static attributes: vue-tsc 3.3 turns the `//` of a
@@ -22,7 +22,7 @@ const urls = {
   sponsor: 'https://github.com/sponsors/davidabou',
   iconRequest: 'https://github.com/davidabou/icons/issues/new?template=icon-request.yml',
   upstream: 'https://github.com/codex-team/icons'
-};
+}
 
 /**
  * Theme: the initial class is set by an inline script before hydration, to avoid a flash.
@@ -32,120 +32,120 @@ useHead({
   script: [{
     innerHTML: `(function(){try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.classList.toggle('dark',t==='dark')}catch(e){}})()`
   }]
-});
+})
 
-type Theme = 'light' | 'dark';
+type Theme = 'light' | 'dark'
 
-const theme = ref<Theme>('light');
+const theme = ref<Theme>('light')
 
-function setTheme (value: Theme | 'system') {
+function setTheme(value: Theme | 'system') {
   const resolved: Theme = value === 'system'
     ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-    : value;
+    : value
 
-  theme.value = resolved;
-  sound.play('toggle');
-  document.documentElement.classList.toggle('dark', resolved === 'dark');
-  localStorage.setItem('theme', resolved);
+  theme.value = resolved
+  sound.play('toggle')
+  document.documentElement.classList.toggle('dark', resolved === 'dark')
+  localStorage.setItem('theme', resolved)
 }
 
 /**
  * Install command, for each framework: the tab is shared with the icon dialog's snippets
  */
-const installTabs: { id: Framework; label: string; code: string }[] = [
+const installTabs: { id: Framework, label: string, code: string }[] = [
   { id: 'vue', label: 'Vue', code: 'bun add @davidabou/icons-vue' },
   // nuxi installs the module with the project's package manager and adds it to nuxt.config.ts
   { id: 'nuxt', label: 'Nuxt', code: 'bunx nuxi module add @davidabou/nuxt-icons' },
   { id: 'react', label: 'React', code: 'bun add @davidabou/icons-react' },
   { id: 'vanilla', label: 'Vanilla', code: 'bun add @davidabou/icons' }
-];
+]
 
-const installTab = useFramework();
+const installTab = useFramework()
 
 /**
  * Search and preview size
  */
-const query = ref('');
-const searchInput = ref<{ $el: HTMLInputElement }>();
-const sizes = [16, 24, 32];
-const previewSize = ref(24);
+const query = ref('')
+const searchInput = ref<{ $el: HTMLInputElement }>()
+const sizes = [16, 24, 32]
+const previewSize = ref(24)
 
 /**
  * "Suggest an icon" link: opens the icon request form with the search prefilled as the icon name.
  */
 const iconRequestUrl = computed(() => {
-  const name = query.value.trim();
-  const params = new URLSearchParams({ title: `Icon request: ${name}`, name });
+  const name = query.value.trim()
+  const params = new URLSearchParams({ title: `Icon request: ${name}`, name })
 
-  return `${urls.iconRequest}&${params}`;
-});
+  return `${urls.iconRequest}&${params}`
+})
 
 const filtered = computed(() => {
-  const words = query.value.trim().toLowerCase().split(/[\s-]+/).filter(Boolean);
+  const words = query.value.trim().toLowerCase().split(/[\s-]+/).filter(Boolean)
 
   if (!words.length) {
-    return icons;
+    return icons
   }
 
-  return icons.filter(icon => {
-    const haystack = `${icon.slug} ${icon.name.toLowerCase()}`;
+  return icons.filter((icon) => {
+    const haystack = `${icon.slug} ${icon.name.toLowerCase()}`
 
-    return words.every(word => haystack.includes(word));
-  });
-});
+    return words.every(word => haystack.includes(word))
+  })
+})
 
 /**
  * Selected icon: the route itself (/icons/arrow-left), so it can be shared and indexed.
  * Sounds play from the clicks themselves: opening from the URL is silent.
  */
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 
-const selected = computed<IconEntry | null>(() => icons.find(icon => icon.slug === route.params.slug) ?? null);
+const selected = computed<IconEntry | null>(() => icons.find(icon => icon.slug === route.params.slug) ?? null)
 
-function close () {
-  sound.play('close');
+function close() {
+  sound.play('close')
   // Opened from the grid: going back closes it, without leaving a /icons entry to come back to
   if (router.options.history.state.back === '/') {
-    router.back();
+    router.back()
   } else {
-    router.replace('/');
+    router.replace('/')
   }
 }
 
 /** Title, description, social previews and structured data of the current page */
-useIconSeo(selected);
+useIconSeo(selected)
 
 /**
  * Keyboard: "/" focuses the search, Escape clears it (the Dialog closes itself on Escape)
  */
-function onKeydown (event: KeyboardEvent) {
-  const input = searchInput.value?.$el;
-  const typing = event.target instanceof HTMLInputElement;
+function onKeydown(event: KeyboardEvent) {
+  const input = searchInput.value?.$el
+  const typing = event.target instanceof HTMLInputElement
 
   if (event.key === '/' && !typing) {
-    event.preventDefault();
-    input?.focus();
+    event.preventDefault()
+    input?.focus()
   } else if (event.key === 'Escape' && typing && !selected.value) {
-    query.value = '';
-    input?.blur();
+    query.value = ''
+    input?.blur()
   }
 }
 
 onMounted(() => {
-  theme.value = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  theme.value = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
 
   // Links shared before icon pages existed (/?icon=arrow-left)
-  const legacy = route.query.icon;
+  const legacy = route.query.icon
 
   if (typeof legacy === 'string' && icons.some(icon => icon.slug === legacy)) {
-    router.replace(`/icons/${legacy}`);
+    router.replace(`/icons/${legacy}`)
   }
 
-  window.addEventListener('keydown', onKeydown);
-});
+  window.addEventListener('keydown', onKeydown)
+})
 
-onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 </script>
 
 <template>

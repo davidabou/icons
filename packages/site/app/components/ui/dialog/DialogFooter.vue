@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<{
   class?: HTMLAttributes['class']
   showCloseButton?: boolean
 }>(), {
-  showCloseButton: false,
+  showCloseButton: false
 })
 </script>
 

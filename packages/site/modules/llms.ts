@@ -1,8 +1,8 @@
-import { mkdir, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { defineNuxtModule } from '@nuxt/kit';
-import * as iconsModule from '../../../src/index';
-import { toSlug } from '../app/lib/icon-names';
+import { mkdir, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import { defineNuxtModule } from '@nuxt/kit'
+import * as iconsModule from '../../../src/index'
+import { toSlug } from '../app/lib/icon-names'
 
 /**
  * Build-time files for LLMs and coding assistants (https://llmstxt.org), served from the site root:
@@ -14,9 +14,9 @@ import { toSlug } from '../app/lib/icon-names';
 
 const names = Object.keys(iconsModule)
   .filter(name => name.startsWith('Icon'))
-  .sort((a, b) => toSlug(a) < toSlug(b) ? -1 : toSlug(a) > toSlug(b) ? 1 : 0);
+  .sort((a, b) => toSlug(a) < toSlug(b) ? -1 : toSlug(a) > toSlug(b) ? 1 : 0)
 
-function summary (siteUrl: string): string {
+function summary(siteUrl: string): string {
   return `# CodeX Icons Extended
 
 > ${names.length} free, MIT-licensed rounded outline SVG icons (24×24 grid, 2px stroke, \`currentColor\`), an extended fork of CodeX Icons (\`@codexteam/icons\`). Available as SVG strings, Vue 3 components, React components and a Nuxt module.
@@ -103,10 +103,10 @@ element.innerHTML = IconHeart;
 - [React package](https://github.com/davidabou/icons/tree/master/packages/react#readme)
 - [Nuxt module](https://github.com/davidabou/icons/tree/master/packages/nuxt#readme)
 - [SVG files](https://github.com/davidabou/icons/tree/master/dist/icons), also at ${siteUrl}/svg/<kebab-case-name>.svg
-`;
+`
 }
 
-function list (siteUrl: string): string {
+function list(siteUrl: string): string {
   return [
     '## Icons',
     '',
@@ -114,22 +114,22 @@ function list (siteUrl: string): string {
     '',
     ...names.map(name => `- [\`${name}\` / \`${toSlug(name)}\`](${siteUrl}/icons/${toSlug(name)})`),
     ''
-  ].join('\n');
+  ].join('\n')
 }
 
 export default defineNuxtModule({
   meta: { name: 'llms' },
-  async setup (_, nuxt) {
-    const siteUrl = (nuxt.options.runtimeConfig.public as { siteUrl: string }).siteUrl;
+  async setup(_, nuxt) {
+    const siteUrl = (nuxt.options.runtimeConfig.public as { siteUrl: string }).siteUrl
     // Not in buildDir: Nuxt empties it after the modules have run
-    const dir = join(nuxt.options.rootDir, 'node_modules', '.cache', 'llms');
+    const dir = join(nuxt.options.rootDir, 'node_modules', '.cache', 'llms')
 
-    nuxt.options.nitro.publicAssets = [...nuxt.options.nitro.publicAssets ?? [], { dir, maxAge: 60 * 60 * 24 }];
+    nuxt.options.nitro.publicAssets = [...nuxt.options.nitro.publicAssets ?? [], { dir, maxAge: 60 * 60 * 24 }]
 
-    await mkdir(dir, { recursive: true });
+    await mkdir(dir, { recursive: true })
     await Promise.all([
       writeFile(join(dir, 'llms.txt'), summary(siteUrl)),
       writeFile(join(dir, 'llms-full.txt'), `${summary(siteUrl)}\n${list(siteUrl)}`)
-    ]);
+    ])
   }
-});
+})
