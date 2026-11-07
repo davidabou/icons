@@ -1,9 +1,20 @@
 {
   "name": "@davidabou/icons",
   "version": "0.1.1",
+  "author": "davidabou",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidabou/icons.git"
+  },
   "main": "dist/index.umd.js",
   "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "svgo": "^2.8.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.5",
+    "vite-plugin-dts": "^5.1.2"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -12,10 +23,17 @@
     }
   },
   "description": "Rounded outline SVG icons, 24×24 with a 2px stroke. Extended fork of CodeX Icons.",
-  "keywords": ["icons", "svg", "svg-icons", "icon-set", "outline-icons", "rounded-icons", "vue", "react", "nuxt", "codex"],
+  "files": [
+    "dist/index.mjs",
+    "dist/index.umd.js",
+    "dist/index.d.ts"
+  ],
   "homepage": "https://icons.abou.dev",
+  "keywords": ["icons", "svg", "svg-icons", "icon-set", "outline-icons", "rounded-icons", "vue", "react", "nuxt", "codex"],
   "license": "MIT",
-  "author": "davidabou",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "bun run generate && vite build",
     "generate": "node bin/generate.js",
@@ -23,23 +41,5 @@
     "site:dev": "bun run --cwd packages/site dev",
     "site:generate": "bun run --cwd packages/site generate"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/davidabou/icons.git"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "devDependencies": {
-    "@resvg/resvg-js": "^2.6.2",
-    "svgo": "^2.8.0",
-    "typescript": "^6.0.3",
-    "vite": "^8.3.5",
-    "vite-plugin-dts": "^5.1.2"
-  },
-  "files": [
-    "dist/index.mjs",
-    "dist/index.umd.js",
-    "dist/index.d.ts"
-  ]
+  "types": "dist/index.d.ts"
 }
