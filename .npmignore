@@ -5,4 +5,5 @@ dist/icons/
 src/
 .gitignore
 bun.lock
-vite.config.mjs
+vite.config.ts
+tsconfig.json

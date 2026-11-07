@@ -1,72 +1,86 @@
-const { optimize } = require('svgo');
-const { Resvg } = require('@resvg/resvg-js');
-const path = require('path');
-const fs = require('fs');
+import { optimize, type XastElement, type XastRoot } from 'svgo';
+import { Resvg } from '@resvg/resvg-js';
+import path from 'node:path';
+import fs from 'node:fs';
+
+/**
+ * An optimized icon: export name and svg code
+ */
+interface Icon {
+  name: string;
+  svg: string;
+}
+
+/**
+ * An element inside an icon's <svg> root, as [tag, attrs, children?]
+ */
+type IconNode = [tag: string, attrs: Record<string, string>, children?: IconNode[]];
+
+/**
+ * Icon of the framework packages (packages/vue, packages/react)
+ */
+interface Component {
+  name: string;
+  nodes: IconNode[];
+}
 
 /**
  * Module for generating icon pack file from svg icons
  */
 class IconsGenerator {
   /**
-   * Define necessary variables and constants
+   * Path to package's root
    */
-  constructor() {
-    /**
-     * Path to package's root
-     */
-    this.ROOT_DIR = path.resolve(__dirname, '..');
+  readonly ROOT_DIR = path.resolve(import.meta.dirname, '..');
 
-    /**
-     * Input files and dirs
-     */
-    this.INPUT_ICONS_DIR = path.join(this.ROOT_DIR, 'src', 'icons');
+  /**
+   * Input files and dirs
+   */
+  readonly INPUT_ICONS_DIR = path.join(this.ROOT_DIR, 'src', 'icons');
 
-    /**
-     * Output files and dirs
-     */
-    this.OUTPUT_DIST_DIR = path.join(this.ROOT_DIR, 'dist');
-    this.OUTPUT_SRC_DIR = path.join(this.ROOT_DIR, 'src');
-    this.OUTPUT_ICONS_DIR = path.join(this.OUTPUT_DIST_DIR, 'icons');
-    this.OUTPUT_BUNDLE_FILE = path.join(this.OUTPUT_SRC_DIR, 'index.ts');
-    this.OUTPUT_SHOWCASE_FILE = path.join(this.ROOT_DIR, 'showcase.png');
-    this.OUTPUT_VUE_FILE = path.join(this.ROOT_DIR, 'packages', 'vue', 'src', 'icons.ts');
-    this.OUTPUT_REACT_FILE = path.join(this.ROOT_DIR, 'packages', 'react', 'src', 'icons.ts');
+  /**
+   * Output files and dirs
+   */
+  readonly OUTPUT_DIST_DIR = path.join(this.ROOT_DIR, 'dist');
+  readonly OUTPUT_SRC_DIR = path.join(this.ROOT_DIR, 'src');
+  readonly OUTPUT_ICONS_DIR = path.join(this.OUTPUT_DIST_DIR, 'icons');
+  readonly OUTPUT_BUNDLE_FILE = path.join(this.OUTPUT_SRC_DIR, 'index.ts');
+  readonly OUTPUT_SHOWCASE_FILE = path.join(this.ROOT_DIR, 'showcase.png');
+  readonly OUTPUT_VUE_FILE = path.join(this.ROOT_DIR, 'packages', 'vue', 'src', 'icons.ts');
+  readonly OUTPUT_REACT_FILE = path.join(this.ROOT_DIR, 'packages', 'react', 'src', 'icons.ts');
 
-    /**
-     * Showcase image layout: white icons on a dark background, 2x scale
-     */
-    this.SHOWCASE = {
-      columns: 11,
-      iconSize: 48,
-      step: 96,
-      paddingX: 218,
-      paddingY: 158,
-      background: '#17191F',
-      color: '#FFFFFF'
-    };
+  /**
+   * Showcase image layout: white icons on a dark background, 2x scale
+   */
+  readonly SHOWCASE = {
+    columns: 11,
+    iconSize: 48,
+    step: 96,
+    paddingX: 218,
+    paddingY: 158,
+    background: '#17191F',
+    color: '#FFFFFF'
+  };
 
-    /**
-     * Optimized icons to be drawn on the showcase image
-     */
-    this.SHOWCASE_ICONS = [];
+  /**
+   * Optimized icons to be drawn on the showcase image
+   */
+  SHOWCASE_ICONS: Icon[] = [];
 
-    /**
-     * Icons of the framework packages (packages/vue, packages/react), as { name, nodes }
-     */
-    this.COMPONENTS = [];
+  /**
+   * Icons of the framework packages (packages/vue, packages/react)
+   */
+  COMPONENTS: Component[] = [];
 
-    /**
-     * List of input svg files
-     */
-    this.files = [];
-
-    this.INPUT_ICONS_DIR = path.join(this.ROOT_DIR, 'src', 'icons');
-  }
+  /**
+   * List of input svg files
+   */
+  files: string[] = [];
 
   /**
    * Main list of actions
    */
-  run() {
+  run(): void {
     this.recreateOutputDirectory();
     this.createOutputScript();
 
@@ -83,7 +97,7 @@ class IconsGenerator {
   /**
    * Recreating output directory
    */
-  recreateOutputDirectory() {
+  recreateOutputDirectory(): void {
     console.log('🗄 Recreating output directory');
 
     fs.rmSync(this.OUTPUT_DIST_DIR, { recursive: true, force: true });
@@ -93,14 +107,14 @@ class IconsGenerator {
   /**
    * Create an output script
    */
-  createOutputScript() {
+  createOutputScript(): void {
     fs.writeFileSync(this.OUTPUT_BUNDLE_FILE, '');
   }
 
   /**
    * Get all SVG files from icons directory
    */
-  getSvgFiles() {
+  getSvgFiles(): void {
     console.log('🔎 Getting SVG files');
 
     /**
@@ -114,7 +128,7 @@ class IconsGenerator {
   /**
    * Going through all found SVG files and process them
    */
-  processSvgFiles() {
+  processSvgFiles(): void {
     console.log('🛠 Processing SVG files');
 
     /**
@@ -142,9 +156,8 @@ class IconsGenerator {
 
       /**
        * Creating icon's object to simplify processing calls
-       * @type {{svg: string, name: string}}
        */
-      const icon = {
+      const icon: Icon = {
         name: exportName,
         svg: optimizedSvgString
       };
@@ -152,7 +165,7 @@ class IconsGenerator {
       /**
        * Add icon to the icons bundle
        */
-      this.appendIconToBundle(icon)
+      this.appendIconToBundle(icon);
 
       /**
        * Save optimized file to output directory
@@ -174,11 +187,9 @@ class IconsGenerator {
   /**
    * Generate icon's export name
    *
-   * @param filename
-   *
-   * @return {string}
+   * @param filename - name of the svg file
    */
-  generateIconExportName(filename) {
+  generateIconExportName(filename: string): string {
     /** Get the filename */
     const name = filename
 
@@ -200,15 +211,15 @@ class IconsGenerator {
   /**
    * Optimize SVG code
    *
-   * @param {string} svg - SVG code
+   * @param svg - SVG code
    *
-   * @returns {{svg: string, root: object}} - optimized code, and its syntax tree (xast)
+   * @returns optimized code, and its syntax tree (xast)
    */
-  optimizeSvg(svg) {
+  optimizeSvg(svg: string): { svg: string; root: XastRoot } {
     /**
      * Syntax tree of the optimized icon, kept by the last plugin, right before it is serialized
      */
-    let root;
+    let root: XastRoot | undefined;
 
     /**
      * Optimizing SVG with SVGO package
@@ -232,33 +243,31 @@ class IconsGenerator {
       ]
     });
 
+    if (!root) {
+      throw new Error(`No syntax tree for: ${svg}`);
+    }
+
     return { svg: result.data, root };
   }
 
   /**
    * Append icon to the icons bundle
-   *
-   * @param {string} name - name of the icon
-   * @param {string} svg - optimized svg code
    */
-  appendIconToBundle({name, svg}) {
+  appendIconToBundle({ name, svg }: Icon): void {
     fs.appendFileSync(this.OUTPUT_BUNDLE_FILE, `export const ${name}: string = '${svg}';\n`);
   }
 
   /**
    * Save optimized file to output directory
-   *
-   * @param {string} name - name of the icon
-   * @param {string} svg - optimized svg code
    */
-  saveOptimizedSvg({ name , svg}) {
+  saveOptimizedSvg({ name, svg }: Icon): void {
     fs.writeFileSync(path.join(this.OUTPUT_ICONS_DIR, `${name}.svg`), svg);
   }
 
   /**
    * Render all icons as a grid to the showcase.png image
    */
-  renderShowcase() {
+  renderShowcase(): void {
     console.log('🖼 Rendering the showcase.png image');
 
     const { columns, iconSize, step, paddingX, paddingY, background, color } = this.SHOWCASE;
@@ -291,20 +300,18 @@ class IconsGenerator {
   /**
    * Convert an optimized SVG to the elements inside its <svg> root, as [tag, attrs, children?] nodes
    *
-   * @param {object} tree - syntax tree (xast) of the optimized svg
-   * @param {string} svg - optimized svg code, for the error message
-   *
-   * @returns {Array}
+   * @param tree - syntax tree (xast) of the optimized svg
+   * @param svg - optimized svg code, for the error message
    */
-  svgToNodes(tree, svg) {
-    const root = tree.children.find(node => node.type === 'element');
+  svgToNodes(tree: XastRoot, svg: string): IconNode[] {
+    const root = tree.children.find((node): node is XastElement => node.type === 'element');
 
-    if (root.attributes.viewBox !== '0 0 24 24' || root.attributes.fill !== 'none') {
+    if (root?.attributes.viewBox !== '0 0 24 24' || root.attributes.fill !== 'none') {
       throw new Error(`Unexpected <svg> root: ${svg}`);
     }
 
-    const toNode = ({ name, attributes, children }) => {
-      const elements = children.filter(child => child.type === 'element');
+    const toNode = ({ name, attributes, children }: XastElement): IconNode => {
+      const elements = children.filter((child): child is XastElement => child.type === 'element');
 
       return elements.length
         ? [name, attributes, elements.map(toNode)]
@@ -312,7 +319,7 @@ class IconsGenerator {
     };
 
     return root.children
-      .filter(node => node.type === 'element')
+      .filter((node): node is XastElement => node.type === 'element')
       .map(toNode);
   }
 
@@ -320,11 +327,9 @@ class IconsGenerator {
    * Generate icon's name in kebab-case, as used by the website URLs and the Nuxt <CodeXIcon>:
    * IconTableWithHeadings → table-with-headings, IconH1 → h1
    *
-   * @param {string} name - export name of the icon
-   *
-   * @return {string}
+   * @param name - export name of the icon
    */
-  generateIconSlug(name) {
+  generateIconSlug(name: string): string {
     return name
       .replace(/^Icon/, '')
       .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
@@ -332,34 +337,36 @@ class IconsGenerator {
   }
 
   /**
-   * Rename the attributes of the nodes for React (stroke-width → strokeWidth), recursively
+   * Rename the attributes of a node for React (stroke-width → strokeWidth)
    *
-   * @param {object} attrs - attributes of a node
-   *
-   * @returns {object}
+   * @param attrs - attributes of a node
    */
-  toReactAttributes(attrs) {
+  toReactAttributes(attrs: Record<string, string>): Record<string, string> {
     return Object.fromEntries(Object.entries(attrs)
-      .map(([key, value]) => [key.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()), value]));
+      .map(([key, value]) => [key.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase()), value]));
   }
 
   /**
    * Write the components file of a framework package (one createIcon() call per icon),
    * followed by the map of all icons by name
    *
-   * @param {string} framework - name shown in the logs
-   * @param {string} file - output file
-   * @param {Function} mapAttributes - converts the attributes of each node for the framework
+   * @param framework - name shown in the logs
+   * @param file - output file
+   * @param mapAttributes - converts the attributes of each node for the framework
    */
-  writeComponents(framework, file, mapAttributes) {
+  writeComponents(
+    framework: string,
+    file: string,
+    mapAttributes: (attrs: Record<string, string>) => Record<string, string>
+  ): void {
     console.log(`🧩 Writing the ${framework} components`);
 
-    const mapNodes = nodes => nodes.map(([tag, attrs, children]) => children
+    const mapNodes = (nodes: IconNode[]): IconNode[] => nodes.map(([tag, attrs, children]) => children
       ? [tag, mapAttributes(attrs), mapNodes(children)]
       : [tag, mapAttributes(attrs)]);
 
     const lines = [
-      '// Generated by bin/generate.js from src/icons, do not edit.',
+      '// Generated by bin/generate.ts from src/icons, do not edit.',
       "import { createIcon } from './create-icon';",
       '',
       ...this.COMPONENTS.map(({ name, nodes }) => `export const ${name} = /* @__PURE__ */ createIcon('${name}', ${JSON.stringify(mapNodes(nodes))});`),
@@ -384,7 +391,7 @@ class IconsGenerator {
   /**
    * Just a check for number of input and output files
    */
-  showReport() {
+  showReport(): void {
     /**
      * Count input files
      */
@@ -406,8 +413,4 @@ class IconsGenerator {
 /**
  * Run generator
  */
-(new IconsGenerator()).run();
-
-
-
-
+new IconsGenerator().run();

@@ -31,7 +31,7 @@ jobs:
 
       - name: Check that all packages have the same version
         run: |
-          node bin/set-version.js
+          bun bin/set-version.ts
           git diff --exit-code -- package.json packages/vue/package.json packages/react/package.json packages/nuxt/package.json
 
       # Core package (also regenerates packages/vue/src/icons.ts and packages/react/src/icons.ts)

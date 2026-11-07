@@ -1,5 +1,5 @@
-const path = require('path');
-const fs = require('fs');
+import path from 'node:path';
+import fs from 'node:fs';
 
 /**
  * Set the same version on every published package, so they are always released together:
@@ -7,7 +7,7 @@ const fs = require('fs');
  *   bun run set-version 0.3.0
  *   bun run set-version          (no argument: re-applies the root version to the other packages)
  */
-const ROOT_DIR = path.resolve(__dirname, '..');
+const ROOT_DIR = path.resolve(import.meta.dirname, '..');
 
 const PACKAGES = [
   'package.json',
@@ -27,7 +27,7 @@ if (!/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(version)) {
 PACKAGES.forEach(file => {
   const filePath = path.join(ROOT_DIR, file);
   const content = fs.readFileSync(filePath, 'utf8');
-  const { name } = JSON.parse(content);
+  const { name } = JSON.parse(content) as { name: string };
 
   /**
    * Replace only the version line, to keep the file's field order and formatting

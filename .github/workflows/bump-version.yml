@@ -53,7 +53,7 @@ jobs:
 
       # Apply the same version to the Vue, React and Nuxt packages
       - name: Sync the other packages
-        run: node bin/set-version.js
+        run: bun bin/set-version.ts
 
       # Get package new version name
       - name: Get package info

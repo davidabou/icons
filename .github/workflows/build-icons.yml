@@ -18,8 +18,14 @@ jobs:
       - name: Use Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: Install packages and run 'build' command
-        run: bun install && bun run build
+      - name: Install packages
+        run: bun install
+
+      - name: Type-check the build scripts
+        run: bun run typecheck
+
+      - name: Run 'build' command
+        run: bun run build
 
       - name: Commit the regenerated build
         run: |

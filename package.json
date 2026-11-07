@@ -10,6 +10,7 @@
   "module": "dist/index.mjs",
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
+    "@types/node": "^26.6.6",
     "svgo": "^4.1.0",
     "typescript": "^6.0.3",
     "vite": "^8.3.5",
@@ -36,12 +37,13 @@
   },
   "scripts": {
     "build": "bun run generate && vite build",
-    "generate": "node bin/generate.js",
+    "generate": "bun bin/generate.ts",
     "playground:dev": "bun run --cwd packages/nuxt dev",
     "site:dev": "bun run --cwd packages/site dev",
     "site:generate": "bun run --cwd packages/site generate",
     "react:test": "bun run --cwd packages/react test",
-    "set-version": "node bin/set-version.js",
+    "set-version": "bun bin/set-version.ts",
+    "typecheck": "tsc --noEmit",
     "vue:test": "bun run --cwd packages/vue test"
   },
   "types": "dist/index.d.ts",

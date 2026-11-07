@@ -5,7 +5,7 @@ Fork of [`@codexteam/icons`](https://github.com/codex-team/icons). Goal of this 
 ## Structure
 
 - `src/icons/*.svg` — **single source of truth**. This is the only place where icons are added or modified.
-- `bin/generate.js` — optimizes the SVGs (svgo), generates `src/index.ts`, `dist/icons/Icon*.svg`, `packages/vue/src/icons.ts`, `packages/react/src/icons.ts` and the `showcase.png` preview (all icons as a grid, rendered with `@resvg/resvg-js`).
+- `bin/generate.ts` — optimizes the SVGs (svgo), generates `src/index.ts`, `dist/icons/Icon*.svg`, `packages/vue/src/icons.ts`, `packages/react/src/icons.ts` and the `showcase.png` preview (all icons as a grid, rendered with `@resvg/resvg-js`).
 - `src/index.ts`, `dist/`, `packages/vue/src/icons.ts`, `packages/react/src/icons.ts`, `showcase.png` — **generated, never edit by hand**.
 - `packages/vue/` — `@davidabou/icons-vue`, one functional Vue 3 component per icon (`<IconHeart :size="20" />`) plus an `icons` map by kebab-case name (`IconName` type, same names as the site URLs), built from the parsed SVG elements by `createIcon` (`src/create-icon.ts`), no `v-html`. `bun run vue:test` builds it and checks the SSR output.
 - `packages/react/` — `@davidabou/icons-react`, the same for React 18/19 (`<IconHeart size={20} />`, `forwardRef`, same `icons` map and `IconName`), from the same nodes with React attribute names (`strokeWidth`…). `bun run react:test` builds it and checks the server-rendered markup.
@@ -26,6 +26,7 @@ bun run site:dev   # website dev server (packages/site)
 bun run site:generate  # static build of the website
 bun run vue:test   # builds packages/vue and checks the rendered components
 bun run react:test # builds packages/react and checks the rendered components
+bun run typecheck  # type-checks bin/ (TypeScript, ESM, run with Bun), src/ and vite.config.ts
 bun run set-version 0.3.0  # sets the same version on all published packages
 ```
 
