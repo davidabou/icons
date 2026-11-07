@@ -1,0 +1,4 @@
+# Bulk reformatting, ignored by git blame (git config blame.ignoreRevsFile .git-blame-ignore-revs)
+
+# style: apply the ESLint code style
+038634a9d367f1a66dbab13fdbdff486e412a860
