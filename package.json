@@ -9,12 +9,21 @@
   "type": "module",
   "main": "./dist/index.mjs",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@resvg/resvg-js": "^2.6.2",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-vue": "^10.12.0",
+    "globals": "^17.14.0",
+    "jiti": "^2.7.0",
     "svgo": "^4.1.0",
     "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
     "vite": "^8.3.5",
-    "vite-plugin-dts": "^5.1.2"
+    "vite-plugin-dts": "^5.1.2",
+    "vue-eslint-parser": "^10.4.2"
   },
   "exports": {
     ".": {
@@ -44,6 +53,8 @@
     "site:generate": "bun run --cwd packages/site generate",
     "react:test": "bun run --cwd packages/react test",
     "set-version": "bun bin/set-version.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
     "vue:test": "bun run --cwd packages/vue test"
   },

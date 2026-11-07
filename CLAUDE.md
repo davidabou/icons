@@ -26,6 +26,7 @@ bun run site:dev   # website dev server (packages/site)
 bun run site:generate  # static build of the website
 bun run vue:test   # builds packages/vue and checks the rendered components
 bun run react:test # builds packages/react and checks the rendered components
+bun run lint       # ESLint on the whole repo, site included (lint:fix applies the fixes)
 bun run typecheck  # type-checks bin/ (TypeScript, ESM, run with Bun), src/ and vite.config.ts
 bun run set-version 0.3.0  # sets the same version on all published packages
 ```
@@ -40,7 +41,7 @@ The rules for drawing and naming icons live in `CONTRIBUTING.md`, imported here:
 
 ## Misc
 
-- 2-space indentation, LF, final newline (`.editorconfig`).
+- 2-space indentation, LF, final newline (`.editorconfig`). Code style, enforced by ESLint (`eslint.config.ts`: typescript-eslint strict + stylistic, eslint-plugin-vue, @stylistic): single quotes, no semicolons, no trailing commas. Run `bun run lint:fix` after editing code, including files added by the shadcn-vue or Animate UI CLIs.
 - The project's package manager is **Bun** (CI: `bun install && bun run build`). The root is a Bun workspace with `packages/vue`, `packages/react` and `packages/nuxt` (one `bun.lock` at the root); `packages/site` stays outside, with its own `bun.lock`.
 - **ESM only**: every package has `"type": "module"` and publishes a single ESM build (`exports` with `types` + `default`, so `require()` still works through Node's require(esm), `engines.node >=20.19.0`). Do not add back CJS or UMD builds.
 - **Synchronized versions**: `@davidabou/icons`, `@davidabou/icons-vue`, `@davidabou/icons-react` and `@davidabou/nuxt-icons` always share the same version, set with `bun run set-version <x.y.z>` (never edit one `version` field alone). `npm-publish.yml` (manual) publishes the four in that order and skips the ones already on npm. A breaking change in any package bumps all of them.
