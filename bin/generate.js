@@ -61,6 +61,11 @@ class IconsGenerator {
     ];
 
     /**
+     * Lines of the icons map (name in kebab-case → component), at the end of the same file
+     */
+    this.VUE_ICON_NAMES = [];
+
+    /**
      * Preparing lines for the table of icons which will be inserted to README file
      */
     this.TABLE_OF_ICONS = [
@@ -380,15 +385,48 @@ class IconsGenerator {
     const nodes = JSON.stringify(this.svgToNodes(svg));
 
     this.VUE_COMPONENTS.push(`export const ${name} = /* @__PURE__ */ createIcon('${name}', ${nodes});`);
+    this.VUE_ICON_NAMES.push(`  '${this.generateIconSlug(name)}': ${name},`);
   }
 
   /**
-   * Write the Vue components file
+   * Generate icon's name in kebab-case, as used by the website URLs and the Nuxt <CodeXIcon>:
+   * IconTableWithHeadings → table-with-headings, IconH1 → h1
+   *
+   * @param {string} name - export name of the icon
+   *
+   * @return {string}
+   */
+  generateIconSlug(name) {
+    return name
+      .replace(/^Icon/, '')
+      .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+      .toLowerCase();
+  }
+
+  /**
+   * Write the Vue components file, followed by the map of all icons by name
    */
   writeVueComponents() {
     console.log('🧩 Writing the Vue components');
 
-    fs.writeFileSync(this.OUTPUT_VUE_FILE, `${this.VUE_COMPONENTS.join('\n')}\n`);
+    const lines = [
+      ...this.VUE_COMPONENTS,
+      '',
+      '/**',
+      " * All icons by name (kebab-case), for dynamic use: icons['arrow-left'].",
+      ' * Importing it bundles every icon: prefer the named exports when the icon is known.',
+      ' */',
+      'export const icons = {',
+      ...this.VUE_ICON_NAMES,
+      '};',
+      '',
+      '/**',
+      ' * Union type of the icon names (kebab-case)',
+      ' */',
+      'export type IconName = keyof typeof icons;'
+    ];
+
+    fs.writeFileSync(this.OUTPUT_VUE_FILE, `${lines.join('\n')}\n`);
   }
 
   /**

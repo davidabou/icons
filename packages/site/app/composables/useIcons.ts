@@ -4,9 +4,9 @@ import { toSlug } from '../lib/icon-names';
 
 export interface IconEntry {
   /** Export name, e.g. IconArrowLeft */
-  name: CodeXIconName;
-  /** Source file name, e.g. arrow-left */
-  slug: string;
+  name: string;
+  /** Name in kebab-case, as used by <CodeXIcon> and the URLs, e.g. arrow-left */
+  slug: CodeXIconName;
   /** Optimized SVG markup */
   svg: string;
 }
@@ -15,7 +15,7 @@ const icons: Record<string, string> = iconsModule;
 
 const list: IconEntry[] = Object.entries(icons)
   .filter(([name, svg]) => name.startsWith('Icon') && typeof svg === 'string')
-  .map(([name, svg]) => ({ name: name as CodeXIconName, slug: toSlug(name), svg }))
+  .map(([name, svg]) => ({ name, slug: toSlug(name) as CodeXIconName, svg }))
   /**
    * Sort explicitly: the key order of a module namespace differs between server and client,
    * which would break hydration. Headings come first, like in the README.

@@ -143,12 +143,12 @@ onBeforeUnmount(() => clearTimeout(downloadedTimeout));
         <div class="flex items-center justify-between gap-4 px-6 pt-5 pb-2">
           <nav class="flex min-w-0 items-center gap-1.5 text-sm text-muted-foreground" aria-label="Breadcrumb">
             <span class="truncate">@davidabou/icons</span>
-            <CodeXIcon name="IconChevronRight" :size="16" class="shrink-0" />
+            <CodeXIcon name="chevron-right" :size="16" class="shrink-0" />
             <span class="truncate font-semibold text-foreground">{{ shown.slug }}</span>
           </nav>
           <DialogClose as-child>
             <Button variant="ghost" size="icon-lg" class="shrink-0 text-muted-foreground" aria-label="Close">
-              <CodeXIcon name="IconCross" :size="20" />
+              <CodeXIcon name="cross" :size="20" />
             </Button>
           </DialogClose>
         </div>
@@ -157,7 +157,7 @@ onBeforeUnmount(() => clearTimeout(downloadedTimeout));
         <div class="grid gap-6 px-6 pt-4 pb-6 sm:grid-cols-[174px_1fr]">
           <!-- Preview, at the chosen size and color -->
           <div class="flex aspect-square items-center justify-center rounded-3xl bg-muted" :style="color ? { color } : undefined">
-            <CodeXIcon :name="shown.name" :size="size" />
+            <CodeXIcon :name="shown.slug" :size="size" />
           </div>
 
           <div class="flex min-w-0 flex-col gap-4">
@@ -176,10 +176,10 @@ onBeforeUnmount(() => clearTimeout(downloadedTimeout));
                     >
                       <CopyButtonIcon>
                         <template #icon>
-                          <CodeXIcon name="IconCopy" :size="20" />
+                          <CodeXIcon name="copy" :size="20" />
                         </template>
                         <template #copied-icon>
-                          <CodeXIcon name="IconCheck" :size="20" />
+                          <CodeXIcon name="check" :size="20" />
                         </template>
                       </CopyButtonIcon>
                     </CopyButton>
@@ -225,7 +225,7 @@ onBeforeUnmount(() => clearTimeout(downloadedTimeout));
                     aria-label="Reset size and color"
                     @click="reset"
                   >
-                    <CodeXIcon name="IconRefresh" :size="20" />
+                    <CodeXIcon name="refresh" :size="20" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Reset</TooltipContent>
@@ -243,10 +243,10 @@ onBeforeUnmount(() => clearTimeout(downloadedTimeout));
               >
                 <CopyButtonIcon>
                   <template #icon>
-                    <CodeXIcon name="IconDownload" :size="20" />
+                    <CodeXIcon name="download" :size="20" />
                   </template>
                   <template #copied-icon>
-                    <CodeXIcon name="IconCheck" :size="20" />
+                    <CodeXIcon name="check" :size="20" />
                   </template>
                 </CopyButtonIcon>
                 Download SVG
@@ -260,7 +260,7 @@ onBeforeUnmount(() => clearTimeout(downloadedTimeout));
                 target="_blank"
                 rel="noopener"
               >
-                <CodeXIcon name="IconExternalLink" :size="20" />
+                <CodeXIcon name="external-link" :size="20" />
                 View on Iconify
               </Button>
             </div>

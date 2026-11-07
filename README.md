@@ -72,7 +72,7 @@ bun add @davidabou/nuxt-icons
 ```
 
 ```vue
-<CodeXIcon name="IconHeart" :size="20" />
+<CodeXIcon name="heart" :size="20" />
 ```
 
 See the [module documentation](packages/nuxt#readme) for the setup.

@@ -50,6 +50,24 @@ Any other attribute (`class`, `style`, `aria-label`, event listeners…) is pass
 
 Icons are decorative by default (`aria-hidden="true"`). Give them an `aria-label` when they carry meaning on their own, for example in an icon-only button.
 
+## Dynamic icons
+
+When the icon is only known at runtime, the `icons` map gives every icon by its name in kebab-case, as shown on [icons.abou.dev](https://icons.abou.dev):
+
+```vue
+<script setup lang="ts">
+import { icons, type IconName } from '@davidabou/icons-vue';
+
+defineProps<{ name: IconName }>();
+</script>
+
+<template>
+  <component :is="icons[name]" />
+</template>
+```
+
+Importing `icons` bundles every icon: prefer the named exports when the icon is known.
+
 The `IconComponent` type can be used to type your own props:
 
 ```ts

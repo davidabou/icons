@@ -37,10 +37,10 @@ defineProps<{
         >
           <CopyButtonIcon>
             <template #icon>
-              <CodeXIcon name="IconCopy" :size="20" />
+              <CodeXIcon name="copy" :size="20" />
             </template>
             <template #copied-icon>
-              <CodeXIcon name="IconCheck" :size="20" />
+              <CodeXIcon name="check" :size="20" />
             </template>
           </CopyButtonIcon>
         </CopyButton>

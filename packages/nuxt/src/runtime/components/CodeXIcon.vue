@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import * as icons from '@davidabou/icons-vue';
+import { icons } from '@davidabou/icons-vue';
 import type { CodeXIconName } from '../types';
 
 /**
@@ -8,7 +8,7 @@ import type { CodeXIconName } from '../types';
  */
 const props = withDefaults(defineProps<{
   /**
-   * Icon name, should be one of the names listed on https://github.com/davidabou/icons
+   * Icon name in kebab-case, for example: 'arrow-left'. See https://icons.abou.dev
    */
   name: CodeXIconName,
 

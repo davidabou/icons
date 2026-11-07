@@ -36,12 +36,12 @@ export default defineNuxtConfig({
 
 ## Usage
 
-Use the `CodeXIcon` component (or `code-x-icon` in kebab-case) with the `name` property which should be one of the [list](https://github.com/davidabou/icons#list-of-icons).
+Use the `CodeXIcon` component (or `code-x-icon` in kebab-case) with the `name` property: the icon name in kebab-case, as shown on [icons.abou.dev](https://icons.abou.dev) (`arrow-left`, `table-with-headings`, `h1`…).
 
 ```vue
-<CodeXIcon name="IconHeart" />
-<code-x-icon name="IconSparkles" :size="20" class="text-primary" />
-<CodeXIcon :name="isOpen ? 'IconChevronUp' : 'IconChevronDown'" />
+<CodeXIcon name="heart" />
+<code-x-icon name="sparkles" :size="20" class="text-primary" />
+<CodeXIcon :name="isOpen ? 'chevron-up' : 'chevron-down'" />
 ```
 
 The icon takes the current text color, so it can be colored with CSS `color` or any utility class.
@@ -50,7 +50,7 @@ The icon takes the current text color, so it can be colored with CSS `color` or 
 
 | prop | type | description |
 | -- | -- | -- |
-| `name` | `CodeXIconName` | Required. Name of icon from the `@davidabou/icons` pack |
+| `name` | `CodeXIconName` | Required. Icon name in kebab-case, for example `arrow-left` |
 | `size` | `number \| string` | Icon width and height, `24` by default (in pixels when a number) |
 
 Any other attribute (`class`, `style`, `aria-label`…) is passed to the `<svg>`. Icons are decorative by default (`aria-hidden="true"`), unless they get an `aria-label`.
@@ -65,9 +65,16 @@ To import icons one by one instead (only those end up in the bundle), use [`@dav
 
 ### Migrating from `<DaIcon>`
 
-`<DaIcon>` and the `DaIconName` type were renamed to `<CodeXIcon>` and `CodeXIconName` in 0.2.0. The old names still work but are deprecated.
+`<DaIcon>` was replaced by `<CodeXIcon>` in 0.2.0, which takes kebab-case names without the `Icon` prefix:
 
-The icon is no longer wrapped in a `<span class="da-icon">`: attributes now land on the `<svg>` itself, and the `.da-icon` class is gone.
+```diff
+- <DaIcon name="IconArrowLeft" />
++ <CodeXIcon name="arrow-left" />
+```
+
+The type of the names is now `CodeXIconName`. `<DaIcon>` and `DaIconName` still work, with the former names, but are deprecated.
+
+In both components, the icon is no longer wrapped in a `<span class="da-icon">`: attributes now land on the `<svg>` itself, and the `.da-icon` class is gone.
 
 ## Development
 

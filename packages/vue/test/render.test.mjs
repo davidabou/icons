@@ -15,6 +15,15 @@ test('exports one component per source icon', () => {
   assert.deepEqual(Object.keys(icons).filter(key => key.startsWith('Icon')).sort(), names.sort());
 });
 
+test('maps every icon by its kebab-case name', () => {
+  const components = Object.entries(icons).filter(([key]) => key.startsWith('Icon'));
+
+  assert.equal(Object.keys(icons.icons).length, components.length);
+  assert.equal(icons.icons['arrow-left'], icons.IconArrowLeft);
+  assert.equal(icons.icons['table-with-headings'], icons.IconTableWithHeadings);
+  assert.equal(icons.icons.h1, icons.IconH1);
+});
+
 test('renders a 24px decorative svg by default', async () => {
   const html = await render(h(icons.IconHeart));
 

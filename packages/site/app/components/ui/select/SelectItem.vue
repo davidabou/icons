@@ -33,7 +33,7 @@ const forwardedProps = useForwardProps(delegatedProps)
       <!-- flex: as a block, the animated wrapper takes a line-height box and pushes the check up -->
       <SelectItemIndicator class="flex">
         <slot name="indicator-icon">
-          <CodeXIcon name="IconCheck" :size="16" class="pointer-events-none" />
+          <CodeXIcon name="check" :size="16" class="pointer-events-none" />
         </slot>
       </SelectItemIndicator>
     </span>
