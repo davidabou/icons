@@ -1,6 +1,6 @@
 {
   "name": "@davidabou/nuxt-icons",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "150+ rounded outline SVG icons as a typed, server-rendered component.",
   "repository": {
     "type": "git",
