@@ -57,7 +57,9 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        // For LLMs and coding assistants (see modules/llms.ts)
+        { rel: 'alternate', type: 'text/markdown', href: '/llms.txt', title: 'LLM-friendly summary' }
       ]
     }
   },

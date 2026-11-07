@@ -100,6 +100,10 @@ Optimized SVG files are available in [`dist/icons`](dist/icons), for design tool
 <img src="https://cdn.jsdelivr.net/gh/davidabou/icons/dist/icons/IconHeart.svg" alt="" width="24" height="24">
 ```
 
+### For LLMs and coding assistants
+
+Point your assistant to [icons.abou.dev/llms-full.txt](https://icons.abou.dev/llms-full.txt): it describes the packages and lists every icon with its exact names, so the generated code uses icons that exist.
+
 ## List of icons
 
 <!-- DO NOT EDIT THE FOLLOWING SECTION MANUALLY -->
