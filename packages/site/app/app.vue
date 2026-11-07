@@ -22,6 +22,18 @@
           >
             {{ link.label }}
           </Button>
+          <Button
+            as="a"
+            variant="outline"
+            href="https://github.com/sponsors/davidabou"
+            target="_blank"
+            rel="noopener"
+            aria-label="Sponsor on GitHub"
+            class="mx-1 gap-1.5 px-2.5 sm:px-3"
+          >
+            <DaIcon name="IconHeart" class="text-pink-500" />
+            <span class="hidden sm:inline">Sponsor</span>
+          </Button>
           <Tooltip>
             <TooltipTrigger>
               <Button
