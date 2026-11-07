@@ -3,24 +3,20 @@ import { appendFileSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 
 /**
- * Steps of the Release workflow (.github/workflows/npm-publish.yml), run with Bun:
+ * Version step of the Release workflow (.github/workflows/npm-publish.yml), run with Bun:
  *
  *   bun .github/scripts/release.ts next-version <auto|patch|minor|major>
- *     finds the last release, computes the next version from the Conventional Commits since then,
- *     and writes `version` and `base` to the step outputs ($GITHUB_OUTPUT)
  *
- *   bun .github/scripts/release.ts notes <version> <base>
- *     prints the release notes (Markdown) of the commits from <base> to the tag v<version>
+ * Finds the last release, computes the next version from the Conventional Commits since then,
+ * and writes `version` and `base` to the step outputs ($GITHUB_OUTPUT). The release notes are
+ * written by changelogithub, from the same commits.
  */
 
 type Bump = 'patch' | 'minor' | 'major'
 
 interface Commit {
-  hash: string
   type: string
-  scope: string
   breaking: boolean
-  text: string
 }
 
 const ROOT_DIR = path.resolve(import.meta.dirname, '..', '..')
@@ -28,12 +24,7 @@ const ROOT_DIR = path.resolve(import.meta.dirname, '..', '..')
 /**
  * Conventional Commit subject: type(scope)!: text
  */
-const SUBJECT = /^(?<type>[a-z]+)(?:\((?<scope>[^)]*)\))?(?<bang>!)?: (?<text>.*)$/
-
-/**
- * Commits made by this workflow, left out of the notes
- */
-const RELEASE_COMMIT = /^chore: release \d/
+const SUBJECT = /^(?<type>[a-z]+)(?:\([^)]*\))?(?<bang>!)?: /
 
 function git(...args: string[]): string {
   return execFileSync('git', args, { cwd: ROOT_DIR, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim()
@@ -45,22 +36,16 @@ function fail(message: string): never {
 }
 
 /**
- * Commits between two refs (oldest first), without merges
+ * Commits between two refs, without merges
  */
 function getCommits(from: string, to: string): Commit[] {
-  const log = git('log', '--no-merges', '--reverse', '--format=%h%x1f%s%x1f%b%x1e', `${from}..${to}`)
+  const log = git('log', '--no-merges', '--format=%s%x1f%b%x1e', `${from}..${to}`)
 
   return log.split('\x1e').filter(Boolean).map((entry) => {
-    const [hash = '', subject = '', body = ''] = entry.trim().split('\x1f')
-    const { type = '', scope = '', bang, text = subject } = SUBJECT.exec(subject)?.groups ?? {}
+    const [subject = '', body = ''] = entry.trim().split('\x1f')
+    const { type = '', bang } = SUBJECT.exec(subject)?.groups ?? {}
 
-    return {
-      hash,
-      type,
-      scope,
-      breaking: Boolean(bang) || /^BREAKING CHANGE:/m.test(body),
-      text: RELEASE_COMMIT.test(subject) ? '' : text
-    }
+    return { type, breaking: Boolean(bang) || /^BREAKING CHANGE:/m.test(body) }
   })
 }
 
@@ -119,40 +104,10 @@ function nextVersion(bump: string): void {
   }
 }
 
-function notes(version: string, base: string): void {
-  const sections: Record<string, string[]> = {
-    '⚠️ Breaking changes': [],
-    'Features': [],
-    'Fixes': [],
-    'Other changes': []
-  }
-
-  for (const { hash, type, scope, breaking, text } of getCommits(base, `v${version}`)) {
-    if (!text) {
-      continue
-    }
-
-    const section = breaking ? '⚠️ Breaking changes' : type === 'feat' ? 'Features' : type === 'fix' ? 'Fixes' : 'Other changes'
-
-    sections[section]?.push(`- ${scope ? `**${scope}:** ` : ''}${text} (${hash})`)
-  }
-
-  const repository = process.env.GITHUB_REPOSITORY ?? 'davidabou/icons'
-
-  console.log([
-    ...Object.entries(sections)
-      .filter(([, lines]) => lines.length)
-      .map(([title, lines]) => `## ${title}\n\n${lines.join('\n')}\n`),
-    `**Full changelog**: https://github.com/${repository}/compare/${base}...v${version}`
-  ].join('\n'))
-}
-
-const [command, ...args] = process.argv.slice(2)
+const [command, bump = 'auto'] = process.argv.slice(2)
 
 if (command === 'next-version') {
-  nextVersion(args[0] ?? 'auto')
-} else if (command === 'notes' && args[0] && args[1]) {
-  notes(args[0], args[1])
+  nextVersion(bump)
 } else {
-  fail('Usage: release.ts next-version <auto|patch|minor|major> | notes <version> <base>')
+  fail('Usage: release.ts next-version <auto|patch|minor|major>')
 }

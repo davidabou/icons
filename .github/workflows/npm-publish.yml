@@ -5,7 +5,8 @@ name: Release
 #      (or takes the bump chosen below, see .github/scripts/release.ts), checks the build, then commits "chore: release x.y.z" and tags vx.y.z
 #   2. publish: publishes @davidabou/icons, @davidabou/icons-vue, @davidabou/icons-react, then
 #      @davidabou/nuxt-icons (which depends on icons-vue), skipping the versions already on npm
-#   3. release: creates the GitHub Release with notes grouped by commit type, and rebuilds the website
+#   3. release: creates the GitHub Release with changelogithub (features, fixes, performance and breaking changes,
+#      with their contributors), and rebuilds the website
 # A failed job can be re-run alone: publishing skips what is already on npm.
 #
 # This file keeps the name npm-publish.yml: it is the workflow registered as the npm trusted publisher
@@ -148,15 +149,11 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
-      # Notes grouped by Conventional Commit type, from the commits since the last release
-      - name: Write the release notes
-        run: bun .github/scripts/release.ts notes ${{ needs.version.outputs.version }} ${{ needs.version.outputs.base }} | tee "$RUNNER_TEMP/notes.md"
-
+      # Notes from the Conventional Commits since the last release (--from: needed until the first tag exists)
       - name: Create the GitHub Release
+        run: bunx changelogithub@15.0.5 --from ${{ needs.version.outputs.base }} --to v${{ needs.version.outputs.version }}
         env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ needs.version.outputs.version }}
-        run: gh release create "v$VERSION" --title "v$VERSION" --notes-file "$RUNNER_TEMP/notes.md" --verify-tag
+          GITHUB_TOKEN: ${{ github.token }}
 
       # Rebuild the website (icons.abou.dev) so the new icons show the version they shipped in.
       # VERCEL_DEPLOY_HOOK: Vercel project → Settings → Git → Deploy Hooks (branch master)
