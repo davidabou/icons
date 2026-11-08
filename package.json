@@ -51,12 +51,13 @@
     "playground:dev": "bun run --cwd packages/nuxt dev",
     "site:dev": "bun run --cwd packages/site dev",
     "site:generate": "bun run --cwd packages/site generate",
+    "vue:test": "bun run --cwd packages/vue test",
     "react:test": "bun run --cwd packages/react test",
+    "test": "bun --filter './packages/*' test",
     "set-version": "bun bin/set-version.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit",
-    "vue:test": "bun run --cwd packages/vue test"
+    "typecheck": "tsc --noEmit"
   },
   "types": "./dist/index.d.ts",
   "workspaces": [

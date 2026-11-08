@@ -26,6 +26,7 @@ bun run site:dev   # website dev server (packages/site)
 bun run site:generate  # static build of the website
 bun run vue:test   # builds packages/vue and checks the rendered components
 bun run react:test # builds packages/react and checks the rendered components
+bun run test       # runs the test script of every workspace package (vue + react)
 bun run lint       # ESLint on the whole repo, site included (lint:fix applies the fixes)
 bun run typecheck  # type-checks bin/ (TypeScript, ESM, run with Bun), src/ and vite.config.ts
 bun run set-version 0.3.0  # sets the same version on all published packages (done by the Release workflow)
