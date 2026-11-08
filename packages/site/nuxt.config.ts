@@ -56,6 +56,8 @@ export default defineNuxtConfig({
         { name: 'author', content: 'davidabou' }
       ],
       link: [
+        // favicon.ico first: browsers that read SVG favicons still pick the SVG one
+        { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
         // For LLMs and coding assistants (see modules/llms.ts)

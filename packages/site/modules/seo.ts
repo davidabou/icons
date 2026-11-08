@@ -10,7 +10,7 @@ import { toSlug, toTitle } from '../app/lib/icon-names'
  * - robots.txt and sitemap.xml (home + one page per icon)
  * - og.png (home) and og/<slug>.png (one per icon), 1200×630 social previews
  * - svg/<slug>.svg, the plain file of each icon (image search, JSON-LD contentUrl)
- * - apple-touch-icon.png
+ * - apple-touch-icon.png, and favicon.ico for the clients that do not read favicon.svg
  * It also adds every /icons/<slug> page to the prerendered routes.
  */
 
@@ -54,6 +54,24 @@ function place(icon: Icon, x: number, y: number, size: number, color: string): s
 
 const logo = (x: number, y: number, size: number) =>
   `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none"><path d="${LOGO}" stroke="${COLORS.primary}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+
+/**
+ * A .ico file holding a single PNG image (supported by every browser since Windows Vista)
+ */
+function ico(png: Buffer, size: number): Buffer {
+  const header = Buffer.alloc(22)
+
+  header.writeUInt16LE(1, 2) // type: icon
+  header.writeUInt16LE(1, 4) // one image
+  header.writeUInt8(size, 6) // width
+  header.writeUInt8(size, 7) // height
+  header.writeUInt16LE(1, 10) // color planes
+  header.writeUInt16LE(32, 12) // bits per pixel
+  header.writeUInt32LE(png.length, 14)
+  header.writeUInt32LE(header.length, 18) // offset of the image
+
+  return Buffer.concat([header, png])
+}
 
 const canvas = (width: number, height: number, content: string) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" font-family="Fredoka"><rect width="${width}" height="${height}" fill="${COLORS.background}"/>${content}</svg>`
@@ -163,6 +181,8 @@ export default defineNuxtModule({
       writeFile(join(dir, 'og.png'), png(homeImage())),
       // The logo on a white square with some padding, as iOS expects (no transparency)
       writeFile(join(dir, 'apple-touch-icon.png'), png(canvas(180, 180, logo(30, 30, 120)))),
+      // Same as favicon.svg (transparent, same padding), 48px as Google asks for search results
+      writeFile(join(dir, 'favicon.ico'), ico(png(`<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48">${logo(0, 0, 48)}</svg>`), 48)),
       ...icons.map(icon => writeFile(join(dir, 'svg', `${icon.slug}.svg`), icon.svg)),
       ...icons.map(icon => writeFile(join(dir, 'og', `${icon.slug}.png`), png(iconImage(icon))))
     ])
