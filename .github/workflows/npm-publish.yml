@@ -40,6 +40,7 @@ jobs:
     outputs:
       version: ${{ steps.next.outputs.version }}
       base: ${{ steps.next.outputs.base }}
+      notes-filter: ${{ steps.next.outputs.notes-filter }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -149,9 +150,10 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
-      # Notes from the Conventional Commits since the last release (--from: needed until the first tag exists)
+      # Notes from the Conventional Commits since the last release that touch the published packages
+      # (--from: needed until the first tag exists, notes-filter: the package paths, from release.ts)
       - name: Create the GitHub Release
-        run: bunx changelogithub@15.0.5 --from ${{ needs.version.outputs.base }} --to v${{ needs.version.outputs.version }}
+        run: bunx changelogithub@15.0.5 --from ${{ needs.version.outputs.base }} --to v${{ needs.version.outputs.version }} ${{ needs.version.outputs.notes-filter }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
 

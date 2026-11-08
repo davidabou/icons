@@ -8,8 +8,11 @@ import path from 'node:path'
  *   bun .github/scripts/release.ts next-version <auto|patch|minor|major>
  *
  * Finds the last release, computes the next version from the Conventional Commits since then,
- * and writes `version` and `base` to the step outputs ($GITHUB_OUTPUT). The release notes are
- * written by changelogithub, from the same commits.
+ * and writes `version`, `base` and `notes-filter` to the step outputs ($GITHUB_OUTPUT). The release
+ * notes are written by changelogithub, from the same commits.
+ *
+ * Only the commits that touch the published packages count: a `feat(site):` commit changes neither
+ * the version nor the release notes.
  */
 
 type Bump = 'patch' | 'minor' | 'major'
@@ -20,6 +23,11 @@ interface Commit {
 }
 
 const ROOT_DIR = path.resolve(import.meta.dirname, '..', '..')
+
+/**
+ * Sources of the published packages (src/ holds the icons and the generated core package)
+ */
+const PACKAGE_PATHS = ['src', 'packages/vue', 'packages/react', 'packages/nuxt', 'package.json']
 
 /**
  * Conventional Commit subject: type(scope)!: text
@@ -36,10 +44,10 @@ function fail(message: string): never {
 }
 
 /**
- * Commits between two refs, without merges
+ * Commits between two refs that touch the published packages, without merges
  */
 function getCommits(from: string, to: string): Commit[] {
-  const log = git('log', '--no-merges', '--format=%s%x1f%b%x1e', `${from}..${to}`)
+  const log = git('log', '--no-merges', '--format=%s%x1f%b%x1e', `${from}..${to}`, '--', ...PACKAGE_PATHS)
 
   return log.split('\x1e').filter(Boolean).map((entry) => {
     const [subject = '', body = ''] = entry.trim().split('\x1f')
@@ -69,7 +77,7 @@ function nextVersion(bump: string): void {
   const commits = getCommits(base, 'HEAD')
 
   if (!commits.length) {
-    fail(`No commit since the last release (${base})`)
+    fail(`No change to the packages since the last release (${base})`)
   }
 
   const { version: current } = JSON.parse(readFileSync(path.join(ROOT_DIR, 'package.json'), 'utf8')) as { version: string }
@@ -100,7 +108,9 @@ function nextVersion(bump: string): void {
   console.log(`🔖 ${current} → ${version} (${type})`)
 
   if (process.env.GITHUB_OUTPUT) {
-    appendFileSync(process.env.GITHUB_OUTPUT, `version=${version}\nbase=${base}\n`)
+    const notesFilter = PACKAGE_PATHS.map(file => `--commit-filter-by-paths ${file}`).join(' ')
+
+    appendFileSync(process.env.GITHUB_OUTPUT, `version=${version}\nbase=${base}\nnotes-filter=${notesFilter}\n`)
   }
 }
 
