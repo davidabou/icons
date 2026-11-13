@@ -19,6 +19,7 @@ export const IconArrowDown = /* @__PURE__ */ createIcon('IconArrowDown', [["path
 export const IconArrowLeft = /* @__PURE__ */ createIcon('IconArrowLeft', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M17 12H7M7 12L10.33 8.67M7 12L10.33 15.33"}]]);
 export const IconArrowRight = /* @__PURE__ */ createIcon('IconArrowRight', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M7 12H17M17 12L13.67 8.67M17 12L13.67 15.33"}]]);
 export const IconArrowUp = /* @__PURE__ */ createIcon('IconArrowUp', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M12 17V7M12 7L8.67 10.33M12 7L15.33 10.33"}]]);
+export const IconAtSign = /* @__PURE__ */ createIcon('IconAtSign', [["circle",{"cx":"12","cy":"12","r":"2.8","stroke":"currentColor","stroke-width":"2"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M14.8 9.2V12.7A2.1 2.1 0 0 0 19 12.7V12A7 7 0 1 0 16.2 17.6"}]]);
 export const IconBell = /* @__PURE__ */ createIcon('IconBell', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M12 5.3C14.8 5.3 16.6 7.6 16.5 10.5C16.45 11.9 16.6 13.3 17.6 14.7C18 15.3 17.7 16.1 17 16.15Q12 16.7 7 16.15C6.3 16.1 6 15.3 6.4 14.7C7.4 13.3 7.55 11.9 7.5 10.5C7.4 7.6 9.2 5.3 12 5.3Z"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M10 16.4A2 2 0 0 0 14 16.4Z"}]]);
 export const IconBold = /* @__PURE__ */ createIcon('IconBold', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-width":"2","d":"M9 12L9 7.1C9 7.04477 9.04477 7 9.1 7H10.4C11.5 7 14 7.1 14 9.5C14 9.5 14 12 11 12M9 12V16.8C9 16.9105 9.08954 17 9.2 17H12.5C14 17 15 16 15 14.5C15 11.7046 11 12 11 12M9 12H11"}]]);
 export const IconBolt = /* @__PURE__ */ createIcon('IconBolt', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M14 4.8L5.8 13.6H11.3L10 19.2L18.2 10.4H12.7L14 4.8Z"}]]);
@@ -189,6 +190,7 @@ export const icons = {
   'arrow-left': IconArrowLeft,
   'arrow-right': IconArrowRight,
   'arrow-up': IconArrowUp,
+  'at-sign': IconAtSign,
   'bell': IconBell,
   'bold': IconBold,
   'bolt': IconBolt,
