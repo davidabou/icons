@@ -77,6 +77,7 @@ export declare const IconGlobe: string;
 export declare const IconGridView: string;
 export declare const IconHash: string;
 export declare const IconHeading: string;
+export declare const IconHeadphones: string;
 export declare const IconHeart: string;
 export declare const IconHidden: string;
 export declare const IconHome: string;
