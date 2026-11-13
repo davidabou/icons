@@ -93,6 +93,7 @@ export declare const IconInstagram: string;
 export declare const IconItalic: string;
 export declare const IconKey: string;
 export declare const IconLaptop: string;
+export declare const IconLayers: string;
 export declare const IconLightbulb: string;
 export declare const IconLink: string;
 export declare const IconLinkedin: string;
