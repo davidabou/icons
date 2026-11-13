@@ -113,6 +113,7 @@ export const IconMinimize = /* @__PURE__ */ createIcon('IconMinimize', [["path",
 export const IconMinus = /* @__PURE__ */ createIcon('IconMinus', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M17 12H7"}]]);
 export const IconMoney = /* @__PURE__ */ createIcon('IconMoney', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M14 9.75C13.6 9.3 12.9 9 12 9C10.9 9 10 9.6 10 10.5C10 12.5 14 11.5 14 13.5C14 14.4 13.1 15 12 15C11.1 15 10.4 14.7 10 14.25M12 8V9M12 15V16"}]]);
 export const IconMoon = /* @__PURE__ */ createIcon('IconMoon', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M12 5.25A4.5 4.5 0 0 0 18.75 12A6.75 6.75 0 1 1 12 5.25Z"}]]);
+export const IconMusic = /* @__PURE__ */ createIcon('IconMusic', [["circle",{"cx":"7.5","cy":"16.5","r":"2.5","stroke":"currentColor","strokeWidth":"2"}],["circle",{"cx":"16.5","cy":"15","r":"2.5","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M10 16.5V7L19 5.5V15"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M10 7L19 5.5V6.75L10 8.25Z"}]]);
 export const IconMute = /* @__PURE__ */ createIcon('IconMute', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M7.28 16.15C4.25 13.35 4.25 10.65 7.28 7.85C10.42 5.2 12 5.6 12 8.6V15.4C12 18.4 10.42 18.8 7.28 16.15Z"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M19 10.13L15.25 13.88M15.25 10.13L19 13.88"}]]);
 export const IconPause = /* @__PURE__ */ createIcon('IconPause', [["rect",{"width":"3","height":"10","x":"7","y":"7","fill":"currentColor","stroke":"currentColor","strokeLinejoin":"round","strokeWidth":"2","rx":"1"}],["rect",{"width":"3","height":"10","x":"14","y":"7","fill":"currentColor","stroke":"currentColor","strokeLinejoin":"round","strokeWidth":"2","rx":"1"}]]);
 export const IconPhone = /* @__PURE__ */ createIcon('IconPhone', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M19 15.44V17.54A1.4 1.4 0 0 1 17.47 18.94A13.85 13.85 0 0 1 11.43 16.8A13.65 13.65 0 0 1 7.23 12.6A13.85 13.85 0 0 1 5.08 6.53A1.4 1.4 0 0 1 6.48 5H8.58A1.4 1.4 0 0 1 9.98 6.2A8.99 8.99 0 0 0 10.47 8.17A1.4 1.4 0 0 1 10.15 9.65L9.26 10.54A11.2 11.2 0 0 0 13.46 14.74L14.35 13.85A1.4 1.4 0 0 1 15.83 13.53A8.99 8.99 0 0 0 17.8 14.02A1.4 1.4 0 0 1 19 15.44Z"}]]);
@@ -285,6 +286,7 @@ export const icons = {
   'minus': IconMinus,
   'money': IconMoney,
   'moon': IconMoon,
+  'music': IconMusic,
   'mute': IconMute,
   'pause': IconPause,
   'phone': IconPhone,
