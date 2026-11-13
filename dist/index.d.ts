@@ -143,6 +143,7 @@ export declare const IconTable: string;
 export declare const IconTag: string;
 export declare const IconTerminal: string;
 export declare const IconText: string;
+export declare const IconThumbsUp: string;
 export declare const IconTranslate: string;
 export declare const IconTrash: string;
 export declare const IconTwitter: string;
