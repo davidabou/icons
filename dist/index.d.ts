@@ -44,6 +44,7 @@ export declare const IconCode: string;
 export declare const IconCoffee: string;
 export declare const IconCollapse: string;
 export declare const IconColor: string;
+export declare const IconCommand: string;
 export declare const IconCompass: string;
 export declare const IconCopyCheck: string;
 export declare const IconCopy: string;
