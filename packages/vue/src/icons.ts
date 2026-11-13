@@ -178,6 +178,7 @@ export const IconUsersGroup = /* @__PURE__ */ createIcon('IconUsersGroup', [["pa
 export const IconVideo = /* @__PURE__ */ createIcon('IconVideo', [["rect",{"width":"10","height":"9","x":"5","y":"7.5","stroke":"currentColor","stroke-width":"2","rx":"3"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M15 10.5L17.6 9.04C18.27 8.67 19 9.15 19 9.91V14.09C19 14.85 18.27 15.33 17.6 14.96L15 13.5"}]]);
 export const IconVolume = /* @__PURE__ */ createIcon('IconVolume', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M7.28 16.15C4.25 13.35 4.25 10.65 7.28 7.85C10.42 5.2 12 5.6 12 8.6V15.4C12 18.4 10.42 18.8 7.28 16.15Z"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M15.25 11A1.45 1.45 0 0 1 15.25 13ZM15.25 12H15.45"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M15.25 7.32A4.8 4.8 0 0 1 15.25 16.68"}]]);
 export const IconWarning = /* @__PURE__ */ createIcon('IconWarning', [["rect",{"width":"14","height":"14","x":"5","y":"5","stroke":"currentColor","stroke-width":"2","rx":"4"}],["line",{"x1":"12","x2":"12","y1":"9","y2":"12","stroke":"currentColor","stroke-linecap":"round","stroke-width":"2"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-width":"2","d":"M12 15.02V15.01"}]]);
+export const IconX = /* @__PURE__ */ createIcon('IconX', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M6 6H10.25L18 18H13.75Z"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M18 6L13.29 10.71M10.71 13.29L6 18"}]]);
 export const IconZoomIn = /* @__PURE__ */ createIcon('IconZoomIn', [["circle",{"cx":"11","cy":"11","r":"6","stroke":"currentColor","stroke-width":"2"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-width":"2","d":"M15.95 15.95L19 19M11 8.5V13.5M8.5 11H13.5"}]]);
 export const IconZoomOut = /* @__PURE__ */ createIcon('IconZoomOut', [["circle",{"cx":"11","cy":"11","r":"6","stroke":"currentColor","stroke-width":"2"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-width":"2","d":"M15.95 15.95L19 19M8.5 11H13.5"}]]);
 
@@ -363,6 +364,7 @@ export const icons = {
   'video': IconVideo,
   'volume': IconVolume,
   'warning': IconWarning,
+  'x': IconX,
   'zoom-in': IconZoomIn,
   'zoom-out': IconZoomOut,
 };
