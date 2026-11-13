@@ -124,6 +124,7 @@ export declare const IconPin: string;
 export declare const IconPlay: string;
 export declare const IconPlug: string;
 export declare const IconPlus: string;
+export declare const IconPower: string;
 export declare const IconPrinter: string;
 export declare const IconQuestion: string;
 export declare const IconQuote: string;
