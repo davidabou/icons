@@ -137,6 +137,7 @@ export declare const IconSave: string;
 export declare const IconScissors: string;
 export declare const IconSearch: string;
 export declare const IconSend: string;
+export declare const IconServer: string;
 export declare const IconSettings: string;
 export declare const IconShare: string;
 export declare const IconShield: string;
