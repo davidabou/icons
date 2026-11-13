@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
     inputs:
       bump:
-        description: 'Version bump (auto: from the commits, feat → minor, fix → patch, breaking → major, or minor before 1.0)'
+        description: 'Version bump (auto: from the commits, feat → minor, fix → patch, breaking → major; before 1.0: breaking → minor, feat and fix → patch)'
         type: choice
         default: auto
         options:

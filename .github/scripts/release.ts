@@ -89,10 +89,16 @@ function nextVersion(bump: string): void {
     : bump as Bump
 
   /**
-   * Before 1.0, a breaking change bumps the minor version
+   * Before 1.0, everything shifts down one level, as npm's caret ranges do (^0.3.0 is >=0.3.0 <0.4.0):
+   * a breaking change bumps the minor version, and in auto mode a feature bumps the patch version,
+   * so the apps on ^0.x.y still get the new icons
    */
-  if (type === 'major' && major === 0) {
-    type = 'minor'
+  if (major === 0) {
+    if (type === 'major') {
+      type = 'minor'
+    } else if (type === 'minor' && bump === 'auto') {
+      type = 'patch'
+    }
   }
 
   const version = {
