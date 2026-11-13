@@ -18,6 +18,7 @@ export declare const IconArrowLeft: string;
 export declare const IconArrowRight: string;
 export declare const IconArrowUp: string;
 export declare const IconAtSign: string;
+export declare const IconBarChart: string;
 export declare const IconBell: string;
 export declare const IconBold: string;
 export declare const IconBolt: string;
