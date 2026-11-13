@@ -141,6 +141,7 @@ export const IconSettings = /* @__PURE__ */ createIcon('IconSettings', [["path",
 export const IconShare = /* @__PURE__ */ createIcon('IconShare', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M12 12.5V5M12 5L9.5 7.5M12 5L14.5 7.5"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M7.5 11C6.12 11 5 12.12 5 13.5V16C5 17.66 6.34 19 8 19H16C17.66 19 19 17.66 19 16V13.5C19 12.12 17.88 11 16.5 11"}]]);
 export const IconShield = /* @__PURE__ */ createIcon('IconShield', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M11.4 5.4C9.9 6.25 8.3 6.6 6.9 6.7C6.4 6.74 6 7.15 6 7.65V11.5C6 15.1 8.5 17.7 11.5 18.9C11.82 19.03 12.18 19.03 12.5 18.9C15.5 17.7 18 15.1 18 11.5V7.65C18 7.15 17.6 6.74 17.1 6.7C15.7 6.6 14.1 6.25 12.6 5.4C12.23 5.19 11.77 5.19 11.4 5.4Z"}]]);
 export const IconSidebar = /* @__PURE__ */ createIcon('IconSidebar', [["rect",{"width":"14","height":"14","x":"5","y":"5","stroke":"currentColor","stroke-width":"2","rx":"4"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-width":"2","d":"M9 9V15"}]]);
+export const IconSliders = /* @__PURE__ */ createIcon('IconSliders', [["circle",{"cx":"9","cy":"8.5","r":"2.5","stroke":"currentColor","stroke-width":"2"}],["circle",{"cx":"15","cy":"15.5","r":"2.5","stroke":"currentColor","stroke-width":"2"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M5 8.5H5.5M12.5 8.5H19M5 15.5H11.5M18.5 15.5H19"}]]);
 export const IconSmile = /* @__PURE__ */ createIcon('IconSmile', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","stroke-width":"2"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-width":"2.6","d":"M9.5 10.01V10M14.5 10.01V10"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M15.03 13.75A3.5 3.5 0 0 1 8.97 13.75"}]]);
 export const IconSort = /* @__PURE__ */ createIcon('IconSort', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M8.25 7V17M8.25 17L5 13.75M8.25 17L11.5 13.75"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M15.75 17V7M15.75 7L12.5 10.25M15.75 7L19 10.25"}]]);
 export const IconSparkles = /* @__PURE__ */ createIcon('IconSparkles', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M10 9Q11 13 15 14Q11 15 10 19Q9 15 5 14Q9 13 10 9ZM16.5 5.5Q16.9 7.1 18.5 7.5Q16.9 7.9 16.5 9.5Q16.1 7.9 14.5 7.5Q16.1 7.1 16.5 5.5Z"}]]);
@@ -319,6 +320,7 @@ export const icons = {
   'share': IconShare,
   'shield': IconShield,
   'sidebar': IconSidebar,
+  'sliders': IconSliders,
   'smile': IconSmile,
   'sort': IconSort,
   'sparkles': IconSparkles,
