@@ -4,6 +4,7 @@ export declare const IconH3: string;
 export declare const IconH4: string;
 export declare const IconH5: string;
 export declare const IconH6: string;
+export declare const IconActivity: string;
 export declare const IconAddBackground: string;
 export declare const IconAddBorder: string;
 export declare const IconAlignCenter: string;
