@@ -110,6 +110,7 @@ export declare const IconMute: string;
 export declare const IconPause: string;
 export declare const IconPhone: string;
 export declare const IconPicture: string;
+export declare const IconPin: string;
 export declare const IconPlay: string;
 export declare const IconPlug: string;
 export declare const IconPlus: string;
