@@ -154,6 +154,7 @@ export const IconSettings = /* @__PURE__ */ createIcon('IconSettings', [["path",
 export const IconShare = /* @__PURE__ */ createIcon('IconShare', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M12 12.5V5M12 5L9.5 7.5M12 5L14.5 7.5"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M7.5 11C6.12 11 5 12.12 5 13.5V16C5 17.66 6.34 19 8 19H16C17.66 19 19 17.66 19 16V13.5C19 12.12 17.88 11 16.5 11"}]]);
 export const IconShield = /* @__PURE__ */ createIcon('IconShield', [["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M11.4 5.4C9.9 6.25 8.3 6.6 6.9 6.7C6.4 6.74 6 7.15 6 7.65V11.5C6 15.1 8.5 17.7 11.5 18.9C11.82 19.03 12.18 19.03 12.5 18.9C15.5 17.7 18 15.1 18 11.5V7.65C18 7.15 17.6 6.74 17.1 6.7C15.7 6.6 14.1 6.25 12.6 5.4C12.23 5.19 11.77 5.19 11.4 5.4Z"}]]);
 export const IconSidebar = /* @__PURE__ */ createIcon('IconSidebar', [["rect",{"width":"14","height":"14","x":"5","y":"5","stroke":"currentColor","stroke-width":"2","rx":"4"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-width":"2","d":"M9 9V15"}]]);
+export const IconSkipBack = /* @__PURE__ */ createIcon('IconSkipBack', [["path",{"fill":"currentColor","stroke":"currentColor","stroke-linejoin":"round","stroke-width":"2","d":"M15.72 7.36L11.44 10.54Q9.48 12 11.44 13.46L15.72 16.64Q17.5 17.97 17.5 15.45L17.5 8.55Q17.5 6.03 15.72 7.36Z"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M6.5 7V17"}]]);
 export const IconSkipForward = /* @__PURE__ */ createIcon('IconSkipForward', [["path",{"fill":"currentColor","stroke":"currentColor","stroke-linejoin":"round","stroke-width":"2","d":"M8.28 7.36L12.56 10.54Q14.52 12 12.56 13.46L8.28 16.64Q6.5 17.97 6.5 15.45L6.5 8.55Q6.5 6.03 8.28 7.36Z"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M17.5 7V17"}]]);
 export const IconSliders = /* @__PURE__ */ createIcon('IconSliders', [["circle",{"cx":"9","cy":"8.5","r":"2.5","stroke":"currentColor","stroke-width":"2"}],["circle",{"cx":"15","cy":"15.5","r":"2.5","stroke":"currentColor","stroke-width":"2"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":"2","d":"M5 8.5H5.5M12.5 8.5H19M5 15.5H11.5M18.5 15.5H19"}]]);
 export const IconSmartphone = /* @__PURE__ */ createIcon('IconSmartphone', [["rect",{"width":"9","height":"14","x":"7.5","y":"5","stroke":"currentColor","stroke-width":"2","rx":"3"}],["path",{"stroke":"currentColor","stroke-linecap":"round","stroke-width":"2.6","d":"M12.01 15.75H12"}]]);
@@ -349,6 +350,7 @@ export const icons = {
   'share': IconShare,
   'shield': IconShield,
   'sidebar': IconSidebar,
+  'skip-back': IconSkipBack,
   'skip-forward': IconSkipForward,
   'sliders': IconSliders,
   'smartphone': IconSmartphone,
