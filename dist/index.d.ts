@@ -115,6 +115,7 @@ export declare const IconMail: string;
 export declare const IconMarker: string;
 export declare const IconMenuSmall: string;
 export declare const IconMenu: string;
+export declare const IconMicrophoneOff: string;
 export declare const IconMicrophone: string;
 export declare const IconMinimize: string;
 export declare const IconMinus: string;
