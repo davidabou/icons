@@ -151,6 +151,7 @@ export declare const IconSettings: string;
 export declare const IconShare: string;
 export declare const IconShield: string;
 export declare const IconSidebar: string;
+export declare const IconSkipForward: string;
 export declare const IconSliders: string;
 export declare const IconSmartphone: string;
 export declare const IconSmile: string;
