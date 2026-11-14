@@ -61,6 +61,7 @@ export declare const IconCompass: string;
 export declare const IconCopyCheck: string;
 export declare const IconCopy: string;
 export declare const IconCreditCard: string;
+export declare const IconCrop: string;
 export declare const IconCross: string;
 export declare const IconCrown: string;
 export declare const IconCurlyBrackets: string;
