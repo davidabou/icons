@@ -32,6 +32,7 @@ export declare const IconBracketsVertical: string;
 export declare const IconBrackets: string;
 export declare const IconBrain: string;
 export declare const IconBriefcase: string;
+export declare const IconBug: string;
 export declare const IconCalendar: string;
 export declare const IconCart: string;
 export declare const IconChat: string;
