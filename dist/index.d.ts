@@ -127,6 +127,7 @@ export declare const IconMusic: string;
 export declare const IconMute: string;
 export declare const IconPaperclip: string;
 export declare const IconPause: string;
+export declare const IconPercent: string;
 export declare const IconPhone: string;
 export declare const IconPicture: string;
 export declare const IconPin: string;
