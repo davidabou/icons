@@ -66,7 +66,7 @@ Values measured on the existing icons (`check`, `plus`, `search`, `picture`, `wa
 
 ### Media controls (filled exception)
 
-`play`, `pause` and `stop` are **solid shapes without a container**, by convention for player controls. Each shape uses `fill="black"` **plus** a matching `stroke="black" stroke-width="2" stroke-linejoin="round"`, which rounds its corners; svgo turns both into `currentColor`. All three share the same visible height (6→18). Do not extend this filled style to other icons.
+`play`, `pause`, `stop`, `skip-forward` and `skip-back` are **solid shapes without a container**, by convention for player controls. Each shape uses `fill="black"` **plus** a matching `stroke="black" stroke-width="2" stroke-linejoin="round"`, which rounds its corners; svgo turns both into `currentColor`. They share the same visible height (6→18). In `skip-forward` and `skip-back`, the triangle is solid and the bar is a regular 2px stroke. Do not extend this filled style to other icons.
 
 ### Forbidden
 
