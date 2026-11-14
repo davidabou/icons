@@ -186,6 +186,7 @@ export declare const IconUser: string;
 export declare const IconUsersGroup: string;
 export declare const IconVideo: string;
 export declare const IconVolume: string;
+export declare const IconWallet: string;
 export declare const IconWarning: string;
 export declare const IconX: string;
 export declare const IconZoomIn: string;
