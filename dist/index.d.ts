@@ -177,6 +177,7 @@ export declare const IconText: string;
 export declare const IconThumbsUp: string;
 export declare const IconTranslate: string;
 export declare const IconTrash: string;
+export declare const IconTrendingUp: string;
 export declare const IconTrophy: string;
 export declare const IconTwitter: string;
 export declare const IconUnderline: string;
