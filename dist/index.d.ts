@@ -97,6 +97,7 @@ export declare const IconHeadphones: string;
 export declare const IconHeart: string;
 export declare const IconHidden: string;
 export declare const IconHome: string;
+export declare const IconHourglass: string;
 export declare const IconHtml: string;
 export declare const IconInbox: string;
 export declare const IconInfo: string;
