@@ -122,6 +122,7 @@ export declare const IconMinimize: string;
 export declare const IconMinus: string;
 export declare const IconMoney: string;
 export declare const IconMoon: string;
+export declare const IconMouse: string;
 export declare const IconMusic: string;
 export declare const IconMute: string;
 export declare const IconPaperclip: string;
