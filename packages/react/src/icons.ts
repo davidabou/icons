@@ -47,6 +47,7 @@ export const IconChevronDown = /* @__PURE__ */ createIcon('IconChevronDown', [["
 export const IconChevronLeft = /* @__PURE__ */ createIcon('IconChevronLeft', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M14.5 17.5L9.64142 12.6414C9.56331 12.5633 9.56331 12.4367 9.64142 12.3586L14.5 7.5"}]]);
 export const IconChevronRight = /* @__PURE__ */ createIcon('IconChevronRight', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M9.58284 17.5L14.4414 12.6414C14.5195 12.5633 14.5195 12.4367 14.4414 12.3586L9.58284 7.5"}]]);
 export const IconChevronUp = /* @__PURE__ */ createIcon('IconChevronUp', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M7 15L11.8586 10.1414C11.9367 10.0633 12.0633 10.0633 12.1414 10.1414L17 15"}]]);
+export const IconCircleAlert = /* @__PURE__ */ createIcon('IconCircleAlert', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M12 9V12"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M12 15.02V15.01"}]]);
 export const IconCircleCheck = /* @__PURE__ */ createIcon('IconCircleCheck', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M9 12.25L11 14.25L15 10"}]]);
 export const IconCircleMinus = /* @__PURE__ */ createIcon('IconCircleMinus', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M9 12H15"}]]);
 export const IconCirclePlus = /* @__PURE__ */ createIcon('IconCirclePlus', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M12 9V15M9 12H15"}]]);
@@ -252,6 +253,7 @@ export const icons = {
   'chevron-left': IconChevronLeft,
   'chevron-right': IconChevronRight,
   'chevron-up': IconChevronUp,
+  'circle-alert': IconCircleAlert,
   'circle-check': IconCircleCheck,
   'circle-minus': IconCircleMinus,
   'circle-plus': IconCirclePlus,

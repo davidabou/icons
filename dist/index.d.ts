@@ -44,6 +44,7 @@ export declare const IconChevronDown: string;
 export declare const IconChevronLeft: string;
 export declare const IconChevronRight: string;
 export declare const IconChevronUp: string;
+export declare const IconCircleAlert: string;
 export declare const IconCircleCheck: string;
 export declare const IconCircleMinus: string;
 export declare const IconCirclePlus: string;
