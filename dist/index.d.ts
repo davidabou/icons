@@ -151,6 +151,7 @@ export declare const IconServer: string;
 export declare const IconSettings: string;
 export declare const IconShare: string;
 export declare const IconShield: string;
+export declare const IconShuffle: string;
 export declare const IconSidebar: string;
 export declare const IconSkipBack: string;
 export declare const IconSkipForward: string;

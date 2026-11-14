@@ -154,6 +154,7 @@ export const IconServer = /* @__PURE__ */ createIcon('IconServer', [["rect",{"wi
 export const IconSettings = /* @__PURE__ */ createIcon('IconSettings', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M10.3 5.98Q12 5 13.7 5.98L16.36 7.52Q18.06 8.5 18.06 10.46L18.06 13.54Q18.06 15.5 16.36 16.48L13.7 18.02Q12 19 10.3 18.02L7.64 16.48Q5.94 15.5 5.94 13.54L5.94 10.46Q5.94 8.5 7.64 7.52Z"}],["circle",{"cx":"12","cy":"12","r":"2.5","stroke":"currentColor","strokeWidth":"2"}]]);
 export const IconShare = /* @__PURE__ */ createIcon('IconShare', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M12 12.5V5M12 5L9.5 7.5M12 5L14.5 7.5"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M7.5 11C6.12 11 5 12.12 5 13.5V16C5 17.66 6.34 19 8 19H16C17.66 19 19 17.66 19 16V13.5C19 12.12 17.88 11 16.5 11"}]]);
 export const IconShield = /* @__PURE__ */ createIcon('IconShield', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M11.4 5.4C9.9 6.25 8.3 6.6 6.9 6.7C6.4 6.74 6 7.15 6 7.65V11.5C6 15.1 8.5 17.7 11.5 18.9C11.82 19.03 12.18 19.03 12.5 18.9C15.5 17.7 18 15.1 18 11.5V7.65C18 7.15 17.6 6.74 17.1 6.7C15.7 6.6 14.1 6.25 12.6 5.4C12.23 5.19 11.77 5.19 11.4 5.4Z"}]]);
+export const IconShuffle = /* @__PURE__ */ createIcon('IconShuffle', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M5 7.5H5.5C10.6 7.5 8.9 16.5 14 16.5H19M16 13.5L19 16.5L16 19.5"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M5 16.5H5.5C10.6 16.5 8.9 7.5 14 7.5H19M16 4.5L19 7.5L16 10.5"}]]);
 export const IconSidebar = /* @__PURE__ */ createIcon('IconSidebar', [["rect",{"width":"14","height":"14","x":"5","y":"5","stroke":"currentColor","strokeWidth":"2","rx":"4"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M9 9V15"}]]);
 export const IconSkipBack = /* @__PURE__ */ createIcon('IconSkipBack', [["path",{"fill":"currentColor","stroke":"currentColor","strokeLinejoin":"round","strokeWidth":"2","d":"M15.72 7.36L11.44 10.54Q9.48 12 11.44 13.46L15.72 16.64Q17.5 17.97 17.5 15.45L17.5 8.55Q17.5 6.03 15.72 7.36Z"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M6.5 7V17"}]]);
 export const IconSkipForward = /* @__PURE__ */ createIcon('IconSkipForward', [["path",{"fill":"currentColor","stroke":"currentColor","strokeLinejoin":"round","strokeWidth":"2","d":"M8.28 7.36L12.56 10.54Q14.52 12 12.56 13.46L8.28 16.64Q6.5 17.97 6.5 15.45L6.5 8.55Q6.5 6.03 8.28 7.36Z"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M17.5 7V17"}]]);
@@ -351,6 +352,7 @@ export const icons = {
   'settings': IconSettings,
   'share': IconShare,
   'shield': IconShield,
+  'shuffle': IconShuffle,
   'sidebar': IconSidebar,
   'skip-back': IconSkipBack,
   'skip-forward': IconSkipForward,
