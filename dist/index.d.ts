@@ -76,6 +76,7 @@ export declare const IconEye: string;
 export declare const IconFile: string;
 export declare const IconFilm: string;
 export declare const IconFilter: string;
+export declare const IconFingerprint: string;
 export declare const IconFlag: string;
 export declare const IconFolderOpen: string;
 export declare const IconFolder: string;
