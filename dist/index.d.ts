@@ -20,6 +20,7 @@ export declare const IconArrowUp: string;
 export declare const IconAtSign: string;
 export declare const IconAudio: string;
 export declare const IconBarChart: string;
+export declare const IconBellOff: string;
 export declare const IconBell: string;
 export declare const IconBold: string;
 export declare const IconBolt: string;
