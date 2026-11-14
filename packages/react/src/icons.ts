@@ -47,6 +47,7 @@ export const IconChevronLeft = /* @__PURE__ */ createIcon('IconChevronLeft', [["
 export const IconChevronRight = /* @__PURE__ */ createIcon('IconChevronRight', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M9.58284 17.5L14.4414 12.6414C14.5195 12.5633 14.5195 12.4367 14.4414 12.3586L9.58284 7.5"}]]);
 export const IconChevronUp = /* @__PURE__ */ createIcon('IconChevronUp', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M7 15L11.8586 10.1414C11.9367 10.0633 12.0633 10.0633 12.1414 10.1414L17 15"}]]);
 export const IconCircleCheck = /* @__PURE__ */ createIcon('IconCircleCheck', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M9 12.25L11 14.25L15 10"}]]);
+export const IconCirclePlus = /* @__PURE__ */ createIcon('IconCirclePlus', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M12 9V15M9 12H15"}]]);
 export const IconClipboard = /* @__PURE__ */ createIcon('IconClipboard', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M9.5 7H9A3 3 0 0 0 6 10V16A3 3 0 0 0 9 19H15A3 3 0 0 0 18 16V10A3 3 0 0 0 15 7"}],["rect",{"width":"5","height":"3.4","x":"9.5","y":"5","stroke":"currentColor","strokeWidth":"2","rx":"1.7"}]]);
 export const IconClock = /* @__PURE__ */ createIcon('IconClock', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M12 8.5V12L14.5 13.5"}]]);
 export const IconCloud = /* @__PURE__ */ createIcon('IconCloud', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M8 17H16A3 3 0 0 0 15.98 11A4.5 4.5 0 0 0 7.02 11.17A3 3 0 0 0 8 17Z"}]]);
@@ -239,6 +240,7 @@ export const icons = {
   'chevron-right': IconChevronRight,
   'chevron-up': IconChevronUp,
   'circle-check': IconCircleCheck,
+  'circle-plus': IconCirclePlus,
   'clipboard': IconClipboard,
   'clock': IconClock,
   'cloud': IconCloud,
