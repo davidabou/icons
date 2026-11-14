@@ -76,6 +76,7 @@ export declare const IconDirectionUpRight: string;
 export declare const IconDotCircle: string;
 export declare const IconDownload: string;
 export declare const IconDrag: string;
+export declare const IconEarth: string;
 export declare const IconError: string;
 export declare const IconEtcHorisontal: string;
 export declare const IconEtcVertical: string;

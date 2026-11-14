@@ -79,6 +79,7 @@ export const IconDirectionUpRight = /* @__PURE__ */ createIcon('IconDirectionUpR
 export const IconDotCircle = /* @__PURE__ */ createIcon('IconDotCircle', [["circle",{"cx":"12","cy":"12","r":"4","stroke":"currentColor","strokeWidth":"2"}]]);
 export const IconDownload = /* @__PURE__ */ createIcon('IconDownload', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M12 5V13M12 13L8.6667 9.6667M12 13L15.3333 9.6667"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M5 14V15C5 17.2091 6.7909 19 9 19H15C17.2091 19 19 17.2091 19 15V14"}]]);
 export const IconDrag = /* @__PURE__ */ createIcon('IconDrag', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M9.66 7.3H9.65"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M9.66 12H9.65"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M9.66 16.7H9.65"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M14.36 7.3H14.35"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M14.36 12H14.35"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M14.36 16.7H14.35"}]]);
+export const IconEarth = /* @__PURE__ */ createIcon('IconEarth', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M16.9 7H14A2 2 0 0 0 12 9A2 2 0 0 0 14 11A1.75 1.75 0 0 1 15.75 12.75A1.75 1.75 0 0 0 17.5 14.5H18.54"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M5.16 10.5H5.75A2 2 0 0 1 7.75 12.5A1.75 1.75 0 0 0 9.5 14.25A2 2 0 0 1 11.5 16.25V18.98"}]]);
 export const IconError = /* @__PURE__ */ createIcon('IconError', [["rect",{"width":"14","height":"14","x":"5","y":"5","stroke":"currentColor","strokeWidth":"2","rx":"4"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M9.75 9.75L14.25 14.25M14.25 9.75L9.75 14.25"}]]);
 export const IconEtcHorisontal = /* @__PURE__ */ createIcon('IconEtcHorisontal', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M7.30499 11.995L7.30499 12.005M12.005 11.995V12.005M16.705 11.995L16.705 12.005"}]]);
 export const IconEtcVertical = /* @__PURE__ */ createIcon('IconEtcVertical', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M12.01 7.29999H12"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M12.01 12H12"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M12.01 16.7H12"}]]);
@@ -288,6 +289,7 @@ export const icons = {
   'dot-circle': IconDotCircle,
   'download': IconDownload,
   'drag': IconDrag,
+  'earth': IconEarth,
   'error': IconError,
   'etc-horisontal': IconEtcHorisontal,
   'etc-vertical': IconEtcVertical,
