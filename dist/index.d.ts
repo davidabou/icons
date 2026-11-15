@@ -153,6 +153,7 @@ export declare const IconRemoveBackground: string;
 export declare const IconRepeat: string;
 export declare const IconReplace: string;
 export declare const IconRocket: string;
+export declare const IconSad: string;
 export declare const IconSave: string;
 export declare const IconScissors: string;
 export declare const IconSearch: string;
