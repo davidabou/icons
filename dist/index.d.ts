@@ -94,6 +94,7 @@ export declare const IconFolder: string;
 export declare const IconGift: string;
 export declare const IconGitBranch: string;
 export declare const IconGlobe: string;
+export declare const IconGrab: string;
 export declare const IconGridView: string;
 export declare const IconHappy: string;
 export declare const IconHash: string;
