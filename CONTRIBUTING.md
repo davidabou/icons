@@ -50,7 +50,7 @@ Values measured on the existing icons (`check`, `plus`, `search`, `picture`, `wa
 - `stroke-width="2"` — **standard weight, non-negotiable**.
 - `stroke-linecap="round"` on every open stroke (lines, unclosed paths).
 - `stroke-linejoin="round"` whenever a path has corners.
-- **No fills**: 100% outline style. Solid dots are drawn with a near-zero-length stroke (see below). Only exception: the media controls (see below).
+- **No fills**: 100% outline style. Solid dots are drawn with a near-zero-length stroke (see below). Only exceptions: the media controls and small solid shapes (see below).
 
 ### Recurring shapes
 
@@ -66,7 +66,11 @@ Values measured on the existing icons (`check`, `plus`, `search`, `picture`, `wa
 
 ### Media controls (filled exception)
 
-`play`, `pause`, `stop`, `skip-forward` and `skip-back` are **solid shapes without a container**, by convention for player controls. Each shape uses `fill="black"` **plus** a matching `stroke="black" stroke-width="2" stroke-linejoin="round"`, which rounds its corners; svgo turns both into `currentColor`. They share the same visible height (6→18). In `skip-forward` and `skip-back`, the triangle is solid and the bar is a regular 2px stroke. Do not extend this filled style to other icons.
+`play`, `pause`, `stop`, `skip-forward` and `skip-back` are **solid shapes without a container**, by convention for player controls. Each shape uses `fill="black"` **plus** a matching `stroke="black" stroke-width="2" stroke-linejoin="round"`, which rounds its corners; svgo turns both into `currentColor`. They share the same visible height (6→18). In `skip-forward` and `skip-back`, the triangle is solid and the bar is a regular 2px stroke. Do not extend this filled style to other icons, apart from the small solid shapes below.
+
+### Small solid shapes (filled exception)
+
+A small inner shape may be filled when it is too small to be drawn as an outline: as a 2px outline, it would leave an empty area too small to read. Example: the liquid in `flask`. Fill it like the media controls: `fill="black"` **plus** a matching `stroke="black" stroke-width="2" stroke-linejoin="round"`. The rest of the icon stays an outline.
 
 ### Forbidden
 
