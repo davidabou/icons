@@ -98,6 +98,7 @@ export const IconGift = /* @__PURE__ */ createIcon('IconGift', [["rect",{"width"
 export const IconGitBranch = /* @__PURE__ */ createIcon('IconGitBranch', [["circle",{"cx":"8","cy":"7","r":"2","stroke":"currentColor","strokeWidth":"2"}],["circle",{"cx":"16","cy":"7","r":"2","stroke":"currentColor","strokeWidth":"2"}],["circle",{"cx":"8","cy":"17","r":"2","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M8 9V15M16 9C16 11.5 14 12.5 11.5 12.5H10.5C9.1 12.5 8 13.6 8 15"}]]);
 export const IconGlobe = /* @__PURE__ */ createIcon('IconGlobe', [["path",{"stroke":"currentColor","strokeWidth":"2","d":"M18 12C18 15.3137 15.3137 18 12 18C8.68629 18 6 15.3137 6 12M18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12M18 12H6M11.7 6C11.7 6 9.7 7.63811 9.7 12C9.7 16.9 11.7 18 11.7 18M12.3 6C12.3 6 14.3 7.63811 14.3 12C14.3 16.9 12.3 18 12.3 18"}]]);
 export const IconGridView = /* @__PURE__ */ createIcon('IconGridView', [["rect",{"width":"14","height":"14","x":"5","y":"5","stroke":"currentColor","strokeWidth":"2","rx":"4"}],["path",{"stroke":"currentColor","strokeWidth":"2","d":"M12 5V19M5 12H19"}]]);
+export const IconHappy = /* @__PURE__ */ createIcon('IconHappy', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2.6","d":"M9.5 10.01V10M14.5 10.01V10"}],["path",{"fill":"currentColor","stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M9.5 13.25H14.5A2.5 2.5 0 0 1 9.5 13.25Z"}]]);
 export const IconHash = /* @__PURE__ */ createIcon('IconHash', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M10.75 6.5L9.25 17.5M14.75 6.5L13.25 17.5M7 10H17.5M6.5 14H17"}]]);
 export const IconHeading = /* @__PURE__ */ createIcon('IconHeading', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M9 7L9 12M9 17V12M9 12L15 12M15 7V12M15 17L15 12"}]]);
 export const IconHeadphones = /* @__PURE__ */ createIcon('IconHeadphones', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M5 15V12A7 7 0 0 1 19 12V15"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M5 15.5A2 2 0 0 1 7 13.5H7A1.5 1.5 0 0 1 8.5 15V17.5A1.5 1.5 0 0 1 7 19H7A2 2 0 0 1 5 17Z"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M19 15.5A2 2 0 0 0 17 13.5H17A1.5 1.5 0 0 0 15.5 15V17.5A1.5 1.5 0 0 0 17 19H17A2 2 0 0 0 19 17Z"}]]);
@@ -312,6 +313,7 @@ export const icons = {
   'git-branch': IconGitBranch,
   'globe': IconGlobe,
   'grid-view': IconGridView,
+  'happy': IconHappy,
   'hash': IconHash,
   'heading': IconHeading,
   'headphones': IconHeadphones,
