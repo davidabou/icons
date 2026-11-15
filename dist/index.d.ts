@@ -134,6 +134,7 @@ export declare const IconMoon: string;
 export declare const IconMouse: string;
 export declare const IconMusic: string;
 export declare const IconMute: string;
+export declare const IconNeutral: string;
 export declare const IconPaperclip: string;
 export declare const IconPause: string;
 export declare const IconPercent: string;
