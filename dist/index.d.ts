@@ -11,6 +11,7 @@ export declare const IconAlignCenter: string;
 export declare const IconAlignJustify: string;
 export declare const IconAlignLeft: string;
 export declare const IconAlignRight: string;
+export declare const IconAngry: string;
 export declare const IconApplication: string;
 export declare const IconArchive: string;
 export declare const IconArrowDown: string;

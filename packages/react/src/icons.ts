@@ -14,6 +14,7 @@ export const IconAlignCenter = /* @__PURE__ */ createIcon('IconAlignCenter', [["
 export const IconAlignJustify = /* @__PURE__ */ createIcon('IconAlignJustify', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M18 7L6 7"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M18 17H6"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M18 12L6 12"}]]);
 export const IconAlignLeft = /* @__PURE__ */ createIcon('IconAlignLeft', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M17 7L5 7"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M17 17H5"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M13 12L5 12"}]]);
 export const IconAlignRight = /* @__PURE__ */ createIcon('IconAlignRight', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M19 7L7 7"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M19 17H7"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeWidth":"2","d":"M19 12L11 12"}]]);
+export const IconAngry = /* @__PURE__ */ createIcon('IconAngry', [["circle",{"cx":"12","cy":"12","r":"7","stroke":"currentColor","strokeWidth":"2"}],["path",{"fill":"currentColor","stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M9 10L10.75 10.75L9.9 11.4ZM15 10L13.25 10.75L14.1 11.4Z"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M10.25 15A2.5 2.5 0 0 1 13.75 15"}]]);
 export const IconApplication = /* @__PURE__ */ createIcon('IconApplication', [["rect",{"width":"5.5","height":"5.5","x":"5","y":"5","stroke":"currentColor","strokeWidth":"2","rx":"2"}],["rect",{"width":"5.5","height":"5.5","x":"5","y":"13.5","stroke":"currentColor","strokeWidth":"2","rx":"2"}],["rect",{"width":"5.5","height":"5.5","x":"13.5","y":"13.5","stroke":"currentColor","strokeWidth":"2","rx":"2"}],["circle",{"cx":"16.25","cy":"7.75","r":"2.75","stroke":"currentColor","strokeWidth":"2"}]]);
 export const IconArchive = /* @__PURE__ */ createIcon('IconArchive', [["rect",{"width":"14","height":"4.5","x":"5","y":"5","stroke":"currentColor","strokeWidth":"2","rx":"2.25"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M6.5 9.5V16A3 3 0 0 0 9.5 19H14.5A3 3 0 0 0 17.5 16V9.5"}],["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M10.5 13.5H13.5"}]]);
 export const IconArrowDown = /* @__PURE__ */ createIcon('IconArrowDown', [["path",{"stroke":"currentColor","strokeLinecap":"round","strokeLinejoin":"round","strokeWidth":"2","d":"M12 7V17M12 17L8.67 13.67M12 17L15.33 13.67"}]]);
@@ -225,6 +226,7 @@ export const icons = {
   'align-justify': IconAlignJustify,
   'align-left': IconAlignLeft,
   'align-right': IconAlignRight,
+  'angry': IconAngry,
   'application': IconApplication,
   'archive': IconArchive,
   'arrow-down': IconArrowDown,
